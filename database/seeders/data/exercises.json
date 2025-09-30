@@ -1,0 +1,2272 @@
+[
+  {
+    "name": "Press banca plano (barra)",
+    "slug": "barbell-bench-press-flat",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "flat"
+      }
+    ]
+  },
+  {
+    "name": "Press banca inclinado (barra)",
+    "slug": "barbell-bench-press-incline",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "incline"
+      }
+    ]
+  },
+  {
+    "name": "Press banca declinado (barra)",
+    "slug": "barbell-bench-press-decline",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "decline"
+      }
+    ]
+  },
+  {
+    "name": "Press banca plano (mancuernas)",
+    "slug": "dumbbell-bench-press-flat",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "flat"
+      }
+    ]
+  },
+  {
+    "name": "Press banca inclinado (mancuernas)",
+    "slug": "dumbbell-bench-press-incline",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "incline"
+      }
+    ]
+  },
+  {
+    "name": "Press banca declinado (mancuernas)",
+    "slug": "dumbbell-bench-press-decline",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "decline"
+      }
+    ]
+  },
+  {
+    "name": "Press pecho en máquina (plano)",
+    "slug": "machine-chest-press-flat",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "flat"
+      }
+    ]
+  },
+  {
+    "name": "Press pecho en máquina (inclinado)",
+    "slug": "machine-chest-press-incline",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "incline"
+      }
+    ]
+  },
+  {
+    "name": "Press pecho en Smith",
+    "slug": "smith-machine-chest-press",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Aperturas con mancuernas (plano)",
+    "slug": "dumbbell-flyes-flat",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "flat"
+      }
+    ]
+  },
+  {
+    "name": "Aperturas con mancuernas (inclinado)",
+    "slug": "dumbbell-flyes-incline",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "incline"
+      }
+    ]
+  },
+  {
+    "name": "Aperturas en polea (media)",
+    "slug": "cable-flyes-mid",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Aperturas en polea (alto-a-bajo)",
+    "slug": "cable-flyes-high-to-low",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Aperturas en polea (bajo-a-alto)",
+    "slug": "cable-flyes-low-to-high",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Pec deck (máquina de aperturas)",
+    "slug": "pec-deck-fly",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Lagartijas / Flexiones (estándar)",
+    "slug": "push-up-standard",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Lagartijas inclinadas",
+    "slug": "push-up-incline",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "incline"
+      }
+    ]
+  },
+  {
+    "name": "Lagartijas declinadas",
+    "slug": "push-up-decline",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      },
+      {
+        "type_slug": "angle",
+        "name_slug": "decline"
+      }
+    ]
+  },
+  {
+    "name": "Fondos con inclinación al frente (pecho)",
+    "slug": "dips-chest-lean",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "triceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Squeeze press con mancuernas",
+    "slug": "dumbbell-squeeze-press",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "chest"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Dominadas pronas",
+    "slug": "pull-up-pronated",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Dominadas supinas (chin-up)",
+    "slug": "chin-up-supinated",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "biceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Dominadas agarre neutro",
+    "slug": "pull-up-neutral-grip",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Jalón al pecho (barra ancha)",
+    "slug": "lat-pulldown-wide-grip",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Jalón al pecho (agarre neutro/estrecho)",
+    "slug": "lat-pulldown-neutral",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Remo con barra inclinado",
+    "slug": "barbell-bent-over-row",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Remo Pendlay",
+    "slug": "barbell-pendlay-row",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Remo con barra apoyado (seal row)",
+    "slug": "barbell-seal-row",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Remo en T (máquina/landmine)",
+    "slug": "t-bar-row",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Remo con mancuerna a un brazo",
+    "slug": "one-arm-dumbbell-row",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Remo sentado en polea (agarre neutro)",
+    "slug": "seated-cable-row-neutral",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Remo sentado en polea (barra ancha)",
+    "slug": "seated-cable-row-wide",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Remo en máquina pecho apoyado",
+    "slug": "chest-supported-machine-row",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Pulldown con brazos rectos (polea)",
+    "slug": "straight-arm-pulldown",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Peso muerto convencional",
+    "slug": "barbell-deadlift-conventional",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Peso muerto sumo",
+    "slug": "barbell-deadlift-sumo",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      },
+      {
+        "type_slug": "stance",
+        "name_slug": "sumo"
+      }
+    ]
+  },
+  {
+    "name": "Peso muerto rumano (RDL)",
+    "slug": "barbell-romanian-deadlift",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      },
+      {
+        "type_slug": "range",
+        "name_slug": "romanian"
+      }
+    ]
+  },
+  {
+    "name": "Buenos días (barbell good morning)",
+    "slug": "barbell-good-morning",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "lower_back"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Hiperextensiones 45° (espalda baja/glúteo)",
+    "slug": "back-extension-45",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "lower_back"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Face pull (polea)",
+    "slug": "cable-face-pull",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "back"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Press militar de pie (barra)",
+    "slug": "barbell-overhead-press-standing",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Press hombros sentado (mancuernas)",
+    "slug": "seated-dumbbell-shoulder-press",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Press Arnold",
+    "slug": "arnold-press",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Push press (barra)",
+    "slug": "barbell-push-press",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Press con landmine",
+    "slug": "landmine-press",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Elevaciones laterales (mancuernas)",
+    "slug": "dumbbell-lateral-raise",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Elevaciones laterales (polea)",
+    "slug": "cable-lateral-raise",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Elevaciones frontales (mancuernas)",
+    "slug": "dumbbell-front-raise",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Pájaros / Reverse fly (mancuernas)",
+    "slug": "dumbbell-rear-delt-fly",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Reverse pec deck",
+    "slug": "reverse-pec-deck",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Remo al mentón (barra/EZ)",
+    "slug": "upright-row-barbell",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "shoulders"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "pull"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Sentadilla trasera (barra)",
+    "slug": "barbell-back-squat",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Sentadilla frontal (barra)",
+    "slug": "barbell-front-squat",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Sentadilla en Smith",
+    "slug": "smith-machine-squat",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Prensa de piernas",
+    "slug": "leg-press",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Sentadilla búlgara (mancuernas)",
+    "slug": "bulgarian-split-squat",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Zancadas caminando (mancuernas)",
+    "slug": "walking-lunge-dumbbell",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Zancadas hacia atrás",
+    "slug": "reverse-lunge",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "other"
+      }
+    ]
+  },
+  {
+    "name": "Step-up al banco (mancuernas)",
+    "slug": "dumbbell-step-up",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Hack squat (máquina)",
+    "slug": "hack-squat-machine",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Extensiones de cuádriceps (máquina)",
+    "slug": "leg-extension",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Sentadilla sissy (máquina/soporte)",
+    "slug": "sissy-squat",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Curl femoral acostado (máquina)",
+    "slug": "lying-leg-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Curl femoral sentado (máquina)",
+    "slug": "seated-leg-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Curl femoral de pie (máquina)",
+    "slug": "standing-leg-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Nordic curl",
+    "slug": "nordic-hamstring-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Glute ham raise (GHR)",
+    "slug": "glute-ham-raise",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Peso muerto piernas rígidas",
+    "slug": "stiff-leg-deadlift",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "RDL con mancuernas",
+    "slug": "dumbbell-romanian-deadlift",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      },
+      {
+        "type_slug": "range",
+        "name_slug": "romanian"
+      }
+    ]
+  },
+  {
+    "name": "Hip thrust (barra)",
+    "slug": "barbell-hip-thrust",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Hip thrust en Smith",
+    "slug": "smith-machine-hip-thrust",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Hip thrust (máquina específica)",
+    "slug": "machine-hip-thrust",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Glute bridge (suelo/barra)",
+    "slug": "glute-bridge",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "other"
+      }
+    ]
+  },
+  {
+    "name": "Abducción de cadera (máquina)",
+    "slug": "seated-hip-abduction",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Patada de glúteo en polea",
+    "slug": "cable-glute-kickback",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Pull-through en polea",
+    "slug": "cable-pull-through",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Elevación de talones de pie (máquina)",
+    "slug": "standing-calf-raise-machine",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "calves"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Elevación de talones sentado",
+    "slug": "seated-calf-raise",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "calves"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Elevación de talón en prensa",
+    "slug": "leg-press-calf-raise",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "calves"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Plancha frontal",
+    "slug": "front-plank",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "abs"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "anti_extension"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Plancha lateral",
+    "slug": "side-plank",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "obliques"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "anti_lateral_flexion"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Crunch",
+    "slug": "crunch",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "abs"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "flexion"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Crunch en polea (de rodillas)",
+    "slug": "kneeling-cable-crunch",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "abs"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "flexion"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Elevación de piernas colgado",
+    "slug": "hanging-leg-raise",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "abs"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "flexion"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Ab wheel rollout",
+    "slug": "ab-wheel-rollout",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "abs"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "anti_extension"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "other"
+      }
+    ]
+  },
+  {
+    "name": "Pallof press",
+    "slug": "pallof-press",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "obliques"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "anti_rotation"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Giros rusos (Russian twist)",
+    "slug": "russian-twist",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "obliques"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "rotation"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "other"
+      }
+    ]
+  },
+  {
+    "name": "Curl con barra recta",
+    "slug": "barbell-biceps-curl-straight",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "biceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Curl con barra EZ",
+    "slug": "ez-bar-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "biceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Curl alterno con mancuernas",
+    "slug": "alternating-dumbbell-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "biceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Curl martillo",
+    "slug": "hammer-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "biceps"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "forearms"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Curl predicador (EZ/máquina)",
+    "slug": "preacher-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "biceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "machine"
+      }
+    ]
+  },
+  {
+    "name": "Curl concentración",
+    "slug": "concentration-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "biceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Curl en polea (barra recta)",
+    "slug": "cable-biceps-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "biceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Curl inverso (EZ)",
+    "slug": "reverse-ez-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "biceps"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "forearms"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Press banca agarre cerrado",
+    "slug": "close-grip-bench-press",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "triceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Fondos en paralelas (tríceps)",
+    "slug": "dips-triceps-vertical",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "triceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "bodyweight"
+      }
+    ]
+  },
+  {
+    "name": "Extensión de tríceps en polea (barra)",
+    "slug": "cable-triceps-pushdown-straight-bar",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "triceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Extensión de tríceps en polea (soga)",
+    "slug": "cable-triceps-pushdown-rope",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "triceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "cable"
+      }
+    ]
+  },
+  {
+    "name": "Rompecráneos / Lying triceps extension (EZ)",
+    "slug": "lying-triceps-extension-ez",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "triceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Extensión por encima de la cabeza (mancuernas)",
+    "slug": "overhead-dumbbell-triceps-extension",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "triceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Kickback de tríceps (mancuerna)",
+    "slug": "dumbbell-triceps-kickback",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "triceps"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Curl de muñeca",
+    "slug": "wrist-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "forearms"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Curl de muñeca inverso",
+    "slug": "reverse-wrist-curl",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "forearms"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Hold de platos (pinch grip)",
+    "slug": "plate-pinch-hold",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "forearms"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "other"
+      }
+    ]
+  },
+  {
+    "name": "Farmer’s carry",
+    "slug": "farmers-carry",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "forearms"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "carry"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Power clean",
+    "slug": "power-clean",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "full_body"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Clean & jerk",
+    "slug": "clean-and-jerk",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "full_body"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Snatch",
+    "slug": "snatch",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "full_body"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Thruster (barra)",
+    "slug": "barbell-thruster",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "full_body"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "squat"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "push"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "barbell"
+      }
+    ]
+  },
+  {
+    "name": "Swing con kettlebell",
+    "slug": "kettlebell-swing",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "glutes"
+      },
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "hamstrings"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "hinge"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "kettlebell"
+      }
+    ]
+  },
+  {
+    "name": "Turkish get-up",
+    "slug": "turkish-get-up",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "full_body"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "other"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "kettlebell"
+      }
+    ]
+  },
+  {
+    "name": "Sled push (Prowler)",
+    "slug": "sled-push",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "full_body"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "carry"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "other"
+      }
+    ]
+  },
+  {
+    "name": "Sled pull",
+    "slug": "sled-pull",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "full_body"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "carry"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "other"
+      }
+    ]
+  },
+  {
+    "name": "Suitcase carry",
+    "slug": "suitcase-carry",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "obliques"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "carry"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "dumbbell"
+      }
+    ]
+  },
+  {
+    "name": "Box jump",
+    "slug": "box-jump",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "quads"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "power"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "other"
+      }
+    ]
+  },
+  {
+    "name": "Medicine ball slam",
+    "slug": "medicine-ball-slam",
+    "categories": [
+      {
+        "type_slug": "muscle_group",
+        "name_slug": "full_body"
+      },
+      {
+        "type_slug": "movement_pattern",
+        "name_slug": "power"
+      },
+      {
+        "type_slug": "equipment",
+        "name_slug": "other"
+      }
+    ]
+  }
+]

@@ -1,0 +1,203 @@
+{
+  "muscle_group": {
+    "values": [
+      "chest",
+      "back",
+      "shoulders",
+      "biceps",
+      "triceps",
+      "forearms",
+      "quads",
+      "hamstrings",
+      "glutes",
+      "calves",
+      "abs",
+      "obliques",
+      "lower_back",
+      "full_body"
+    ],
+    "labels": {
+      "es": "Grupo muscular",
+      "en": "Muscle group"
+    },
+    "value_labels": {
+      "es": {
+        "chest": "Pectorales",
+        "back": "Espalda",
+        "shoulders": "Hombros",
+        "biceps": "Bíceps",
+        "triceps": "Tríceps",
+        "forearms": "Antebrazos",
+        "quads": "Cuádriceps",
+        "hamstrings": "Isquios",
+        "glutes": "Glúteos",
+        "calves": "Pantorrillas",
+        "abs": "Abdominales",
+        "obliques": "Oblicuos",
+        "lower_back": "Zona lumbar",
+        "full_body": "Cuerpo completo"
+      },
+      "en": {
+        "chest": "Chest",
+        "back": "Back",
+        "shoulders": "Shoulders",
+        "biceps": "Biceps",
+        "triceps": "Triceps",
+        "forearms": "Forearms",
+        "quads": "Quads",
+        "hamstrings": "Hamstrings",
+        "glutes": "Glutes",
+        "calves": "Calves",
+        "abs": "Abs",
+        "obliques": "Obliques",
+        "lower_back": "Lower back",
+        "full_body": "Full body"
+      }
+    }
+  },
+  "movement_pattern": {
+    "values": [
+      "push",
+      "pull",
+      "squat",
+      "hinge",
+      "rotation",
+      "carry",
+      "anti_extension",
+      "anti_rotation",
+      "anti_lateral_flexion",
+      "flexion",
+      "power",
+      "other"
+    ],
+    "labels": {
+      "es": "Patrón de movimiento",
+      "en": "Movement pattern"
+    },
+    "value_labels": {
+      "es": {
+        "push": "Empuje",
+        "pull": "Tirón",
+        "squat": "Sentadilla",
+        "hinge": "Bisagra",
+        "rotation": "Rotación",
+        "carry": "Porteo/Carry",
+        "anti_extension": "Anti-extensión",
+        "anti_rotation": "Anti-rotación",
+        "anti_lateral_flexion": "Anti-flexión lateral",
+        "flexion": "Flexión",
+        "power": "Potencia",
+        "other": "Otro"
+      },
+      "en": {
+        "push": "Push",
+        "pull": "Pull",
+        "squat": "Squat",
+        "hinge": "Hinge",
+        "rotation": "Rotation",
+        "carry": "Carry",
+        "anti_extension": "Anti-extension",
+        "anti_rotation": "Anti-rotation",
+        "anti_lateral_flexion": "Anti-lateral flexion",
+        "flexion": "Flexion",
+        "power": "Power",
+        "other": "Other"
+      }
+    }
+  },
+  "equipment": {
+    "values": [
+      "bodyweight",
+      "dumbbell",
+      "barbell",
+      "machine",
+      "kettlebell",
+      "cable",
+      "resistance_band",
+      "other"
+    ],
+    "labels": {
+      "es": "Equipamiento",
+      "en": "Equipment"
+    },
+    "value_labels": {
+      "es": {
+        "bodyweight": "Peso corporal",
+        "dumbbell": "Mancuerna",
+        "barbell": "Barra",
+        "machine": "Máquina",
+        "kettlebell": "Kettlebell",
+        "cable": "Polea",
+        "resistance_band": "Banda elástica",
+        "other": "Otro"
+      },
+      "en": {
+        "bodyweight": "Bodyweight",
+        "dumbbell": "Dumbbell",
+        "barbell": "Barbell",
+        "machine": "Machine",
+        "kettlebell": "Kettlebell",
+        "cable": "Cable",
+        "resistance_band": "Resistance band",
+        "other": "Other"
+      }
+    }
+  },
+  "angle": {
+    "values": [
+      "flat",
+      "incline",
+      "decline"
+    ],
+    "labels": {
+      "es": "Ángulo",
+      "en": "Angle"
+    },
+    "value_labels": {
+      "es": {
+        "flat": "Plano",
+        "incline": "Inclinado",
+        "decline": "Declinado"
+      },
+      "en": {
+        "flat": "Flat",
+        "incline": "Incline",
+        "decline": "Decline"
+      }
+    }
+  },
+  "stance": {
+    "values": [
+      "sumo"
+    ],
+    "labels": {
+      "es": "Apertura/posición",
+      "en": "Stance"
+    },
+    "value_labels": {
+      "es": {
+        "sumo": "Sumo"
+      },
+      "en": {
+        "sumo": "Sumo"
+      }
+    }
+  },
+  "range": {
+    "values": [
+      "romanian"
+    ],
+    "labels": {
+      "es": "Rango",
+      "en": "Range"
+    },
+    "value_labels": {
+      "es": {
+        "romanian": "Rumano"
+      },
+      "en": {
+        "romanian": "Romanian"
+      }
+    }
+  }
+}
