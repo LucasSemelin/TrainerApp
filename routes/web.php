@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ClientWorkoutController;
+use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\WorkoutController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -21,6 +24,38 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('clients', [ClientController::class, 'store'])->name('clients.store');
     Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
 });
+
+/**
+ * Exercise Management
+ */
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('exercises', [ExerciseController::class, 'index'])->name('exercises.index');
+    Route::get('exercises/list', [ExerciseController::class, 'list'])->name('exercises.list');
+    Route::post('exercises', [ExerciseController::class, 'store'])->name('exercises.store');
+    Route::delete('exercises/{exercise}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');
+});
+
+/**
+ * Workout Management
+ */
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('workouts', [WorkoutController::class, 'index'])->name('workouts.index');
+    Route::post('workouts', [WorkoutController::class, 'store'])->name('workouts.store');
+    Route::delete('workouts/{workout}', [WorkoutController::class, 'destroy'])->name('workouts.destroy');
+
+    Route::post('workouts/{workout}/exercises', [WorkoutController::class, 'addExercise'])->name('workouts.exercises.store');
+});
+
+/**
+ * Client Workout Management
+ */
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('clients/{client}/workouts', [ClientWorkoutController::class, 'index'])->name('clients.workouts.index');
+    Route::get('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'show'])->name('clients.workouts.show');
+    Route::post('clients/{client}/workouts', [ClientWorkoutController::class, 'store'])->name('clients.workouts.store');
+    Route::delete('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'destroy'])->name('clients.workouts.destroy');
+});
+
 
 use App\Http\Controllers\AiController;
 

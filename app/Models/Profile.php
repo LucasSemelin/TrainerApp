@@ -32,4 +32,9 @@ class Profile extends Model
             get: fn($value) => ucfirst($value),
         );
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

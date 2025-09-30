@@ -42,7 +42,7 @@ onUnmounted(() => {
     <AppLayout :breadcrumbs="breadcrumbs">
         <Head title="Two-Factor Authentication" />
         <SettingsLayout>
-            <div class="space-y-6">
+            <div class="space-y-6 pb-24">
                 <HeadingSmall title="Two-Factor Authentication" description="Manage your two-factor authentication settings" />
 
                 <div v-if="!twoFactorEnabled" class="flex flex-col items-start justify-start space-y-4">

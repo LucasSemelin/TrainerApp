@@ -23,7 +23,7 @@ defineProps<Props>();
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Profile settings',
+        title: 'Configuración de perfil',
         href: edit().url,
     },
 ];
@@ -34,29 +34,45 @@ const user = page.props.auth.user;
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Profile settings" />
+        <Head title="Configuración de perfil" />
 
         <SettingsLayout>
-            <div class="flex flex-col space-y-6">
-                <HeadingSmall title="Profile information" description="Update your name and email address" />
+            <div class="flex flex-col space-y-6 pb-24">
+                <HeadingSmall title="Información del perfil" description="Actualiza tu nombre y dirección de correo electrónico" />
 
                 <Form v-bind="ProfileController.update.form()" class="space-y-6" v-slot="{ errors, processing, recentlySuccessful }">
-                    <div class="grid gap-2">
-                        <Label for="name">Name</Label>
-                        <Input
-                            id="name"
-                            class="mt-1 block w-full"
-                            name="name"
-                            :default-value="user.name"
-                            required
-                            autocomplete="name"
-                            placeholder="Full name"
-                        />
-                        <InputError class="mt-2" :message="errors.name" />
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="grid gap-2">
+                            <Label for="first_name">Nombre</Label>
+                            <Input
+                                id="first_name"
+                                class="mt-1 block w-full"
+                                name="first_name"
+                                :default-value="user.profile?.first_name || ''"
+                                required
+                                autocomplete="given-name"
+                                placeholder="Nombre"
+                            />
+                            <InputError class="mt-2" :message="errors.first_name" />
+                        </div>
+
+                        <div class="grid gap-2">
+                            <Label for="last_name">Apellido</Label>
+                            <Input
+                                id="last_name"
+                                class="mt-1 block w-full"
+                                name="last_name"
+                                :default-value="user.profile?.last_name || ''"
+                                required
+                                autocomplete="family-name"
+                                placeholder="Apellido"
+                            />
+                            <InputError class="mt-2" :message="errors.last_name" />
+                        </div>
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="email">Email address</Label>
+                        <Label for="email">Dirección de correo electrónico</Label>
                         <Input
                             id="email"
                             type="email"
@@ -65,7 +81,7 @@ const user = page.props.auth.user;
                             :default-value="user.email"
                             required
                             autocomplete="username"
-                            placeholder="Email address"
+                            placeholder="correo@ejemplo.com"
                         />
                         <InputError class="mt-2" :message="errors.email" />
                     </div>
@@ -100,9 +116,9 @@ const user = page.props.auth.user;
                         </Transition>
                     </div>
                 </Form>
-            </div>
 
-            <DeleteUser />
+                <DeleteUser />
+            </div>
         </SettingsLayout>
     </AppLayout>
 </template>

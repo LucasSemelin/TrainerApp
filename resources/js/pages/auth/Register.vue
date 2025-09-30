@@ -12,8 +12,8 @@ import { LoaderCircle } from 'lucide-vue-next';
 </script>
 
 <template>
-    <AuthBase title="Create an account" description="Enter your details below to create your account">
-        <Head title="Register" />
+    <AuthBase title="Crear una cuenta" description="Ingresa tus datos para crear tu cuenta">
+        <Head title="Registrarse" />
 
         <Form
             v-bind="RegisteredUserController.store.form()"
@@ -32,31 +32,39 @@ import { LoaderCircle } from 'lucide-vue-next';
                         :tabindex="1"
                         autocomplete="first_name"
                         name="first_name"
-                        placeholder="Full name"
+                        placeholder="Nombre completo"
                     />
                     <InputError :message="errors.first_name" />
                 </div>
 
                 <div class="grid gap-2">
                     <Label for="last_name">Apellido</Label>
-                    <Input id="last_name" type="text" required :tabindex="2" autocomplete="last_name" name="last_name" placeholder="Last name" />
+                    <Input id="last_name" type="text" required :tabindex="2" autocomplete="last_name" name="last_name" placeholder="Apellido" />
                     <InputError :message="errors.last_name" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
-                    <Input id="email" type="email" required :tabindex="3" autocomplete="email" name="email" placeholder="email@example.com" />
+                    <Label for="email">Dirección de email</Label>
+                    <Input id="email" type="email" required :tabindex="3" autocomplete="email" name="email" placeholder="email@ejemplo.com" />
                     <InputError :message="errors.email" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password">Password</Label>
-                    <Input id="password" type="password" required :tabindex="4" autocomplete="new-password" name="password" placeholder="Password" />
+                    <Label for="password">Contraseña</Label>
+                    <Input
+                        id="password"
+                        type="password"
+                        required
+                        :tabindex="4"
+                        autocomplete="new-password"
+                        name="password"
+                        placeholder="Contraseña"
+                    />
                     <InputError :message="errors.password" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">Confirm password</Label>
+                    <Label for="password_confirmation">Confirmar contraseña</Label>
                     <Input
                         id="password_confirmation"
                         type="password"
@@ -64,20 +72,20 @@ import { LoaderCircle } from 'lucide-vue-next';
                         :tabindex="5"
                         autocomplete="new-password"
                         name="password_confirmation"
-                        placeholder="Confirm password"
+                        placeholder="Confirmar contraseña"
                     />
                     <InputError :message="errors.password_confirmation" />
                 </div>
 
                 <Button type="submit" class="mt-2 w-full" tabindex="5" :disabled="processing" data-test="register-user-button">
                     <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-                    Create account
+                    Crear cuenta
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                Already have an account?
-                <TextLink :href="login()" class="underline underline-offset-4" :tabindex="6">Log in</TextLink>
+                ¿Ya tienes una cuenta?
+                <TextLink :href="login()" class="underline underline-offset-4" :tabindex="6">Iniciar sesión</TextLink>
             </div>
         </Form>
     </AuthBase>

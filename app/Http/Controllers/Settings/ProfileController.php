@@ -18,8 +18,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $user = $request->user()->load('profile');
+
         return Inertia::render('settings/Profile', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'user' => $user,
+            'mustVerifyEmail' => $user instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
         ]);
     }
@@ -29,13 +32,21 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $validated = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Update email if changed
+        if (isset($validated['email']) && $user->email !== $validated['email']) {
+            $user->email = $validated['email'];
+            $user->email_verified_at = null;
+            $user->save();
         }
 
-        $request->user()->save();
+        // Update or create profile
+        $profile = $user->profile ?: new \App\Models\Profile(['user_id' => $user->id]);
+        $profile->first_name = $validated['first_name'];
+        $profile->last_name = $validated['last_name'];
+        $profile->save();
 
         return to_route('profile.edit');
     }

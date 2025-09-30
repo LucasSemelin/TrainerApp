@@ -17,16 +17,16 @@ interface AuthConfigContent {
 const authConfigContent = computed<AuthConfigContent>(() => {
     if (showRecoveryInput.value) {
         return {
-            title: 'Recovery Code',
-            description: 'Please confirm access to your account by entering one of your emergency recovery codes.',
-            toggleText: 'login using an authentication code',
+            title: 'Código de recuperación',
+            description: 'Por favor confirma el acceso a tu cuenta ingresando uno de tus códigos de recuperación de emergencia.',
+            toggleText: 'iniciar sesión usando un código de autenticación',
         };
     }
 
     return {
-        title: 'Authentication Code',
-        description: 'Enter the authentication code provided by your authenticator application.',
-        toggleText: 'login using a recovery code',
+        title: 'Código de autenticación',
+        description: 'Ingresa el código de autenticación proporcionado por tu aplicación autenticadora.',
+        toggleText: 'iniciar sesión usando un código de recuperación',
     };
 });
 
@@ -44,7 +44,7 @@ const codeValue = computed<string>(() => code.value.join(''));
 
 <template>
     <AuthLayout :title="authConfigContent.title" :description="authConfigContent.description">
-        <Head title="Two-Factor Authentication" />
+        <Head title="Autenticación de dos factores" />
 
         <div class="space-y-6">
             <template v-if="!showRecoveryInput">
@@ -60,9 +60,9 @@ const codeValue = computed<string>(() => code.value.join(''));
                         </div>
                         <InputError :message="errors.code" />
                     </div>
-                    <Button type="submit" class="w-full" :disabled="processing">Continue</Button>
+                    <Button type="submit" class="w-full" :disabled="processing">Continuar</Button>
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>or you can </span>
+                        <span>o puedes </span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
@@ -76,12 +76,12 @@ const codeValue = computed<string>(() => code.value.join(''));
 
             <template v-else>
                 <Form v-bind="store.form()" class="space-y-4" reset-on-error #default="{ errors, processing, clearErrors }">
-                    <Input name="recovery_code" type="text" placeholder="Enter recovery code" :autofocus="showRecoveryInput" required />
+                    <Input name="recovery_code" type="text" placeholder="Ingresa código de recuperación" :autofocus="showRecoveryInput" required />
                     <InputError :message="errors.recovery_code" />
-                    <Button type="submit" class="w-full" :disabled="processing">Continue</Button>
+                    <Button type="submit" class="w-full" :disabled="processing">Continuar</Button>
 
                     <div class="text-center text-sm text-muted-foreground">
-                        <span>or you can </span>
+                        <span>o puedes </span>
                         <button
                             type="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"

@@ -57,11 +57,11 @@ class CreateClient
         }
 
         // Send welcome email summarizing next steps (reset link sent or failed)
-        try {
-            Mail::to($user->email)->send(new WelcomeClientMail($user, $status === Password::RESET_LINK_SENT));
-        } catch (\Throwable $e) {
-            Log::error("CreateClient: Failed to send WelcomeClientMail to {$user->email}: {$e->getMessage()}");
-        }
+        // try {
+        //     Mail::to($user->email)->send(new WelcomeClientMail($user, $status === Password::RESET_LINK_SENT));
+        // } catch (\Throwable $e) {
+        //     Log::error("CreateClient: Failed to send WelcomeClientMail to {$user->email}: {$e->getMessage()}");
+        // }
         return $user;
     }
 }
