@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientWorkoutController;
 use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\ExerciseSetController;
 use App\Http\Controllers\WorkoutController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,6 +34,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('exercises/list', [ExerciseController::class, 'list'])->name('exercises.list');
     Route::post('exercises', [ExerciseController::class, 'store'])->name('exercises.store');
     Route::delete('exercises/{exercise}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');
+});
+
+/**
+ * Exercise Sets Management
+ */
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('exercise-workouts/{exerciseWorkout}/sets', [ExerciseSetController::class, 'store'])->name('exercise-workouts.sets.store');
+    Route::patch('exercise-sets/{set}', [ExerciseSetController::class, 'update'])->name('exercise-sets.update');
+    Route::delete('exercise-workouts/{exerciseWorkout}/sets/{set}', [ExerciseSetController::class, 'destroy'])->name('exercise-workouts.sets.destroy');
+    Route::delete('exercise-sets/{set}', [ExerciseSetController::class, 'destroy'])->name('exercise-sets.destroy');
 });
 
 /**

@@ -12,6 +12,7 @@ class Workout extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
+        'name',
         'trainer_id',
         'client_id',
     ];

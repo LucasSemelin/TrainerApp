@@ -10,6 +10,7 @@ import { computed } from 'vue';
 
 interface Workout {
     id: string;
+    name: string;
     trainer_id: string | null;
     client_id: string;
     created_at: string;
@@ -50,10 +51,10 @@ const formatDate = (dateString: string): string => {
                 <WorkoutCreateDialog :client-id="client.id" />
             </div>
 
-            <div class="flex justify-between font-medium text-slate-700 dark:text-slate-200">
+            <!-- <div class="flex justify-between font-medium text-slate-700 dark:text-slate-200">
                 <div>Rutinas</div>
                 <div>Acciones</div>
-            </div>
+            </div> -->
 
             <!-- Lista de rutinas -->
             <div v-if="workouts.length > 0" class="space-y-2">
@@ -64,9 +65,9 @@ const formatDate = (dateString: string): string => {
                 >
                     <div class="flex flex-col">
                         <span class="font-medium">
-                            {{ formatDate(workout.created_at) }}
+                            {{ workout.name }}
                         </span>
-                        <!-- <span class="text-sm text-muted-foreground"> Rutina creada </span> -->
+                        <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(workout.created_at) }} </span>
                     </div>
                     <Link
                         :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"

@@ -22,7 +22,12 @@ class ClientWorkoutController extends Controller
     public function show(User $client, Workout $workout)
     {
         $exercises = ExerciseWorkout::where('workout_id', $workout->id)
-            ->with('exercise')
+            ->with([
+                'exercise',
+                'sets' => function ($query) {
+                    $query->orderBy('set_number');
+                }
+            ])
             ->get();
 
         return inertia('PageClientWorkoutShow', [

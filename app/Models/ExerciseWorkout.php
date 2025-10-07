@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ExerciseWorkout extends Model
 {
@@ -19,13 +21,18 @@ class ExerciseWorkout extends Model
         'weight',
     ];
 
-    public function exercise()
+    public function exercise(): BelongsTo
     {
         return $this->belongsTo(Exercise::class);
     }
 
-    public function workout()
+    public function workout(): BelongsTo
     {
         return $this->belongsTo(Workout::class);
+    }
+
+    public function sets(): HasMany
+    {
+        return $this->hasMany(ExerciseSet::class);
     }
 }
