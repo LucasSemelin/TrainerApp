@@ -36,25 +36,25 @@ class WorkoutController extends Controller
     {
         $validated = $request->validate([
             'exercise_id' => 'required|exists:exercises,id',
-            'sets' => 'required|integer|min:1|max:20',
-            'min_reps' => 'required|integer|min:1|max:200',
-            'max_reps' => 'nullable|integer|min:1|max:200|gte:min_reps',
-            'weight' => 'required|numeric|min:0|max:1000',
         ]);
 
+        // Get the next order number for this workout
+        $nextOrder = $workout->exerciseWorkouts()->max('order') + 1 ?? 1;
+
         // Create the exercise workout relationship
-        ExerciseWorkout::create([
+        $exerciseWorkout = ExerciseWorkout::create([
             'workout_id' => $workout->id,
             'exercise_id' => $validated['exercise_id'],
-            'sets' => $validated['sets'],
-            'min_reps' => $validated['min_reps'],
-            'max_reps' => $validated['max_reps'],
-            'weight' => $validated['weight'],
+            'order' => $nextOrder,
         ]);
+
+        // Load the related exercise data and empty sets
+        $exerciseWorkout->load(['exercise', 'sets']);
 
         return response()->json([
             'success' => true,
-            'message' => 'Ejercicio agregado exitosamente'
+            'message' => 'Ejercicio agregado exitosamente',
+            'exercise_workout' => $exerciseWorkout,
         ]);
     }
 }

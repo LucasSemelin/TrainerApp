@@ -31,10 +31,6 @@ const isOpen = computed({
 
 const form = useForm({
     exercise_id: '',
-    sets: null as number | null,
-    min_reps: null as number | null,
-    max_reps: null as number | null,
-    weight: null as number | null,
 });
 
 // Load exercises when dialog opens
@@ -69,29 +65,14 @@ const submit = async () => {
     form.processing = true;
 
     try {
-        await axios.post(`/workouts/${props.workoutId}/exercises`, {
+        const response = await axios.post(`/workouts/${props.workoutId}/exercises`, {
             exercise_id: form.exercise_id,
-            sets: form.sets,
-            min_reps: form.min_reps,
-            max_reps: form.max_reps,
-            weight: form.weight,
         });
 
-        // Get the exercise name for the new exercise
-        const selectedExercise = exercises.value.find((ex) => ex.id === form.exercise_id);
+        // Use the real exercise workout data from the backend
+        const exerciseWorkout = response.data.exercise_workout;
 
-        const newExercise = {
-            id: Date.now().toString(), // Temporary ID
-            workout_id: props.workoutId,
-            exercise_id: form.exercise_id,
-            sets: form.sets,
-            min_reps: form.min_reps,
-            max_reps: form.max_reps,
-            weight: form.weight,
-            exercise: selectedExercise,
-        };
-
-        emit('created', newExercise);
+        emit('created', exerciseWorkout);
         isOpen.value = false;
         form.reset();
     } catch (error: any) {
@@ -153,84 +134,6 @@ const submit = async () => {
                         </select>
                         <div v-if="form.errors.exercise_id" class="mt-1 text-sm text-destructive">
                             {{ form.errors.exercise_id }}
-                        </div>
-                    </div>
-
-                    <!-- Sets and Weight Row -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Sets -->
-                        <div>
-                            <label class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                Series*
-                            </label>
-                            <input
-                                v-model.number="form.sets"
-                                type="number"
-                                min="1"
-                                placeholder="Ejemplo: 3"
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                                required
-                            />
-                            <div v-if="form.errors.sets" class="mt-1 text-sm text-destructive">
-                                {{ form.errors.sets }}
-                            </div>
-                        </div>
-
-                        <!-- Weight -->
-                        <div>
-                            <label class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                Peso (kg)*
-                            </label>
-                            <input
-                                v-model.number="form.weight"
-                                type="number"
-                                min="0"
-                                step="0.5"
-                                placeholder="Ejemplo: 20"
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                                required
-                            />
-                            <div v-if="form.errors.weight" class="mt-1 text-sm text-destructive">
-                                {{ form.errors.weight }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Repetitions Row -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Min Reps -->
-                        <div>
-                            <label class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                Reps mínimas*
-                            </label>
-                            <input
-                                v-model.number="form.min_reps"
-                                type="number"
-                                min="1"
-                                placeholder="Ejemplo: 8"
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                                required
-                            />
-                            <div v-if="form.errors.min_reps" class="mt-1 text-sm text-destructive">
-                                {{ form.errors.min_reps }}
-                            </div>
-                        </div>
-
-                        <!-- Max Reps (Optional) -->
-                        <div>
-                            <label class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                Reps máximas
-                            </label>
-                            <input
-                                v-pnumber="form.max_reps"
-                                type="number"
-                                min="1"
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                                placeholder="Ejemplo: 12 (opcional)"
-                            />
-                            <div v-if="form.errors.max_reps" class="mt-1 text-sm text-destructive">
-                                {{ form.errors.max_reps }}
-                            </div>
                         </div>
                     </div>
 

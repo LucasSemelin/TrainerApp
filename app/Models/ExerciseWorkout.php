@@ -15,10 +15,7 @@ class ExerciseWorkout extends Model
     protected $fillable = [
         'workout_id',
         'exercise_id',
-        'sets',
-        'min_reps',
-        'max_reps',
-        'weight',
+        'order',
     ];
 
     public function exercise(): BelongsTo
