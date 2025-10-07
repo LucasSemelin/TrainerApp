@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import Button from './ui/button/Button.vue';
 
@@ -12,11 +14,17 @@ const props = defineProps<Props>();
 const page = usePage();
 
 const form = useForm({
+    name: '',
     trainer_id: page.props.auth.user.id,
     client_id: props.clientId,
 });
 
 const createWorkout = () => {
+    if (!form.name.trim()) {
+        form.setError('name', 'El nombre de la rutina es obligatorio');
+        return;
+    }
+
     form.post('/workouts', {
         onSuccess: () => {
             // Usar router.visit para navegar directamente
@@ -44,8 +52,24 @@ const createWorkout = () => {
         <DialogContent class="sm:max-w-[425px]">
             <DialogHeader>
                 <DialogTitle class="text-lg leading-none font-semibold tracking-tight"> Nueva Rutina </DialogTitle>
-                <p class="text-sm text-muted-foreground">¿Estás seguro de que quieres crear una nueva rutina para este alumno?</p>
+                <p class="text-sm text-muted-foreground">Completa la información para crear una nueva rutina para este alumno.</p>
             </DialogHeader>
+
+            <div class="grid gap-4 py-4">
+                <div class="grid grid-cols-4 items-center gap-4">
+                    <Label for="name" class="text-right"> Nombre </Label>
+                    <Input
+                        id="name"
+                        v-model="form.name"
+                        placeholder="Ej: Rutina de fuerza"
+                        class="col-span-3"
+                        :class="{ 'border-red-500': form.errors.name }"
+                    />
+                </div>
+                <div v-if="form.errors.name" class="col-span-4 text-right text-sm text-red-500">
+                    {{ form.errors.name }}
+                </div>
+            </div>
 
             <DialogFooter class="gap-2">
                 <DialogClose>
@@ -59,7 +83,7 @@ const createWorkout = () => {
                 </DialogClose>
                 <Button
                     type="button"
-                    :disabled="form.processing"
+                    :disabled="form.processing || !form.name.trim()"
                     @click="createWorkout"
                     class="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium whitespace-nowrap text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                 >

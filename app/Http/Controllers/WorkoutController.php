@@ -11,6 +11,7 @@ class WorkoutController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'name' => 'required|string|max:255',
             'trainer_id' => 'required|uuid|exists:users,id',
             'client_id' => 'required|uuid|exists:users,id',
         ]);
