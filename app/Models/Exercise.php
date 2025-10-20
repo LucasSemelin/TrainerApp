@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Exercise extends Model
 {
@@ -21,11 +22,77 @@ class Exercise extends Model
         return $this->belongsToMany(ExerciseCategory::class, 'category_exercise', 'exercise_id', 'category_id');
     }
 
+    public function names(): HasMany
+    {
+        return $this->hasMany(ExerciseName::class);
+    }
+
+    public function primaryName(string $locale = 'es'): ?ExerciseName
+    {
+        return $this->names()
+            ->where('locale', $locale)
+            ->where('is_primary', true)
+            ->first();
+    }
+
+    /**
+     * Obtiene todos los nombres del ejercicio para un locale
+     */
+    public function getAllNames(string $locale = 'es'): array
+    {
+        return $this->names()
+            ->where('locale', $locale)
+            ->pluck('name')
+            ->toArray();
+    }
+
+    /**
+     * Scope para buscar ejercicios por nombre
+     */
+    public function scopeSearchByName(Builder $query, string $search, string $locale = 'es'): Builder
+    {
+        $normalizedSearch = ExerciseName::normalizeForSearch($search);
+
+        return $query->whereHas('names', function ($q) use ($normalizedSearch, $locale) {
+            $q->where('locale', $locale)
+                ->where('name_normalized', 'LIKE', "%{$normalizedSearch}%");
+        });
+    }
+
+    /**
+     * Scope para búsqueda más flexible (palabras separadas)
+     */
+    public function scopeSearchByNameFlexible(Builder $query, string $search, string $locale = 'es'): Builder
+    {
+        $words = explode(' ', ExerciseName::normalizeForSearch($search));
+
+        return $query->whereHas('names', function ($q) use ($words, $locale) {
+            $q->where('locale', $locale);
+
+            foreach ($words as $word) {
+                if (strlen($word) >= 2) { // Solo palabras de 2+ caracteres
+                    $q->where('name_normalized', 'LIKE', "%{$word}%");
+                }
+            }
+        });
+    }
+
     protected static function booted()
     {
         static::creating(function (Exercise $m) {
             if (empty($m->slug) && !empty($m->name)) {
                 $m->slug = Str::slug($m->name);
+            }
+        });
+
+        // Crear nombre primario automáticamente
+        static::created(function (Exercise $model) {
+            if (!empty($model->name)) {
+                $model->names()->create([
+                    'name' => $model->name,
+                    'locale' => 'es',
+                    'is_primary' => true
+                ]);
             }
         });
     }

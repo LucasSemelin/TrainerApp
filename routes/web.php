@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('exercises', [ExerciseController::class, 'index'])->name('exercises.index');
     Route::get('exercises/list', [ExerciseController::class, 'list'])->name('exercises.list');
+    Route::get('exercises/search', [ExerciseController::class, 'search'])->name('exercises.search');
     Route::post('exercises', [ExerciseController::class, 'store'])->name('exercises.store');
     Route::delete('exercises/{exercise}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');
 });

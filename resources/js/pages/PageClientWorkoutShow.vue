@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ExerciseSetCreateDialog from '@/components/ExerciseSetCreateDialog.vue';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
@@ -15,6 +16,7 @@ import { computed, ref } from 'vue';
 interface Exercise {
     id: string;
     name: string;
+    categories?: string[];
 }
 
 interface Set {
@@ -233,6 +235,11 @@ const confirmDeleteSet = async () => {
                         <!-- Exercise Name - Full width -->
                         <div class="mb-3">
                             <h3 class="text-lg font-medium">{{ exercise.exercise.name }}</h3>
+                            <div v-if="exercise.exercise.categories && exercise.exercise.categories.length > 0" class="mt-2">
+                                <Badge variant="secondary" class="text-xs">
+                                    {{ exercise.exercise.categories.join(', ') }}
+                                </Badge>
+                            </div>
                         </div>
 
                         <!-- Sets List -->
