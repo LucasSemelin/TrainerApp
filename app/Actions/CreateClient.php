@@ -2,14 +2,14 @@
 
 namespace App\Actions;
 
+use App\Mail\WelcomeClientMail;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\WelcomeClientMail;
+use Illuminate\Support\Facades\Password;
 
 class CreateClient
 {
@@ -40,7 +40,7 @@ class CreateClient
             'user_id' => $user->id,
             'first_name' => $firstName,
             'last_name' => $lastName,
-            'gender' => $gender
+            'gender' => $gender,
         ]);
         // assign roles/permissions
         $user->assignRole('client');

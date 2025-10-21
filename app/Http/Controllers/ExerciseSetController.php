@@ -15,7 +15,7 @@ class ExerciseSetController extends Controller
             'min_reps' => 'required|integer|min:1',
             'max_reps' => 'nullable|integer|min:1|gte:min_reps',
             'rest_time_seconds' => 'nullable|integer|min:0',
-            'notes' => 'nullable|string|max:1000'
+            'notes' => 'nullable|string|max:1000',
         ]);
 
         // Obtener el siguiente número de serie automáticamente
@@ -40,7 +40,7 @@ class ExerciseSetController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Serie creada exitosamente',
-            'set' => $exerciseSet->load('exerciseWorkout.exercise')
+            'set' => $exerciseSet->load('exerciseWorkout.exercise'),
         ]);
     }
 
@@ -51,7 +51,7 @@ class ExerciseSetController extends Controller
             'min_reps' => 'nullable|integer|min:1',
             'max_reps' => 'nullable|integer|min:1|gte:min_reps',
             'rest_time_seconds' => 'nullable|integer|min:0',
-            'notes' => 'nullable|string|max:1000'
+            'notes' => 'nullable|string|max:1000',
         ]);
 
         // Solo actualizar los campos que vienen en el request
@@ -64,7 +64,7 @@ class ExerciseSetController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Serie actualizada exitosamente',
-            'set' => $set->fresh()
+            'set' => $set->fresh(),
         ]);
     }
 
@@ -74,7 +74,7 @@ class ExerciseSetController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Serie eliminada exitosamente'
+            'message' => 'Serie eliminada exitosamente',
         ]);
     }
 }

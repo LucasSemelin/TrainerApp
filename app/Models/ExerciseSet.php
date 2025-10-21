@@ -18,7 +18,7 @@ class ExerciseSet extends Model
         'min_reps',
         'max_reps',
         'rest_time_seconds',
-        'notes'
+        'notes',
     ];
 
     protected $casts = [

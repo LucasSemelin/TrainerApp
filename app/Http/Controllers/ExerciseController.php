@@ -31,7 +31,7 @@ class ExerciseController extends Controller
         $exercises = $query->with([
             'names' => function ($q) use ($request) {
                 $q->where('locale', $request->get('locale', 'es'));
-            }
+            },
         ])->get();
 
         // Transformar la respuesta para incluir todos los nombres
@@ -56,7 +56,7 @@ class ExerciseController extends Controller
     {
         $request->validate([
             'q' => 'required|string|min:2',
-            'locale' => 'sometimes|string|in:es,en'
+            'locale' => 'sometimes|string|in:es,en',
         ]);
 
         $exercises = Exercise::searchByNameFlexible(
@@ -69,7 +69,7 @@ class ExerciseController extends Controller
                 },
                 'categories.translations' => function ($q) {
                     $q->where('locale', 'es'); // Siempre en español para las categorías
-                }
+                },
             ])
             ->limit(20)
             ->get();

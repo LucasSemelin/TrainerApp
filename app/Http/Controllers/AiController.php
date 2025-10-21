@@ -15,7 +15,7 @@ class AiController extends Controller
         $data = $request->validate(['prompt' => 'required|string']);
         $prompt = $data['prompt'];
 
-        $sessionId = 'user_' . ($request->user() ? $request->user()->id . '_' . $request->session()->getId() : 'guest');
+        $sessionId = 'user_'.($request->user() ? $request->user()->id.'_'.$request->session()->getId() : 'guest');
 
         $response = IntentParserAgent::run($prompt)
             ->forUser($request->user())
@@ -32,7 +32,7 @@ class AiController extends Controller
 
         // DEVOLVER ERROR 422 EN CASO DE ERROR O MISSING DATA
         if ($parsedResponse->action === 'clarify') {
-            return redirect()->back()->with('info', 'AI needs clarification: ' . ($parsedResponse->params->question ?? ''));
+            return redirect()->back()->with('info', 'AI needs clarification: '.($parsedResponse->params->question ?? ''));
         }
 
         if ($parsedResponse->action === 'create_client') {
@@ -41,10 +41,12 @@ class AiController extends Controller
             $fakeRequest = Request::create('/', 'POST', $params);
             try {
                 $newUser = $createClient->handle($fakeRequest);
-                return redirect()->back()->with('success', 'Client created via AI: ' . $newUser->email);
+
+                return redirect()->back()->with('success', 'Client created via AI: '.$newUser->email);
             } catch (\Throwable $e) {
                 Log::error('AiController: CreateClient failed', ['err' => $e->getMessage(), 'params' => $params]);
-                return redirect()->back()->with('error', 'CreateClient failed: ' . $e->getMessage());
+
+                return redirect()->back()->with('error', 'CreateClient failed: '.$e->getMessage());
             }
         }
 
@@ -55,7 +57,9 @@ class AiController extends Controller
     {
         // Attempt to find first balanced JSON object in $text
         $start = strpos($text, '{');
-        if ($start === false) return null;
+        if ($start === false) {
+            return null;
+        }
 
         $stack = 0;
         $inString = false;
@@ -67,17 +71,22 @@ class AiController extends Controller
             $ch = $text[$i];
             if ($escape) {
                 $escape = false;
+
                 continue;
             }
             if ($ch === '\\') {
                 $escape = true;
+
                 continue;
             }
             if ($ch === '"') {
-                $inString = !$inString;
+                $inString = ! $inString;
+
                 continue;
             }
-            if ($inString) continue;
+            if ($inString) {
+                continue;
+            }
             if ($ch === '{') {
                 $stack++;
             }
@@ -90,7 +99,10 @@ class AiController extends Controller
             }
         }
 
-        if ($end === null) return null;
+        if ($end === null) {
+            return null;
+        }
+
         return substr($text, $start, $end - $start + 1);
     }
 
@@ -102,26 +114,32 @@ class AiController extends Controller
         $response = IntentParserAgent::run($prompt)->forUser($request->user())->go();
 
         $raw = null;
-        if (is_array($response) && isset($response['text'])) $raw = $response['text'];
-        elseif (is_string($response)) $raw = $response;
-        elseif (is_object($response) && property_exists($response, 'text')) $raw = $response->text;
+        if (is_array($response) && isset($response['text'])) {
+            $raw = $response['text'];
+        } elseif (is_string($response)) {
+            $raw = $response;
+        } elseif (is_object($response) && property_exists($response, 'text')) {
+            $raw = $response->text;
+        }
 
         if (empty($raw)) {
             Log::error('AiController: Empty response from IntentParserAgent', ['resp' => $response]);
+
             return response()->json(['error' => 'Empty response from agent'], 500);
         }
 
         // Try direct decode first; if fails, try to extract first JSON block
         $decoded = json_decode($raw, true);
-        if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+        if (json_last_error() !== JSON_ERROR_NONE || ! is_array($decoded)) {
             $jsonBlock = $this->extractFirstJson($raw);
             if ($jsonBlock) {
                 $decoded = json_decode($jsonBlock, true);
             }
         }
 
-        if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+        if (json_last_error() !== JSON_ERROR_NONE || ! is_array($decoded)) {
             Log::error('AiController: Failed to decode agent JSON', ['raw' => $raw, 'error' => json_last_error_msg()]);
+
             return response()->json(['error' => 'Agent returned invalid JSON', 'raw' => $raw], 500);
         }
 
@@ -135,7 +153,7 @@ class AiController extends Controller
     {
         $data = $request->validate([
             'action' => 'required|string',
-            'params' => 'required|array'
+            'params' => 'required|array',
         ]);
 
         $action = $data['action'];
@@ -149,12 +167,14 @@ class AiController extends Controller
             }
 
             $fakeRequest = Request::create('/', 'POST', $params);
-            $create = new CreateClient();
+            $create = new CreateClient;
             try {
                 $newUser = $create->handle($fakeRequest);
+
                 return response()->json(['status' => 'ok', 'user' => $newUser]);
             } catch (\Throwable $e) {
                 Log::error('AiController: CreateClient failed', ['err' => $e->getMessage(), 'params' => $params]);
+
                 return response()->json(['error' => 'CreateClient failed', 'message' => $e->getMessage()], 500);
             }
         }

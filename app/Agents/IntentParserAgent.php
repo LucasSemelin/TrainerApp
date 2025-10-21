@@ -4,13 +4,14 @@ namespace App\Agents;
 
 use Prism\Prism\Text\PendingRequest;
 use Vizra\VizraADK\Agents\BaseLlmAgent;
-use Vizra\VizraADK\Contracts\ToolInterface;
 use Vizra\VizraADK\System\AgentContext;
+
 // use App\Tools\YourTool; // Example: Import your tool
 
 class IntentParserAgent extends BaseLlmAgent
 {
     protected string $name = 'intent_parser_agent';
+
     protected string $description = 'Describe what this agent does.';
 
     /**
@@ -19,13 +20,14 @@ class IntentParserAgent extends BaseLlmAgent
      * 2. Database: agent_prompt_versions table (if enabled)
      * 3. File: resources/prompts/intent_parser_agent/default.blade.php
      * 4. Fallback: This property
-     * 
+     *
      * The prompt file has been created for you at:
      * resources/prompts/intent_parser_agent/default.blade.php
      */
     protected string $instructions = 'You are Intent Parser Agent. See resources/prompts/intent_parser_agent/default.blade.php for full instructions.';
 
     protected string $model = 'gpt-4o-mini';
+
     protected ?float $temperature = 0.0;
 
     /** @var array<class-string<\Vizra\VizraADK\Contracts\ToolInterface>> */

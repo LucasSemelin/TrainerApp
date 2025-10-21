@@ -23,7 +23,7 @@ class WorkoutController extends Controller
             return response()->json([
                 'success' => true,
                 'workout' => $workout,
-                'message' => 'Rutina creada exitosamente'
+                'message' => 'Rutina creada exitosamente',
             ]);
         }
 

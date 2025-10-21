@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Actions\CreateClient;
 use App\Actions\RemoveClient;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -17,7 +17,7 @@ class ClientController extends Controller
         $clients = $trainer->clients()->with('profile')->get();
 
         return inertia('PageClientsIndex', [
-            'clients' => $clients
+            'clients' => $clients,
         ]);
     }
 

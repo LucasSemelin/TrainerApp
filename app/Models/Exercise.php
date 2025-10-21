@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Exercise extends Model
 {
@@ -15,6 +15,7 @@ class Exercise extends Model
     use HasFactory;
 
     protected $fillable = ['slug', 'name', 'description', 'metadata'];
+
     protected $casts = ['metadata' => 'array'];
 
     public function categories(): BelongsToMany
@@ -80,18 +81,18 @@ class Exercise extends Model
     protected static function booted()
     {
         static::creating(function (Exercise $m) {
-            if (empty($m->slug) && !empty($m->name)) {
+            if (empty($m->slug) && ! empty($m->name)) {
                 $m->slug = Str::slug($m->name);
             }
         });
 
         // Crear nombre primario automáticamente
         static::created(function (Exercise $model) {
-            if (!empty($model->name)) {
+            if (! empty($model->name)) {
                 $model->names()->create([
                     'name' => $model->name,
                     'locale' => 'es',
-                    'is_primary' => true
+                    'is_primary' => true,
                 ]);
             }
         });
@@ -126,6 +127,7 @@ class Exercise extends Model
             [$type, $names] = $pair;
             $q->withCategory($type, $names);
         }
+
         return $q;
     }
 
@@ -137,7 +139,7 @@ class Exercise extends Model
     {
         return $this->categories
             ->groupBy('type_slug')
-            ->map(fn($grp) => $grp->pluck('name_slug')->values()->all())
+            ->map(fn ($grp) => $grp->pluck('name_slug')->values()->all())
             ->toArray();
     }
 }

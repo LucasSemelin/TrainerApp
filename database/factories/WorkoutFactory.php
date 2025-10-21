@@ -17,7 +17,10 @@ class WorkoutFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->words(3, true),
+            'trainer_id' => \App\Models\User::factory(),
+            'client_id' => \App\Models\User::factory(),
+            'is_current' => false,
         ];
     }
 }

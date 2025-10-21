@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Exercise;
 use App\Models\ExerciseCategory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 
@@ -16,7 +15,7 @@ class ExerciseSeeder extends Seeder
     public function run(): void
     {
         $path = database_path('seeders/data/exercises.json');
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             $this->command->warn("No se encontró $path. Usando fallback de /mnt/data si estás copiando del ejemplo.");
             $path = base_path('exercises.json'); // cambia si querés
         }

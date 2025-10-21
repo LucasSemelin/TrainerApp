@@ -16,7 +16,7 @@ class ExerciseName extends Model
         'name',
         'name_normalized',
         'locale',
-        'is_primary'
+        'is_primary',
     ];
 
     protected $casts = [

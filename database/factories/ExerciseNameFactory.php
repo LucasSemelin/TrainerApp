@@ -24,7 +24,7 @@ class ExerciseNameFactory extends Factory
             'Dominadas',
             'Fondos',
             'Remo con barra',
-            'Curl de bíceps'
+            'Curl de bíceps',
         ];
 
         return [
@@ -36,7 +36,7 @@ class ExerciseNameFactory extends Factory
 
     public function primary(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'is_primary' => true,
         ]);
     }
@@ -51,10 +51,10 @@ class ExerciseNameFactory extends Factory
             'Pull-ups',
             'Dips',
             'Barbell Row',
-            'Bicep Curl'
+            'Bicep Curl',
         ];
 
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'name' => $this->faker->randomElement($englishNames),
             'locale' => 'en',
         ]);

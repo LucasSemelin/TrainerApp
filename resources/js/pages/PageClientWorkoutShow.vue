@@ -43,6 +43,7 @@ interface Workout {
     name: string;
     trainer_id: string | null;
     client_id: string;
+    is_current: boolean;
     created_at: string;
     updated_at: string;
     exercises: WorkoutExercise[];
@@ -221,6 +222,7 @@ const confirmDeleteSet = async () => {
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-2xl font-bold">{{ workout.name }}</h1>
+                    <Badge v-if="workout.is_current" variant="default" class="mb-2 bg-green-500 text-xs hover:bg-green-600"> Actual </Badge>
                     <p class="text-muted-foreground">
                         {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }} • Creada el
                         {{ formatDate(workout.created_at) }}

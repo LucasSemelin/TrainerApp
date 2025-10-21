@@ -25,7 +25,7 @@ class ExerciseCategory extends Model
 
     public function exercises()
     {
-        return $this->belongsToMany(Exercise::class,  'category_exercise', 'category_id', 'exercise_id');
+        return $this->belongsToMany(Exercise::class, 'category_exercise', 'category_id', 'exercise_id');
     }
 
     // ------- SCOPES -------
@@ -38,6 +38,7 @@ class ExerciseCategory extends Model
     public function scopeNamed(Builder $q, string|array $name): Builder
     {
         $names = is_array($name) ? $name : [$name];
+
         return $q->whereIn('name_slug', $names);
     }
 
@@ -73,8 +74,8 @@ class ExerciseCategory extends Model
     public function toLabeledArray(?string $locale = null): array
     {
         return [
-            'type'       => $this->type_slug,
-            'name'       => $this->name_slug,
+            'type' => $this->type_slug,
+            'name' => $this->name_slug,
             'type_label' => $this->typeLabel($locale),
             'name_label' => $this->label($locale),
         ];

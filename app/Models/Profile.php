@@ -22,14 +22,14 @@ class Profile extends Model
     protected function firstName(): Attribute
     {
         return new Attribute(
-            get: fn($value) => ucfirst($value),
+            get: fn ($value) => ucfirst($value),
         );
     }
 
     protected function lastName(): Attribute
     {
         return new Attribute(
-            get: fn($value) => ucfirst($value),
+            get: fn ($value) => ucfirst($value),
         );
     }
 

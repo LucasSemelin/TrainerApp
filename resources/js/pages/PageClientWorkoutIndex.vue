@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import WorkoutCreateDialog from '@/components/WorkoutCreateDialog.vue';
+import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/AppLayout.vue';
 import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import { Eye } from 'lucide-vue-next';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
+import { CheckCircle, Eye } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Workout {
@@ -13,6 +14,7 @@ interface Workout {
     name: string;
     trainer_id: string | null;
     client_id: string;
+    is_current: boolean;
     created_at: string;
     updated_at: string;
 }
@@ -40,6 +42,22 @@ const formatDate = (dateString: string): string => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 };
+
+// Function to mark a workout as current
+const makeWorkoutCurrent = (workoutId: string) => {
+    router.patch(
+        `/clients/${client.value.id}/workouts/${workoutId}/make-current`,
+        {},
+        {
+            onSuccess: () => {
+                // Optional: Show success message
+            },
+            onError: () => {
+                // Optional: Show error message
+            },
+        },
+    );
+};
 </script>
 
 <template>
@@ -64,18 +82,32 @@ const formatDate = (dateString: string): string => {
                     class="flex items-center justify-between border-b border-border/70 py-2 dark:border-border"
                 >
                     <div class="flex flex-col">
-                        <span class="font-medium">
-                            {{ workout.name }}
-                        </span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-medium">
+                                {{ workout.name }}
+                            </span>
+                            <Badge v-if="workout.is_current" variant="default" class="bg-green-500 text-xs hover:bg-green-600"> Actual </Badge>
+                        </div>
                         <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(workout.created_at) }} </span>
                     </div>
-                    <Link
-                        :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
-                        class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                        aria-label="Ver rutina"
-                    >
-                        <Eye class="h-5 w-5" />
-                    </Link>
+                    <div class="flex items-center gap-2">
+                        <button
+                            v-if="!workout.is_current"
+                            @click="makeWorkoutCurrent(workout.id)"
+                            class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-green-50 hover:text-green-600 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-green-900/20"
+                            aria-label="Marcar como actual"
+                            title="Marcar como rutina actual"
+                        >
+                            <CheckCircle class="h-5 w-5" />
+                        </button>
+                        <Link
+                            :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
+                            class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+                            aria-label="Ver rutina"
+                        >
+                            <Eye class="h-5 w-5" />
+                        </Link>
+                    </div>
                 </div>
             </div>
 

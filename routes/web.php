@@ -16,7 +16,6 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
 /**
  * Client Management
  */
@@ -65,9 +64,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('clients/{client}/workouts', [ClientWorkoutController::class, 'index'])->name('clients.workouts.index');
     Route::get('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'show'])->name('clients.workouts.show');
     Route::post('clients/{client}/workouts', [ClientWorkoutController::class, 'store'])->name('clients.workouts.store');
+    Route::patch('clients/{client}/workouts/{workout}/make-current', [ClientWorkoutController::class, 'makeCurrent'])->name('clients.workouts.make-current');
     Route::delete('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'destroy'])->name('clients.workouts.destroy');
 });
-
 
 use App\Http\Controllers\AiController;
 

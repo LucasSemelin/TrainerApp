@@ -38,6 +38,7 @@ const searchResults = ref<Exercise[]>([]);
 const loadingSearch = ref(false);
 const selectedExercise = ref<Exercise | null>(null);
 const showResults = ref(false);
+const inputFocused = ref(false);
 
 const isOpen = computed({
     get: () => props.open,
@@ -78,6 +79,20 @@ const handleSearchInput = (event: Event) => {
     const target = event.target as HTMLInputElement;
     searchQuery.value = target.value;
     searchExercises(target.value);
+};
+
+// Handle input focus
+const handleInputFocus = () => {
+    inputFocused.value = true;
+    showResults.value = searchResults.value.length > 0;
+};
+
+// Handle input blur
+const handleInputBlur = () => {
+    // Delay to allow click on results
+    setTimeout(() => {
+        inputFocused.value = false;
+    }, 200);
 };
 
 // Select an exercise
@@ -135,6 +150,45 @@ const clearSelection = () => {
     searchQuery.value = '';
     searchResults.value = [];
     showResults.value = false;
+};
+
+// Prevent scroll propagation on mobile
+const handleResultsScroll = (event: Event) => {
+    event.stopPropagation();
+};
+
+// Handle touch events to prevent scroll propagation on mobile
+const handleTouchStart = (event: TouchEvent) => {
+    // Store the initial touch position
+    const target = event.currentTarget as HTMLElement;
+    const touch = event.touches[0];
+    (target as any)._startY = touch.clientY;
+    (target as any)._startScrollTop = target.scrollTop;
+};
+
+const handleTouchMove = (event: TouchEvent) => {
+    const target = event.currentTarget as HTMLElement;
+    const touch = event.touches[0];
+    const startY = (target as any)._startY;
+    const startScrollTop = (target as any)._startScrollTop;
+    
+    if (!startY) return;
+    
+    const deltaY = touch.clientY - startY;
+    const newScrollTop = startScrollTop - deltaY;
+    
+    // If we're at the boundaries and trying to scroll beyond, prevent the event
+    if (
+        (newScrollTop <= 0 && deltaY > 0) || // At top, trying to scroll up
+        (newScrollTop >= target.scrollHeight - target.clientHeight && deltaY < 0) // At bottom, trying to scroll down
+    ) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+    }
+    
+    // Otherwise, allow the scroll but prevent propagation
+    event.stopPropagation();
 };
 
 // Watch for dialog opening/closing
@@ -202,7 +256,8 @@ const submit = async () => {
                             placeholder="Ej: press de banca, sentadilla, dominadas..."
                             class="pl-10"
                             @input="handleSearchInput"
-                            @focus="showResults = searchResults.length > 0"
+                            @focus="handleInputFocus"
+                            @blur="handleInputBlur"
                         />
                         <div v-if="loadingSearch" class="absolute top-3 right-3">
                             <Loader2 class="h-4 w-4 animate-spin text-muted-foreground" />
@@ -234,7 +289,11 @@ const submit = async () => {
                     <!-- Search Results -->
                     <div
                         v-if="showResults && searchResults.length > 0 && !selectedExercise"
-                        class="max-h-[300px] overflow-y-auto rounded-lg border bg-background"
+                        class="max-h-[300px] overflow-y-auto rounded-lg border bg-background overscroll-contain touch-pan-y"
+                        :class="{ 'scroll-smooth': inputFocused }"
+                        @scroll="handleResultsScroll"
+                        @touchstart="handleTouchStart"
+                        @touchmove="handleTouchMove"
                     >
                         <div
                             v-for="exercise in searchResults"

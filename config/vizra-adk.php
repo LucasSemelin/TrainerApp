@@ -48,7 +48,7 @@ return [
     /**
      * Provider-specific configurations.
      * Configure API keys and settings for each LLM provider.
-     * 
+     *
      * Note: Most providers are configured through Prism PHP's configuration.
      * Set these environment variables in your .env file:
      * - OPENAI_API_KEY
@@ -60,7 +60,7 @@ return [
      * - XAI_API_KEY
      * - VOYAGEAI_API_KEY
      * - OPENROUTER_API_KEY
-     * 
+     *
      * For OpenRouter:
      * - API Key: Get from https://openrouter.ai/settings
      * - Base URL: https://openrouter.ai/api/v1 (handled by Prism)
@@ -325,7 +325,7 @@ return [
             'strategy' => env('VIZRA_ADK_CHUNK_STRATEGY', 'sentence'), // 'sentence' or 'paragraph'
             'chunk_size' => env('VIZRA_ADK_CHUNK_SIZE', 1000), // Characters per chunk
             'overlap' => env('VIZRA_ADK_CHUNK_OVERLAP', 200), // Overlap between chunks
-            'separators' => ["\n\n", "\n", ". ", ", ", " "],
+            'separators' => ["\n\n", "\n", '. ', ', ', ' '],
             'keep_separators' => true,
         ],
 

@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Exercise;
 use App\Models\ExerciseCategory;
 use App\Models\ExerciseName;
-use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 
 class ExercisesSeeder extends Seeder
 {
@@ -27,12 +26,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'push'],
                     ['equipment', 'barbell'],
-                    ['angle', 'flat']
+                    ['angle', 'flat'],
                 ],
                 'names' => [
                     'es' => ['Press de banca plano con barra', 'Bench press', 'Press de pecho plano', 'Press de pecho con barra'],
-                    'en' => ['Barbell bench press', 'Flat bench press', 'Chest press with barbell']
-                ]
+                    'en' => ['Barbell bench press', 'Flat bench press', 'Chest press with barbell'],
+                ],
             ],
             [
                 'primary_name' => 'Press de banca plano con mancuernas',
@@ -42,12 +41,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'push'],
                     ['equipment', 'dumbbell'],
-                    ['angle', 'flat']
+                    ['angle', 'flat'],
                 ],
                 'names' => [
                     'es' => ['Press de banca plano con mancuernas', 'Dumbbell bench press', 'Press plano con mancuernas'],
-                    'en' => ['Dumbbell bench press', 'Flat dumbbell press']
-                ]
+                    'en' => ['Dumbbell bench press', 'Flat dumbbell press'],
+                ],
             ],
             [
                 'primary_name' => 'Press inclinado con barra',
@@ -57,12 +56,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'push'],
                     ['equipment', 'barbell'],
-                    ['angle', 'incline']
+                    ['angle', 'incline'],
                 ],
                 'names' => [
                     'es' => ['Press inclinado con barra', 'Incline bench press', 'Press inclinado', 'Press al pecho superior'],
-                    'en' => ['Incline barbell press', 'Incline bench press']
-                ]
+                    'en' => ['Incline barbell press', 'Incline bench press'],
+                ],
             ],
             [
                 'primary_name' => 'Press inclinado con mancuernas',
@@ -72,12 +71,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'push'],
                     ['equipment', 'dumbbell'],
-                    ['angle', 'incline']
+                    ['angle', 'incline'],
                 ],
                 'names' => [
                     'es' => ['Press inclinado con mancuernas', 'Incline dumbbell press', 'Press inclinado con mancuernas'],
-                    'en' => ['Incline dumbbell press']
-                ]
+                    'en' => ['Incline dumbbell press'],
+                ],
             ],
             [
                 'primary_name' => 'Press declinado con barra',
@@ -87,12 +86,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'push'],
                     ['equipment', 'barbell'],
-                    ['angle', 'decline']
+                    ['angle', 'decline'],
                 ],
                 'names' => [
                     'es' => ['Press declinado con barra', 'Decline bench press', 'Press inferior de pecho'],
-                    'en' => ['Decline barbell press', 'Decline bench press']
-                ]
+                    'en' => ['Decline barbell press', 'Decline bench press'],
+                ],
             ],
             [
                 'primary_name' => 'Press declinado con mancuernas',
@@ -102,12 +101,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'push'],
                     ['equipment', 'dumbbell'],
-                    ['angle', 'decline']
+                    ['angle', 'decline'],
                 ],
                 'names' => [
                     'es' => ['Press declinado con mancuernas', 'Decline dumbbell press', 'Press de pecho declinado'],
-                    'en' => ['Decline dumbbell press']
-                ]
+                    'en' => ['Decline dumbbell press'],
+                ],
             ],
             [
                 'primary_name' => 'Apertura plana con mancuernas',
@@ -117,12 +116,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'other'],
                     ['equipment', 'dumbbell'],
-                    ['angle', 'flat']
+                    ['angle', 'flat'],
                 ],
                 'names' => [
                     'es' => ['Apertura plana con mancuernas', 'Dumbbell fly', 'Apertura de pecho', 'Aperturas planas'],
-                    'en' => ['Dumbbell flyes', 'Chest flyes', 'Flat dumbbell flyes']
-                ]
+                    'en' => ['Dumbbell flyes', 'Chest flyes', 'Flat dumbbell flyes'],
+                ],
             ],
             [
                 'primary_name' => 'Apertura inclinada con mancuernas',
@@ -132,12 +131,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'other'],
                     ['equipment', 'dumbbell'],
-                    ['angle', 'incline']
+                    ['angle', 'incline'],
                 ],
                 'names' => [
                     'es' => ['Apertura inclinada con mancuernas', 'Incline dumbbell fly', 'Apertura inclinada'],
-                    'en' => ['Incline dumbbell flyes', 'Incline chest flyes']
-                ]
+                    'en' => ['Incline dumbbell flyes', 'Incline chest flyes'],
+                ],
             ],
             [
                 'primary_name' => 'Apertura en máquina pec deck',
@@ -146,12 +145,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Apertura en máquina pec deck', 'Pec deck', 'Contractor', 'Máquina de aperturas'],
-                    'en' => ['Pec deck flyes', 'Machine chest flyes', 'Pec deck']
-                ]
+                    'en' => ['Pec deck flyes', 'Machine chest flyes', 'Pec deck'],
+                ],
             ],
             [
                 'primary_name' => 'Fondos en paralelas para pecho',
@@ -160,12 +159,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'push'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Fondos en paralelas para pecho', 'Dips', 'Fondos', 'Bajadas en paralelas', 'Paralelas'],
-                    'en' => ['Chest dips', 'Parallel bar dips', 'Dips for chest']
-                ]
+                    'en' => ['Chest dips', 'Parallel bar dips', 'Dips for chest'],
+                ],
             ],
             [
                 'primary_name' => 'Pullover con mancuerna',
@@ -174,12 +173,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'chest'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Pullover con mancuerna', 'Dumbbell pullover', 'Jalón con mancuerna', 'Pull over'],
-                    'en' => ['Dumbbell pullover', 'Pullover']
-                ]
+                    'en' => ['Dumbbell pullover', 'Pullover'],
+                ],
             ],
 
             // ESPALDA (BACK)
@@ -190,12 +189,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'back'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Dominadas pronas', 'Pull ups', 'Chin ups prono', 'Barras'],
-                    'en' => ['Pull ups', 'Overhand pull ups']
-                ]
+                    'en' => ['Pull ups', 'Overhand pull ups'],
+                ],
             ],
             [
                 'primary_name' => 'Dominadas supinas',
@@ -205,12 +204,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'back'],
                     ['muscle_group', 'biceps'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Dominadas supinas', 'Chin ups', 'Dominadas invertidas', 'Barras invertidas'],
-                    'en' => ['Chin ups', 'Underhand pull ups', 'Supinated pull ups']
-                ]
+                    'en' => ['Chin ups', 'Underhand pull ups', 'Supinated pull ups'],
+                ],
             ],
             [
                 'primary_name' => 'Dominadas neutras',
@@ -219,12 +218,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'back'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Dominadas neutras', 'Neutral grip pull up', 'Dominadas con agarre neutro'],
-                    'en' => ['Neutral grip pull ups', 'Hammer grip pull ups']
-                ]
+                    'en' => ['Neutral grip pull ups', 'Hammer grip pull ups'],
+                ],
             ],
             [
                 'primary_name' => 'Jalón al pecho agarre ancho',
@@ -233,12 +232,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'back'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'cable']
+                    ['equipment', 'cable'],
                 ],
                 'names' => [
                     'es' => ['Jalón al pecho agarre ancho', 'Lat pulldown', 'Jalones frontales', 'Jalón abierto'],
-                    'en' => ['Wide grip lat pulldown', 'Lat pulldown wide grip']
-                ]
+                    'en' => ['Wide grip lat pulldown', 'Lat pulldown wide grip'],
+                ],
             ],
             [
                 'primary_name' => 'Jalón al pecho supino',
@@ -248,12 +247,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'back'],
                     ['muscle_group', 'biceps'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'cable']
+                    ['equipment', 'cable'],
                 ],
                 'names' => [
                     'es' => ['Jalón al pecho supino', 'Underhand pulldown', 'Jalón con agarre invertido'],
-                    'en' => ['Underhand lat pulldown', 'Reverse grip pulldown']
-                ]
+                    'en' => ['Underhand lat pulldown', 'Reverse grip pulldown'],
+                ],
             ],
             [
                 'primary_name' => 'Remo con barra',
@@ -262,12 +261,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'back'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Remo con barra', 'Barbell row', 'Remo con barra olímpica', 'Remo barra T'],
-                    'en' => ['Barbell row', 'Bent over barbell row']
-                ]
+                    'en' => ['Barbell row', 'Bent over barbell row'],
+                ],
             ],
             [
                 'primary_name' => 'Remo con mancuernas',
@@ -276,12 +275,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'back'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Remo con mancuernas', 'Dumbbell row', 'Remo a una mano', 'Remo mancuerna'],
-                    'en' => ['Dumbbell row', 'Single arm dumbbell row']
-                ]
+                    'en' => ['Dumbbell row', 'Single arm dumbbell row'],
+                ],
             ],
             [
                 'primary_name' => 'Remo en polea baja',
@@ -290,12 +289,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'back'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'cable']
+                    ['equipment', 'cable'],
                 ],
                 'names' => [
                     'es' => ['Remo en polea baja', 'Seated cable row', 'Remo sentado', 'Jalón bajo'],
-                    'en' => ['Seated cable row', 'Cable row']
-                ]
+                    'en' => ['Seated cable row', 'Cable row'],
+                ],
             ],
             [
                 'primary_name' => 'Peso muerto convencional',
@@ -306,12 +305,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'glutes'],
                     ['muscle_group', 'hamstrings'],
                     ['movement_pattern', 'hinge'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Peso muerto convencional', 'Deadlift', 'Peso muerto', 'Levantamiento tierra', 'Despegue'],
-                    'en' => ['Conventional deadlift', 'Deadlift']
-                ]
+                    'en' => ['Conventional deadlift', 'Deadlift'],
+                ],
             ],
             [
                 'primary_name' => 'Peso muerto rumano',
@@ -323,12 +322,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'hamstrings'],
                     ['movement_pattern', 'hinge'],
                     ['equipment', 'barbell'],
-                    ['range', 'romanian']
+                    ['range', 'romanian'],
                 ],
                 'names' => [
                     'es' => ['Peso muerto rumano', 'Romanian deadlift', 'Peso muerto con piernas semirrígidas'],
-                    'en' => ['Romanian deadlift', 'RDL', 'Stiff leg deadlift']
-                ]
+                    'en' => ['Romanian deadlift', 'RDL', 'Stiff leg deadlift'],
+                ],
             ],
             [
                 'primary_name' => 'Peso muerto sumo',
@@ -340,12 +339,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'quads'],
                     ['movement_pattern', 'hinge'],
                     ['equipment', 'barbell'],
-                    ['stance', 'sumo']
+                    ['stance', 'sumo'],
                 ],
                 'names' => [
                     'es' => ['Peso muerto sumo', 'Sumo deadlift', 'Peso muerto abierto'],
-                    'en' => ['Sumo deadlift']
-                ]
+                    'en' => ['Sumo deadlift'],
+                ],
             ],
 
             // PIERNAS (LEGS)
@@ -357,12 +356,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'quads'],
                     ['muscle_group', 'glutes'],
                     ['movement_pattern', 'squat'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Sentadilla libre con barra', 'Barbell squat', 'Squat', 'Cuclillas', 'Sentadillas'],
-                    'en' => ['Barbell squat', 'Back squat', 'Squat']
-                ]
+                    'en' => ['Barbell squat', 'Back squat', 'Squat'],
+                ],
             ],
             [
                 'primary_name' => 'Sentadilla frontal con barra',
@@ -372,12 +371,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'quads'],
                     ['muscle_group', 'glutes'],
                     ['movement_pattern', 'squat'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Sentadilla frontal con barra', 'Front squat', 'Sentadilla frontal'],
-                    'en' => ['Front squat', 'Front barbell squat']
-                ]
+                    'en' => ['Front squat', 'Front barbell squat'],
+                ],
             ],
             [
                 'primary_name' => 'Sentadilla goblet con mancuerna',
@@ -387,12 +386,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'quads'],
                     ['muscle_group', 'glutes'],
                     ['movement_pattern', 'squat'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Sentadilla goblet con mancuerna', 'Goblet squat', 'Sentadilla con mancuerna al pecho'],
-                    'en' => ['Goblet squat', 'Dumbbell goblet squat']
-                ]
+                    'en' => ['Goblet squat', 'Dumbbell goblet squat'],
+                ],
             ],
             [
                 'primary_name' => 'Sentadilla búlgara con mancuernas',
@@ -402,12 +401,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'quads'],
                     ['muscle_group', 'glutes'],
                     ['movement_pattern', 'squat'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Sentadilla búlgara con mancuernas', 'Bulgarian split squat', 'Zancada búlgara', 'Estocada trasera elevada'],
-                    'en' => ['Bulgarian split squat', 'Rear foot elevated split squat']
-                ]
+                    'en' => ['Bulgarian split squat', 'Rear foot elevated split squat'],
+                ],
             ],
             [
                 'primary_name' => 'Prensa de piernas',
@@ -417,12 +416,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'quads'],
                     ['muscle_group', 'glutes'],
                     ['movement_pattern', 'squat'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Prensa de piernas', 'Leg press', 'Prensa inclinada', 'Prensa horizontal'],
-                    'en' => ['Leg press', 'Leg press machine']
-                ]
+                    'en' => ['Leg press', 'Leg press machine'],
+                ],
             ],
             [
                 'primary_name' => 'Extensión de piernas en máquina',
@@ -431,12 +430,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'quads'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Extensión de piernas en máquina', 'Leg extension', 'Extensión de cuádriceps'],
-                    'en' => ['Leg extension', 'Quad extension']
-                ]
+                    'en' => ['Leg extension', 'Quad extension'],
+                ],
             ],
             [
                 'primary_name' => 'Curl de piernas tumbado',
@@ -445,12 +444,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'hamstrings'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Curl de piernas tumbado', 'Leg curl', 'Curl femoral', 'Curl acostado'],
-                    'en' => ['Lying leg curl', 'Hamstring curl lying']
-                ]
+                    'en' => ['Lying leg curl', 'Hamstring curl lying'],
+                ],
             ],
             [
                 'primary_name' => 'Curl de piernas sentado',
@@ -459,12 +458,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'hamstrings'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Curl de piernas sentado', 'Seated leg curl', 'Curl sentado'],
-                    'en' => ['Seated leg curl', 'Sitting hamstring curl']
-                ]
+                    'en' => ['Seated leg curl', 'Sitting hamstring curl'],
+                ],
             ],
             [
                 'primary_name' => 'Hip thrust con barra',
@@ -473,12 +472,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'glutes'],
                     ['movement_pattern', 'hinge'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Hip thrust con barra', 'Hip thrust', 'Empuje de cadera', 'Puente de glúteos con barra'],
-                    'en' => ['Barbell hip thrust', 'Hip thrust']
-                ]
+                    'en' => ['Barbell hip thrust', 'Hip thrust'],
+                ],
             ],
             [
                 'primary_name' => 'Elevaciones de talones',
@@ -487,12 +486,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'calves'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Elevaciones de talones', 'Calf raise', 'Gemelos', 'Punta de pies'],
-                    'en' => ['Calf raises', 'Standing calf raise']
-                ]
+                    'en' => ['Calf raises', 'Standing calf raise'],
+                ],
             ],
 
             // HOMBROS (SHOULDERS)
@@ -503,12 +502,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'shoulders'],
                     ['movement_pattern', 'push'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Press militar con barra', 'Military press', 'Overhead press', 'Press hombros con barra'],
-                    'en' => ['Military press', 'Overhead press', 'Standing barbell press']
-                ]
+                    'en' => ['Military press', 'Overhead press', 'Standing barbell press'],
+                ],
             ],
             [
                 'primary_name' => 'Press militar con mancuernas',
@@ -517,12 +516,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'shoulders'],
                     ['movement_pattern', 'push'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Press militar con mancuernas', 'Dumbbell shoulder press', 'Press hombros con mancuernas'],
-                    'en' => ['Dumbbell shoulder press', 'Seated dumbbell press']
-                ]
+                    'en' => ['Dumbbell shoulder press', 'Seated dumbbell press'],
+                ],
             ],
             [
                 'primary_name' => 'Press Arnold',
@@ -531,12 +530,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'shoulders'],
                     ['movement_pattern', 'push'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Press Arnold', 'Arnold press', 'Press rotatorio de hombros'],
-                    'en' => ['Arnold press', 'Rotational shoulder press']
-                ]
+                    'en' => ['Arnold press', 'Rotational shoulder press'],
+                ],
             ],
             [
                 'primary_name' => 'Elevaciones laterales con mancuernas',
@@ -545,12 +544,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'shoulders'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Elevaciones laterales con mancuernas', 'Lateral raise', 'Vuelo lateral'],
-                    'en' => ['Lateral raises', 'Side lateral raise', 'Dumbbell lateral raise']
-                ]
+                    'en' => ['Lateral raises', 'Side lateral raise', 'Dumbbell lateral raise'],
+                ],
             ],
             [
                 'primary_name' => 'Elevaciones frontales con mancuernas',
@@ -559,12 +558,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'shoulders'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Elevaciones frontales con mancuernas', 'Front raise', 'Elevaciones anteriores'],
-                    'en' => ['Front raises', 'Anterior raises', 'Dumbbell front raise']
-                ]
+                    'en' => ['Front raises', 'Anterior raises', 'Dumbbell front raise'],
+                ],
             ],
             [
                 'primary_name' => 'Face pull en polea alta',
@@ -573,12 +572,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'shoulders'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'cable']
+                    ['equipment', 'cable'],
                 ],
                 'names' => [
                     'es' => ['Face pull en polea alta', 'Face pull', 'Jalón de rostro', 'Tiro facial'],
-                    'en' => ['Face pulls', 'Cable face pulls', 'Rope face pulls']
-                ]
+                    'en' => ['Face pulls', 'Cable face pulls', 'Rope face pulls'],
+                ],
             ],
             [
                 'primary_name' => 'Remo al mentón con barra',
@@ -587,12 +586,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'shoulders'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Remo al mentón con barra', 'Upright row', 'Remo vertical'],
-                    'en' => ['Upright row', 'Barbell upright row']
-                ]
+                    'en' => ['Upright row', 'Barbell upright row'],
+                ],
             ],
 
             // BRAZOS (ARMS)
@@ -603,12 +602,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'biceps'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Curl con barra recta', 'Barbell curl', 'Curl de bíceps', 'Curl barra'],
-                    'en' => ['Barbell curl', 'Standing barbell curl', 'Bicep curl']
-                ]
+                    'en' => ['Barbell curl', 'Standing barbell curl', 'Bicep curl'],
+                ],
             ],
             [
                 'primary_name' => 'Curl con barra Z',
@@ -617,12 +616,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'biceps'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Curl con barra Z', 'EZ bar curl', 'Curl con barra curva'],
-                    'en' => ['EZ bar curl', 'EZ curl bar bicep curl']
-                ]
+                    'en' => ['EZ bar curl', 'EZ curl bar bicep curl'],
+                ],
             ],
             [
                 'primary_name' => 'Curl martillo con mancuernas',
@@ -631,12 +630,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'biceps'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Curl martillo con mancuernas', 'Hammer curl', 'Curl neutro', 'Curl martillo'],
-                    'en' => ['Hammer curl', 'Neutral grip dumbbell curl']
-                ]
+                    'en' => ['Hammer curl', 'Neutral grip dumbbell curl'],
+                ],
             ],
             [
                 'primary_name' => 'Curl concentrado',
@@ -645,12 +644,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'biceps'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Curl concentrado', 'Concentration curl', 'Curl concentrado sentado'],
-                    'en' => ['Concentration curl', 'Seated concentration curl']
-                ]
+                    'en' => ['Concentration curl', 'Seated concentration curl'],
+                ],
             ],
             [
                 'primary_name' => 'Press francés con barra Z',
@@ -659,12 +658,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'triceps'],
                     ['movement_pattern', 'push'],
-                    ['equipment', 'barbell']
+                    ['equipment', 'barbell'],
                 ],
                 'names' => [
                     'es' => ['Press francés con barra Z', 'Skullcrusher', 'Rompecráneos', 'Extensión de tríceps en banco'],
-                    'en' => ['Skullcrushers', 'Lying tricep extension', 'EZ bar skullcrushers']
-                ]
+                    'en' => ['Skullcrushers', 'Lying tricep extension', 'EZ bar skullcrushers'],
+                ],
             ],
             [
                 'primary_name' => 'Fondos en paralelas',
@@ -673,12 +672,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'triceps'],
                     ['movement_pattern', 'push'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Fondos en paralelas', 'Dips', 'Fondos', 'Bajadas'],
-                    'en' => ['Tricep dips', 'Parallel bar dips', 'Dips']
-                ]
+                    'en' => ['Tricep dips', 'Parallel bar dips', 'Dips'],
+                ],
             ],
             [
                 'primary_name' => 'Extensión de tríceps en polea con cuerda',
@@ -687,12 +686,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'triceps'],
                     ['movement_pattern', 'push'],
-                    ['equipment', 'cable']
+                    ['equipment', 'cable'],
                 ],
                 'names' => [
                     'es' => ['Extensión de tríceps en polea con cuerda', 'Rope pushdown', 'Jalón de tríceps con cuerda', 'Extensión con soga'],
-                    'en' => ['Rope pushdowns', 'Cable rope tricep pushdown', 'Tricep rope extension']
-                ]
+                    'en' => ['Rope pushdowns', 'Cable rope tricep pushdown', 'Tricep rope extension'],
+                ],
             ],
             [
                 'primary_name' => 'Patada de tríceps con mancuerna',
@@ -701,12 +700,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'triceps'],
                     ['movement_pattern', 'push'],
-                    ['equipment', 'dumbbell']
+                    ['equipment', 'dumbbell'],
                 ],
                 'names' => [
                     'es' => ['Patada de tríceps con mancuerna', 'Triceps kickback', 'Extensión trasera de tríceps'],
-                    'en' => ['Tricep kickbacks', 'Dumbbell tricep kickback']
-                ]
+                    'en' => ['Tricep kickbacks', 'Dumbbell tricep kickback'],
+                ],
             ],
 
             // ABDOMINALES Y CORE
@@ -717,12 +716,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'abs'],
                     ['movement_pattern', 'flexion'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Crunch abdominal', 'Ab crunch', 'Encogimiento abdominal', 'Abdominal corto'],
-                    'en' => ['Crunches', 'Abdominal crunches', 'Basic crunches']
-                ]
+                    'en' => ['Crunches', 'Abdominal crunches', 'Basic crunches'],
+                ],
             ],
             [
                 'primary_name' => 'Crunch en máquina',
@@ -731,12 +730,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'abs'],
                     ['movement_pattern', 'flexion'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Crunch en máquina', 'Machine crunch', 'Abdominal en máquina'],
-                    'en' => ['Machine crunches', 'Ab machine']
-                ]
+                    'en' => ['Machine crunches', 'Ab machine'],
+                ],
             ],
             [
                 'primary_name' => 'Elevaciones de piernas colgado',
@@ -745,12 +744,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'abs'],
                     ['movement_pattern', 'flexion'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Elevaciones de piernas colgado', 'Hanging leg raise', 'Elevaciones de piernas', 'Abdominal colgado'],
-                    'en' => ['Hanging leg raises', 'Hanging knee raises']
-                ]
+                    'en' => ['Hanging leg raises', 'Hanging knee raises'],
+                ],
             ],
             [
                 'primary_name' => 'Plancha frontal',
@@ -759,12 +758,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'abs'],
                     ['movement_pattern', 'anti_extension'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Plancha frontal', 'Plank', 'Plancha', 'Plancha abdominal'],
-                    'en' => ['Plank', 'Front plank', 'Forearm plank']
-                ]
+                    'en' => ['Plank', 'Front plank', 'Forearm plank'],
+                ],
             ],
             [
                 'primary_name' => 'Plancha lateral',
@@ -773,12 +772,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'obliques'],
                     ['movement_pattern', 'anti_lateral_flexion'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Plancha lateral', 'Side plank', 'Plancha lateral'],
-                    'en' => ['Side plank', 'Lateral plank']
-                ]
+                    'en' => ['Side plank', 'Lateral plank'],
+                ],
             ],
             [
                 'primary_name' => 'Russian twist',
@@ -787,12 +786,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'obliques'],
                     ['movement_pattern', 'rotation'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Russian twist', 'Giros rusos', 'Torsiones rusas', 'Abdominal con giro'],
-                    'en' => ['Russian twists', 'Seated Russian twist']
-                ]
+                    'en' => ['Russian twists', 'Seated Russian twist'],
+                ],
             ],
             [
                 'primary_name' => 'Ab wheel rollout',
@@ -801,12 +800,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'abs'],
                     ['movement_pattern', 'anti_extension'],
-                    ['equipment', 'other']
+                    ['equipment', 'other'],
                 ],
                 'names' => [
                     'es' => ['Ab wheel rollout', 'Rueda abdominal', 'Rollout', 'Rodillo abdominal'],
-                    'en' => ['Ab wheel rollout', 'Ab wheel', 'Rollouts']
-                ]
+                    'en' => ['Ab wheel rollout', 'Ab wheel', 'Rollouts'],
+                ],
             ],
 
             // CARDIO Y FUNCIONAL
@@ -817,12 +816,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'full_body'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Cinta de correr', 'Treadmill', 'Caminadora', 'Banda para correr'],
-                    'en' => ['Treadmill', 'Running machine', 'Treadmill running']
-                ]
+                    'en' => ['Treadmill', 'Running machine', 'Treadmill running'],
+                ],
             ],
             [
                 'primary_name' => 'Bicicleta estática',
@@ -832,12 +831,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'quads'],
                     ['muscle_group', 'calves'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Bicicleta estática', 'Stationary bike', 'Bicicleta fija', 'Spinning bike'],
-                    'en' => ['Stationary bike', 'Exercise bike', 'Spin bike']
-                ]
+                    'en' => ['Stationary bike', 'Exercise bike', 'Spin bike'],
+                ],
             ],
             [
                 'primary_name' => 'Elíptica',
@@ -846,12 +845,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'full_body'],
                     ['movement_pattern', 'other'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Elíptica', 'Elliptical', 'Crosstrainer'],
-                    'en' => ['Elliptical', 'Elliptical trainer', 'Cross trainer']
-                ]
+                    'en' => ['Elliptical', 'Elliptical trainer', 'Cross trainer'],
+                ],
             ],
             [
                 'primary_name' => 'Remo ergómetro',
@@ -860,12 +859,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'full_body'],
                     ['movement_pattern', 'pull'],
-                    ['equipment', 'machine']
+                    ['equipment', 'machine'],
                 ],
                 'names' => [
                     'es' => ['Remo ergómetro', 'Rowing machine', 'Rower', 'Máquina de remo'],
-                    'en' => ['Rowing machine', 'Indoor rowing', 'Erg rowing']
-                ]
+                    'en' => ['Rowing machine', 'Indoor rowing', 'Erg rowing'],
+                ],
             ],
             [
                 'primary_name' => 'Burpees',
@@ -874,12 +873,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'full_body'],
                     ['movement_pattern', 'power'],
-                    ['equipment', 'bodyweight']
+                    ['equipment', 'bodyweight'],
                 ],
                 'names' => [
                     'es' => ['Burpees', 'Burpees', 'Saltos con flexión', 'Ejercicio militar'],
-                    'en' => ['Burpees', 'Squat thrust']
-                ]
+                    'en' => ['Burpees', 'Squat thrust'],
+                ],
             ],
             [
                 'primary_name' => 'Cuerda para saltar',
@@ -888,12 +887,12 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'calves'],
                     ['movement_pattern', 'power'],
-                    ['equipment', 'other']
+                    ['equipment', 'other'],
                 ],
                 'names' => [
                     'es' => ['Cuerda para saltar', 'Jump rope', 'Comba', 'Soga'],
-                    'en' => ['Jump rope', 'Skipping rope', 'Rope jumping']
-                ]
+                    'en' => ['Jump rope', 'Skipping rope', 'Rope jumping'],
+                ],
             ],
             [
                 'primary_name' => 'Box jump',
@@ -903,12 +902,12 @@ class ExercisesSeeder extends Seeder
                     ['muscle_group', 'quads'],
                     ['muscle_group', 'glutes'],
                     ['movement_pattern', 'power'],
-                    ['equipment', 'other']
+                    ['equipment', 'other'],
                 ],
                 'names' => [
                     'es' => ['Box jump', 'Salto al cajón', 'Salto pliométrico', 'Jump box'],
-                    'en' => ['Box jumps', 'Plyometric box jumps', 'Jump box']
-                ]
+                    'en' => ['Box jumps', 'Plyometric box jumps', 'Jump box'],
+                ],
             ],
             [
                 'primary_name' => 'Battle ropes',
@@ -917,13 +916,13 @@ class ExercisesSeeder extends Seeder
                 'categories' => [
                     ['muscle_group', 'full_body'],
                     ['movement_pattern', 'power'],
-                    ['equipment', 'other']
+                    ['equipment', 'other'],
                 ],
                 'names' => [
                     'es' => ['Battle ropes', 'Cuerdas de combate', 'Cuerdas ondulantes'],
-                    'en' => ['Battle ropes', 'Training ropes', 'Heavy ropes']
-                ]
-            ]
+                    'en' => ['Battle ropes', 'Training ropes', 'Heavy ropes'],
+                ],
+            ],
         ];
 
         foreach ($exercisesData as $exerciseData) {
@@ -937,7 +936,7 @@ class ExercisesSeeder extends Seeder
         $exercise = Exercise::create([
             'slug' => $data['slug'],
             'name' => $data['primary_name'], // Se usa para crear el nombre primario automáticamente
-            'description' => $data['description']
+            'description' => $data['description'],
         ]);
 
         // Asociar categorías
@@ -960,12 +959,12 @@ class ExercisesSeeder extends Seeder
                     ->where('locale', $locale)
                     ->first();
 
-                if (!$existingName) {
+                if (! $existingName) {
                     ExerciseName::create([
                         'exercise_id' => $exercise->id,
                         'name' => $name,
                         'locale' => $locale,
-                        'is_primary' => false
+                        'is_primary' => false,
                     ]);
                 }
             }

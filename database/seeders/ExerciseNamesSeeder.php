@@ -21,14 +21,14 @@ class ExerciseNamesSeeder extends Seeder
                     'Press de pecho con barra',
                     'Banco plano con barra',
                     'Press banca',
-                    'Press de banca'
+                    'Press de banca',
                 ],
                 'en' => [
                     'Bench Press' => true,
                     'Flat Bench Press',
                     'Barbell Bench Press',
-                    'Chest Press'
-                ]
+                    'Chest Press',
+                ],
             ],
             'squat' => [
                 'es' => [
@@ -36,63 +36,63 @@ class ExerciseNamesSeeder extends Seeder
                     'Squat con barra',
                     'Sentadilla trasera',
                     'Back squat',
-                    'Sentadilla'
+                    'Sentadilla',
                 ],
                 'en' => [
                     'Back Squat' => true,
                     'Barbell Squat',
-                    'Squat'
-                ]
+                    'Squat',
+                ],
             ],
             'deadlift' => [
                 'es' => [
                     'Peso muerto con barra' => true,
                     'Deadlift',
                     'Peso muerto convencional',
-                    'Levantamiento de peso muerto'
+                    'Levantamiento de peso muerto',
                 ],
                 'en' => [
                     'Deadlift' => true,
                     'Conventional Deadlift',
-                    'Barbell Deadlift'
-                ]
+                    'Barbell Deadlift',
+                ],
             ],
             'pull-up' => [
                 'es' => [
                     'Dominadas' => true,
                     'Pull-ups',
                     'Dominadas en barra',
-                    'Jalones en barra fija'
+                    'Jalones en barra fija',
                 ],
                 'en' => [
                     'Pull-ups' => true,
                     'Chin-ups',
-                    'Bar Pull-ups'
-                ]
+                    'Bar Pull-ups',
+                ],
             ],
             'push-up' => [
                 'es' => [
                     'Flexiones de pecho' => true,
                     'Lagartijas',
                     'Push-ups',
-                    'Flexiones de brazos'
+                    'Flexiones de brazos',
                 ],
                 'en' => [
                     'Push-ups' => true,
-                    'Press-ups'
-                ]
-            ]
+                    'Press-ups',
+                ],
+            ],
         ];
 
         foreach ($exerciseNames as $slug => $locales) {
             $exercise = Exercise::where('slug', $slug)->first();
 
-            if (!$exercise) {
+            if (! $exercise) {
                 // Si no existe el ejercicio, lo creamos
                 $exercise = Exercise::create([
                     'slug' => $slug,
                     'name' => array_keys($locales['es'])[0], // Primer nombre en español
-                    'description' => 'Ejercicio creado por seeder'
+                    'description' => 'Ejercicio creado por seeder',
                 ]);
             }
 
@@ -107,10 +107,10 @@ class ExerciseNamesSeeder extends Seeder
                         [
                             'exercise_id' => $exercise->id,
                             'name' => $name,
-                            'locale' => $locale
+                            'locale' => $locale,
                         ],
                         [
-                            'is_primary' => $isPrimary === true
+                            'is_primary' => $isPrimary === true,
                         ]
                     );
                 }
