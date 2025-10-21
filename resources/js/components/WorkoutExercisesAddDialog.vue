@@ -171,12 +171,12 @@ const handleTouchMove = (event: TouchEvent) => {
     const touch = event.touches[0];
     const startY = (target as any)._startY;
     const startScrollTop = (target as any)._startScrollTop;
-    
+
     if (!startY) return;
-    
+
     const deltaY = touch.clientY - startY;
     const newScrollTop = startScrollTop - deltaY;
-    
+
     // If we're at the boundaries and trying to scroll beyond, prevent the event
     if (
         (newScrollTop <= 0 && deltaY > 0) || // At top, trying to scroll up
@@ -186,7 +186,7 @@ const handleTouchMove = (event: TouchEvent) => {
         event.stopPropagation();
         return;
     }
-    
+
     // Otherwise, allow the scroll but prevent propagation
     event.stopPropagation();
 };
@@ -289,7 +289,7 @@ const submit = async () => {
                     <!-- Search Results -->
                     <div
                         v-if="showResults && searchResults.length > 0 && !selectedExercise"
-                        class="max-h-[300px] overflow-y-auto rounded-lg border bg-background overscroll-contain touch-pan-y"
+                        class="max-h-[300px] touch-pan-y overflow-y-auto overscroll-contain rounded-lg border bg-background"
                         :class="{ 'scroll-smooth': inputFocused }"
                         @scroll="handleResultsScroll"
                         @touchstart="handleTouchStart"
