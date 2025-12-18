@@ -6,7 +6,7 @@ import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
-import { Eye, Pin } from 'lucide-vue-next';
+import { Pin } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Workout {
@@ -78,8 +78,9 @@ const makeWorkoutCurrent = (workoutId: string) => {
             <div v-if="workouts.length > 0" class="space-y-4">
                 <!-- Rutina actual -->
                 <div v-for="workout in workouts.filter((w) => w.is_current)" :key="workout.id">
-                    <div
-                        class="-mx-4 flex items-center justify-between rounded-none border-b border-muted-foreground/20 bg-muted/50 px-4 py-2 dark:border-muted-foreground/30 dark:bg-muted/30"
+                    <Link
+                        :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
+                        class="-mx-4 flex cursor-pointer items-center justify-between rounded-none border-b border-muted-foreground/20 bg-muted/50 px-4 py-2 transition-colors hover:bg-muted/70 dark:border-muted-foreground/30 dark:bg-muted/30 dark:hover:bg-muted/40"
                     >
                         <div class="flex flex-col">
                             <div class="flex items-center gap-2">
@@ -90,16 +91,7 @@ const makeWorkoutCurrent = (workoutId: string) => {
                             </div>
                             <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(workout.created_at) }} </span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <Link
-                                :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
-                                class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                aria-label="Ver rutina"
-                            >
-                                <Eye class="h-5 w-5" />
-                            </Link>
-                        </div>
-                    </div>
+                    </Link>
                 </div>
 
                 <!-- Rutinas anteriores -->
@@ -109,32 +101,28 @@ const makeWorkoutCurrent = (workoutId: string) => {
                         <div
                             v-for="workout in workouts.filter((w) => !w.is_current)"
                             :key="workout.id"
-                            class="flex items-center justify-between border-b border-border/70 py-2 dark:border-border"
+                            class="relative flex items-center justify-between border-b border-border/70 py-2 dark:border-border"
                         >
-                            <div class="flex flex-col">
+                            <Link
+                                :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
+                                class="-mx-2 flex flex-1 cursor-pointer flex-col rounded-md px-2 py-1 transition-colors hover:bg-accent/50"
+                            >
                                 <div class="flex items-center gap-2">
                                     <span class="font-medium">
                                         {{ workout.name }}
                                     </span>
                                 </div>
                                 <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(workout.created_at) }} </span>
-                            </div>
-                            <div class="flex items-center gap-2">
+                            </Link>
+                            <div class="z-10 flex items-center gap-2">
                                 <button
-                                    @click="makeWorkoutCurrent(workout.id)"
+                                    @click.stop="makeWorkoutCurrent(workout.id)"
                                     class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-green-50 hover:text-green-600 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-green-900/20"
                                     aria-label="Marcar como actual"
                                     title="Marcar como rutina actual"
                                 >
                                     <Pin class="h-5 w-5" />
                                 </button>
-                                <Link
-                                    :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
-                                    class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                    aria-label="Ver rutina"
-                                >
-                                    <Eye class="h-5 w-5" />
-                                </Link>
                             </div>
                         </div>
                     </div>

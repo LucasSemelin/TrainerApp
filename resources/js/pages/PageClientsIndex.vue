@@ -6,7 +6,7 @@ import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
 import { Head, Link, usePage } from '@inertiajs/vue3';
-import { ClipboardList, Trash2 } from 'lucide-vue-next';
+import { ClipboardList, Trash2, Users } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -26,20 +26,39 @@ const onCreated = () => {
 </script>
 
 <template>
-    <Head title="Clientes" />
+    <Head title="Alumnos" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 pb-24">
-            <div class="flex items-center justify-between">
-                <h1>Alumnos</h1>
+            <div class="flex items-center justify-end">
+                <!-- <h1>Alumnos</h1> -->
                 <ClientsCreateDialog @created="onCreated" />
             </div>
 
-            <div class="flex justify-between font-medium text-slate-700 dark:text-slate-200">
-                <div>Alumno</div>
-                <div>Acciones</div>
+            <!-- Empty State -->
+            <div v-if="clientsList.length === 0" class="flex flex-1 flex-col items-center justify-center gap-6 py-12">
+                <div class="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+                    <Users class="h-10 w-10 text-muted-foreground" />
+                </div>
+                <div class="flex flex-col items-center gap-2 text-center">
+                    <h2 class="text-xl font-semibold text-foreground">No hay alumnos todavía</h2>
+                    <p class="max-w-md text-sm text-muted-foreground">
+                        Comienza agregando tu primer alumno para poder crear y asignar rutinas de entrenamiento.
+                    </p>
+                </div>
+                <ClientsCreateDialog @created="onCreated">
+                    <template #trigger>
+                        <button
+                            type="button"
+                            class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+                        >
+                            Agregar primer alumno
+                        </button>
+                    </template>
+                </ClientsCreateDialog>
             </div>
 
-            <template v-for="(client, index) in clientsList" :key="client.id">
+            <!-- Clients List -->
+            <template v-else v-for="(client, index) in clientsList" :key="client.id">
                 <div
                     class="flex items-center justify-between border-b border-border/70 py-2 dark:border-border"
                     :class="index % 2 === 1 ? 'bg-muted/30' : ''"

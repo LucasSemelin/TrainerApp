@@ -10,7 +10,7 @@ import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
 import { Head, usePage } from '@inertiajs/vue3';
-import { PencilLine, Plus, Trash2 } from 'lucide-vue-next';
+import { Dumbbell, MoreVertical, PencilLine, Plus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 interface Exercise {
@@ -217,162 +217,129 @@ const confirmDeleteSet = async () => {
 <template>
     <Head title="Detalle de Rutina" />
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 pb-24">
+        <div class="flex h-full flex-1 flex-col gap-6 overflow-x-auto p-4 pb-24">
             <!-- Header -->
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold">{{ workout.name }}</h1>
-                    <Badge v-if="workout.is_current" variant="default" class="mb-2 bg-green-500 text-xs hover:bg-green-600"> Actual </Badge>
-                    <p class="text-muted-foreground">
-                        {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }} • Creada el
-                        {{ formatDate(workout.created_at) }}
-                    </p>
+            <div class="flex items-start justify-between">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-2xl font-semibold">{{ workout.name }}</h1>
+                        <button
+                            type="button"
+                            class="inline-flex items-center justify-center rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                            <PencilLine class="h-4 w-4" />
+                        </button>
+                    </div>
+                    <div class="mt-1 flex items-center gap-2">
+                        <Badge v-if="workout.is_current" variant="default" class="bg-primary/20 text-primary hover:bg-primary/30"> Actual </Badge>
+                        <span class="text-sm text-muted-foreground">
+                            {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
+                        </span>
+                    </div>
                 </div>
             </div>
 
             <!-- Exercises List -->
-            <div v-if="exercises.length > 0">
-                <div class="space-y-4">
-                    <div v-for="exercise in exercises" :key="exercise.id" class="border-b border-border/70 pb-4 dark:border-border">
-                        <!-- Exercise Name - Full width -->
-                        <div class="mb-3">
-                            <h3 class="text-lg font-medium">{{ exercise.exercise.name }}</h3>
-                            <div v-if="exercise.exercise.categories && exercise.exercise.categories.length > 0" class="mt-2">
-                                <Badge variant="secondary" class="text-xs">
-                                    {{ exercise.exercise.categories.join(', ') }}
-                                </Badge>
+            <div v-if="exercises.length > 0" class="space-y-4">
+                <!-- Exercise Card -->
+                <div v-for="exercise in exercises" :key="exercise.id" class="overflow-hidden rounded-2xl border border-border bg-card">
+                    <!-- Exercise Header -->
+                    <div class="flex items-start gap-4 p-4">
+                        <!-- Exercise Image Placeholder -->
+                        <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                            <Dumbbell class="h-10 w-10 text-primary" />
+                        </div>
+
+                        <!-- Exercise Info -->
+                        <div class="flex min-w-0 flex-1 flex-col">
+                            <h3 class="text-lg font-semibold">{{ exercise.exercise.name }}</h3>
+                            <div v-if="exercise.exercise.categories && exercise.exercise.categories.length > 0" class="mt-1">
+                                <span class="text-sm text-muted-foreground">
+                                    {{ exercise.exercise.categories.join(' • ') }}
+                                </span>
                             </div>
                         </div>
 
-                        <!-- Sets List -->
-                        <div v-if="exercise.sets && exercise.sets.length > 0" class="mb-3">
-                            <!-- Sets Header - Hidden on mobile -->
-                            <div class="mb-2 hidden grid-cols-5 gap-4 px-3 text-xs font-medium text-muted-foreground sm:grid">
-                                <div>Repeticiones</div>
-                                <div>Peso</div>
-                                <div>Descanso</div>
-                                <div>Notas</div>
-                                <div class="text-right">Acciones</div>
-                            </div>
-
-                            <!-- Sets Data -->
-                            <div class="space-y-1">
-                                <div v-for="set in exercise.sets" :key="set.id" class="rounded-md bg-muted/50 p-3 text-sm">
-                                    <!-- Mobile layout -->
-                                    <div class="grid grid-cols-5 gap-3 sm:hidden">
-                                        <div class="col-span-4 space-y-1">
-                                            <div class="font-medium">
-                                                {{ set.min_reps
-                                                }}{{ set.max_reps && set.max_reps !== set.min_reps ? `-${set.max_reps}` : '' }} repeticiones
-                                            </div>
-                                            <div class="text-xs text-muted-foreground">
-                                                {{ set.weight ? `${set.weight} kg` : 'Sin peso' }} •
-                                                {{ set.rest_time_seconds ? `${set.rest_time_seconds}s descanso` : 'Sin descanso' }}
-                                            </div>
-                                            <div v-if="set.notes" class="text-xs break-words text-muted-foreground">
-                                                {{ set.notes }}
-                                            </div>
-                                        </div>
-                                        <div class="col-span-1 flex items-start justify-end gap-1">
-                                            <button
-                                                type="button"
-                                                @click="editSetNotes(set.id, exercise.id)"
-                                                class="inline-flex items-center justify-center rounded-md p-1.5 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                                aria-label="Editar notas"
-                                            >
-                                                <PencilLine class="h-3.5 w-3.5" />
-                                            </button>
-                                            <button
-                                                type="button"
-                                                @click="deleteSet(set.id, exercise.id)"
-                                                class="inline-flex items-center justify-center rounded-md p-1.5 text-sm font-medium ring-offset-background transition-colors hover:bg-destructive/10 hover:text-destructive focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                                aria-label="Eliminar serie"
-                                            >
-                                                <Trash2 class="h-3.5 w-3.5" />
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Desktop layout -->
-                                    <div class="hidden grid-cols-5 items-center gap-4 sm:grid">
-                                        <div class="font-medium">
-                                            {{ set.min_reps }}{{ set.max_reps && set.max_reps !== set.min_reps ? `-${set.max_reps}` : '' }} reps
-                                        </div>
-                                        <div class="text-muted-foreground">
-                                            {{ set.weight ? `${set.weight} kg` : 'Sin peso' }}
-                                        </div>
-                                        <div class="text-muted-foreground">
-                                            {{ set.rest_time_seconds ? `${set.rest_time_seconds}s` : 'Sin descanso' }}
-                                        </div>
-                                        <div class="line-clamp-3 max-w-[200px] break-words text-muted-foreground" :title="set.notes || ''">
-                                            {{ set.notes || '-' }}
-                                        </div>
-                                        <div class="flex justify-end gap-1">
-                                            <button
-                                                type="button"
-                                                @click="editSetNotes(set.id, exercise.id)"
-                                                class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                                aria-label="Editar notas"
-                                            >
-                                                <PencilLine class="h-4 w-4" />
-                                            </button>
-                                            <button
-                                                type="button"
-                                                @click="deleteSet(set.id, exercise.id)"
-                                                class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-destructive/10 hover:text-destructive focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                                aria-label="Eliminar serie"
-                                            >
-                                                <Trash2 class="h-4 w-4" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- No sets message -->
-                        <div v-else class="mb-3 text-sm text-muted-foreground">No hay series configuradas para este ejercicio.</div>
-
-                        <!-- Add Set Button -->
+                        <!-- Menu Button -->
                         <button
                             type="button"
-                            @click="openSetDialog(exercise.id)"
-                            class="w-full rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+                            class="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                         >
-                            <Plus class="mr-2 inline h-4 w-4" />
-                            Agregar Serie
+                            <MoreVertical class="h-5 w-5" />
                         </button>
+                    </div>
+
+                    <!-- Sets Info -->
+                    <div v-if="exercise.sets && exercise.sets.length > 0" class="border-t border-border/50 px-4 py-3">
+                        <!-- Sets Summary -->
+                        <div class="text-sm text-muted-foreground">
+                            {{ exercise.sets.length }} series • {{ exercise.sets[0]?.min_reps
+                            }}{{
+                                exercise.sets[0]?.max_reps && exercise.sets[0]?.max_reps !== exercise.sets[0]?.min_reps
+                                    ? `-${exercise.sets[0]?.max_reps}`
+                                    : ''
+                            }}
+                            Reps •
+                            {{ exercise.sets[0]?.weight ? `${exercise.sets[0]?.weight} kg` : '- kg' }}
+                        </div>
+                    </div>
+
+                    <!-- No sets message -->
+                    <div v-else class="border-t border-border/50 px-4 py-3">
+                        <p class="text-sm text-muted-foreground">No hay series configuradas</p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="border-t border-border/50 p-4">
+                        <div class="flex gap-2">
+                            <button
+                                type="button"
+                                @click="openSetDialog(exercise.id)"
+                                class="flex-1 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
+                            >
+                                <Plus class="mr-2 inline h-4 w-4" />
+                                Serie
+                            </button>
+                            <button
+                                type="button"
+                                class="rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
+                            >
+                                Ver detalles
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Add Exercise Button -->
-                <div class="mt-6">
-                    <button
-                        type="button"
-                        @click="showAddDialog = true"
-                        class="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                    >
-                        <Plus class="h-4 w-4" />
-                        Agregar Ejercicio
-                    </button>
-                </div>
+                <button
+                    type="button"
+                    @click="showAddDialog = true"
+                    class="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border px-6 py-4 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary"
+                >
+                    <Plus class="h-5 w-5" />
+                    Añadir Ejercicio
+                </button>
             </div>
 
             <!-- Empty State -->
-            <div v-else class="flex flex-col items-center justify-center py-8 text-center">
-                <p class="text-muted-foreground">No hay ejercicios en esta rutina.</p>
-
-                <!-- Add Exercise Button for Empty State -->
-                <div class="mt-4">
-                    <button
-                        type="button"
-                        @click="showAddDialog = true"
-                        class="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                    >
-                        <Plus class="h-4 w-4" />
-                        Agregar Primer Ejercicio
-                    </button>
+            <div v-else class="flex flex-1 flex-col items-center justify-center gap-6 py-12">
+                <div class="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+                    <Dumbbell class="h-10 w-10 text-muted-foreground" />
                 </div>
+                <div class="flex flex-col items-center gap-2 text-center">
+                    <h2 class="text-xl font-semibold text-foreground">No hay ejercicios todavía</h2>
+                    <p class="max-w-md text-sm text-muted-foreground">
+                        Comienza agregando ejercicios a esta rutina para crear un plan de entrenamiento completo.
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    @click="showAddDialog = true"
+                    class="rounded-xl bg-primary px-8 py-3 text-base font-medium text-primary-foreground shadow-lg transition-all hover:bg-primary/90 hover:shadow-xl"
+                >
+                    <Plus class="mr-2 inline h-5 w-5" />
+                    Agregar Primer Ejercicio
+                </button>
             </div>
         </div>
 
