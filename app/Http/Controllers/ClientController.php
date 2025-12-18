@@ -21,6 +21,17 @@ class ClientController extends Controller
         ]);
     }
 
+    public function show(User $client)
+    {
+        // $this->authorize('view', $client);
+
+        $client->load('profile');
+
+        return inertia('Clients/PageShow', [
+            'client' => $client,
+        ]);
+    }
+
     public function store(Request $request, CreateClient $createClient)
     {
         $createClient->handle($request);

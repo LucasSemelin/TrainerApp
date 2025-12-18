@@ -3,6 +3,7 @@ import ExerciseSetCreateDialog from '@/components/ExerciseSetCreateDialog.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
 import WorkoutExercisesAddDialog from '@/components/WorkoutExercisesAddDialog.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -261,12 +262,22 @@ const confirmDeleteSet = async () => {
                         </div>
 
                         <!-- Menu Button -->
-                        <button
-                            type="button"
-                            class="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                        >
-                            <MoreVertical class="h-5 w-5" />
-                        </button>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger as-child>
+                                <button
+                                    type="button"
+                                    class="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                                >
+                                    <MoreVertical class="h-5 w-5" />
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem> Detalles del ejercicio </DropdownMenuItem>
+                                <DropdownMenuItem @click="openDeleteDialog(exercise.id)" class="text-destructive focus:text-destructive">
+                                    Eliminar
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
 
                     <!-- Sets Info -->
@@ -287,26 +298,6 @@ const confirmDeleteSet = async () => {
                     <!-- No sets message -->
                     <div v-else class="border-t border-border/50 px-4 py-3">
                         <p class="text-sm text-muted-foreground">No hay series configuradas</p>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="border-t border-border/50 p-4">
-                        <div class="flex gap-2">
-                            <button
-                                type="button"
-                                @click="openSetDialog(exercise.id)"
-                                class="flex-1 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
-                            >
-                                <Plus class="mr-2 inline h-4 w-4" />
-                                Serie
-                            </button>
-                            <button
-                                type="button"
-                                class="rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
-                            >
-                                Ver detalles
-                            </button>
-                        </div>
                     </div>
                 </div>
 

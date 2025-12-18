@@ -22,7 +22,16 @@ Route::get('dashboard', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
     Route::post('clients', [ClientController::class, 'store'])->name('clients.store');
+    Route::get('clients/{client}', [ClientController::class, 'show'])->name('clients.show');
     Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
+});
+
+/**
+ * Profile Management
+ */
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::patch('profiles/{profile}/gender', [App\Http\Controllers\ProfileController::class, 'updateGender'])->name('profiles.update-gender');
+    Route::patch('profiles/{profile}/birthdate', [App\Http\Controllers\ProfileController::class, 'updateBirthdate'])->name('profiles.update-birthdate');
 });
 
 /**

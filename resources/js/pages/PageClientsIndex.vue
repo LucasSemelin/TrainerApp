@@ -29,7 +29,7 @@ const onCreated = () => {
     <Head title="Alumnos" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 pb-24">
-            <div class="flex items-center justify-end">
+            <div v-if="clientsList.length > 0" class="flex items-center justify-end">
                 <!-- <h1>Alumnos</h1> -->
                 <ClientsCreateDialog @created="onCreated" />
             </div>
