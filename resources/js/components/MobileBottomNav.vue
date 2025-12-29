@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { Home, Settings, Users } from 'lucide-vue-next';
+import { Bell, Home, Settings, Users } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 import { Form } from '@inertiajs/vue3';
@@ -13,6 +13,9 @@ const promptText = ref('');
 const loading = ref(false);
 
 const page = usePage();
+
+// Número de notificaciones sin leer (esto debería venir del backend)
+const notificationCount = ref(3);
 
 // Función para determinar si un link está activo
 const isActive = computed(() => (href: string) => {
@@ -61,6 +64,23 @@ function closePrompt() {
                     ]"
                 >
                     <Users class="h-5 w-5" />
+                </Link>
+
+                <Link
+                    href="/notifications"
+                    aria-label="Notifications"
+                    :class="[
+                        'relative inline-flex items-center justify-center rounded-lg p-2 text-sm font-medium ring-offset-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
+                        isActive('/notifications') ? 'bg-primary text-primary-foreground' : 'hover:bg-accent hover:text-accent-foreground',
+                    ]"
+                >
+                    <Bell class="h-5 w-5" />
+                    <span
+                        v-if="false"
+                        class="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-destructive-foreground"
+                    >
+                        {{ notificationCount > 99 ? '99+' : notificationCount }}
+                    </span>
                 </Link>
 
                 <!-- <button

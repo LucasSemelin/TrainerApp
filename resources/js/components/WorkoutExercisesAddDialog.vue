@@ -267,13 +267,13 @@ const submit = async () => {
                     <!-- Selected Exercise Display -->
                     <div
                         v-if="selectedExercise"
-                        class="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-800 dark:bg-green-950"
+                        class="flex items-center justify-between rounded-lg border-2 border-primary bg-primary/5 p-3 dark:bg-primary/10"
                     >
                         <div class="flex items-center gap-2">
-                            <Check class="h-4 w-4 text-green-600 dark:text-green-400" />
+                            <Check class="h-4 w-4 text-primary" />
                             <div>
-                                <div class="font-medium text-green-800 dark:text-green-200">{{ getDisplayName(selectedExercise) }}</div>
-                                <div v-if="getAlternativeNames(selectedExercise).length > 0" class="text-sm text-green-600 dark:text-green-400">
+                                <div class="font-medium text-foreground">{{ getDisplayName(selectedExercise) }}</div>
+                                <div v-if="getAlternativeNames(selectedExercise).length > 0" class="text-sm text-muted-foreground">
                                     También:
                                     {{ getAlternativeNames(selectedExercise).slice(0, 2).join(', ') }}
                                 </div>

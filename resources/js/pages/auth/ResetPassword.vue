@@ -48,19 +48,6 @@ const inputEmail = ref(props.email);
                     <InputError :message="errors.password" />
                 </div>
 
-                <div class="grid gap-2">
-                    <Label for="password_confirmation"> Confirmar contraseña </Label>
-                    <Input
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        autocomplete="new-password"
-                        class="mt-1 block w-full"
-                        placeholder="Confirmar contraseña"
-                    />
-                    <InputError :message="errors.password_confirmation" />
-                </div>
-
                 <Button type="submit" class="mt-4 w-full" :disabled="processing" data-test="reset-password-button">
                     <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
                     Restablecer contraseña

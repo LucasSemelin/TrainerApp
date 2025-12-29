@@ -84,8 +84,8 @@
     }
 }
 
-:root {
-    /* Dark mode as default */
+/* :root {
+    
     --background: oklch(0.11 0.01 260);
     --foreground: oklch(0.96 0.01 260);
     --card: oklch(0.17 0.015 260);
@@ -120,6 +120,93 @@
     --sidebar-border: oklch(0.28 0.02 260);
     --sidebar-ring: oklch(0.9 0.24 135);
     --sidebar: oklch(0.11 0.01 260);
+} */
+
+:root {
+    /* =========================
+     Base (dark, neutro frío)
+     ========================= */
+    --background: oklch(0.11 0.01 260);
+    --foreground: oklch(0.96 0.01 260);
+
+    --card: oklch(0.17 0.015 260);
+    --card-foreground: oklch(0.96 0.01 260);
+
+    --popover: oklch(0.22 0.02 260);
+    --popover-foreground: oklch(0.96 0.01 260);
+
+    /* =========================
+     Primary — BASE DEL SISTEMA
+     ========================= */
+    --primary: oklch(0.8342 0.159 79.51);
+    --primary-hover: oklch(0.8 0.159 79.51);
+    --primary-active: oklch(0.76 0.145 79.51);
+
+    --primary-soft: oklch(0.92 0.08 79.51);
+    --primary-soft-hover: oklch(0.88 0.08 79.51);
+
+    --primary-foreground: oklch(0.11 0.01 260);
+
+    /* =========================
+     Secondary / Accent
+     (neutros derivados)
+     ========================= */
+    --secondary: oklch(0.22 0.02 260);
+    --secondary-foreground: oklch(0.96 0.01 260);
+
+    --accent: oklch(0.26 0.03 260);
+    --accent-foreground: oklch(0.96 0.01 260);
+
+    /* =========================
+     Muted / UI secundaria
+     ========================= */
+    --muted: oklch(0.22 0.02 260);
+    --muted-foreground: oklch(0.62 0.025 260);
+
+    /* =========================
+     Feedback (alineado al primary)
+     ========================= */
+    --success: oklch(0.8 0.14 79.51); /* progreso OK */
+    --warning: oklch(0.78 0.16 95); /* sobrecarga */
+    --destructive: oklch(0.62 0.22 25); /* error / lesión */
+    --destructive-foreground: oklch(0.96 0.01 260);
+
+    /* =========================
+     Bordes, inputs, focus
+     ========================= */
+    --border: oklch(0.28 0.02 260);
+    --input: oklch(0.28 0.02 260);
+
+    --ring: oklch(0.86 0.18 79.51);
+
+    /* =========================
+     Charts (fitness + lectura)
+     ========================= */
+    --chart-1: oklch(0.78 0.15 79.51); /* progreso */
+    --chart-2: oklch(0.7 0.12 220); /* volumen / info */
+    --chart-3: oklch(0.76 0.17 95); /* warning */
+    --chart-4: oklch(0.62 0.22 25); /* fatiga */
+    --chart-5: oklch(0.88 0.16 79.51); /* highlight */
+
+    /* =========================
+     Sidebar
+     ========================= */
+    --sidebar-background: oklch(0.11 0.01 260);
+    --sidebar-foreground: oklch(0.96 0.01 260);
+
+    --sidebar-primary: oklch(0.8342 0.159 79.51);
+    --sidebar-primary-foreground: oklch(0.11 0.01 260);
+
+    --sidebar-accent: oklch(0.26 0.03 260);
+    --sidebar-accent-foreground: oklch(0.96 0.01 260);
+
+    --sidebar-border: oklch(0.28 0.02 260);
+    --sidebar-ring: oklch(0.86 0.18 79.51);
+
+    /* =========================
+     Radius
+     ========================= */
+    --radius: 0.5rem;
 }
 
 @layer base {

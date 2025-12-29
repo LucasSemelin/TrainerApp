@@ -52,6 +52,35 @@ class ExerciseController extends Controller
         return response()->json($exercises);
     }
 
+    public function show(Exercise $exercise)
+    {
+        $exercise->load([
+            'names',
+            'categories.translations' => function ($q) {
+                $q->where('locale', 'es'); // Siempre en español para las categorías
+            },
+        ]);
+
+        $primaryName = $exercise->names->firstWhere('is_primary', true);
+        $allNames = $exercise->names->pluck('name')->toArray();
+
+        $response = [
+            'id' => $exercise->id,
+            'name' => $primaryName?->name ?? $exercise->name,
+            'alternative_names' => $allNames,
+            'slug' => $exercise->slug,
+            'description' => $exercise->description,
+            'categories' => $exercise->categories->map(function ($category) {
+                return [
+                    'type' => $category->type_slug,
+                    'name' => $category->label('es'),
+                ];
+            })->toArray(),
+        ];
+
+        return response()->json($response);
+    }
+
     public function search(Request $request)
     {
         $request->validate([

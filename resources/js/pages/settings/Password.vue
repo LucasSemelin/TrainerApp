@@ -41,7 +41,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                         preserveScroll: true,
                     }"
                     reset-on-success
-                    :reset-on-error="['password', 'password_confirmation', 'current_password']"
+                    :reset-on-error="['password', 'current_password']"
                     class="space-y-6"
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >
@@ -71,19 +71,6 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                             placeholder="Nueva contraseña"
                         />
                         <InputError :message="errors.password" />
-                    </div>
-
-                    <div class="grid gap-2">
-                        <Label for="password_confirmation">Confirmar contraseña</Label>
-                        <Input
-                            id="password_confirmation"
-                            name="password_confirmation"
-                            type="password"
-                            class="mt-1 block w-full"
-                            autocomplete="new-password"
-                            placeholder="Confirmar contraseña"
-                        />
-                        <InputError :message="errors.password_confirmation" />
                     </div>
 
                     <div class="flex items-center gap-4">

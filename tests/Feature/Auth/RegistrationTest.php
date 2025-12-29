@@ -9,13 +9,16 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
+    // Ensure the trainer role exists for the test
+    \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'trainer']);
+
     $response = $this->post(route('register.store'), [
-        'name' => 'Test User',
+        'first_name' => 'Test User',
         'email' => 'test@example.com',
         'password' => 'password',
-        'password_confirmation' => 'password',
     ]);
 
+    $response->assertSessionHasNoErrors();
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
 });

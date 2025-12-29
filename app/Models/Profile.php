@@ -27,6 +27,7 @@ class Profile extends Model
     {
         return new Attribute(
             get: fn($value) => ucfirst($value),
+            set: fn($value) => strtolower($value)
         );
     }
 
@@ -34,6 +35,7 @@ class Profile extends Model
     {
         return new Attribute(
             get: fn($value) => ucfirst($value),
+            set: fn($value) => strtolower($value)
         );
     }
 

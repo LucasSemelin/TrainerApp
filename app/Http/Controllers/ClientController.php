@@ -34,9 +34,20 @@ class ClientController extends Controller
 
     public function store(Request $request, CreateClient $createClient)
     {
-        $createClient->handle($request);
+        try {
+            $result = $createClient->handle($request);
 
-        return redirect()->route('clients.index')->with('success', 'Client created.');
+            // If user exists and needs confirmation, return validation error
+            if (is_array($result) && isset($result['user_exists'])) {
+                return back()->withErrors([
+                    'user_exists' => json_encode($result['user']),
+                ]);
+            }
+
+            return redirect()->route('clients.index')->with('success', 'Cliente creado e invitación enviada.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     public function destroy(Request $request, User $client, RemoveClient $removeClient)

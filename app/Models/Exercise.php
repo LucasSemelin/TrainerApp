@@ -14,7 +14,13 @@ class Exercise extends Model
     /** @use HasFactory<\Database\Factories\ExerciseFactory> */
     use HasFactory;
 
-    protected $fillable = ['slug', 'name', 'description', 'metadata'];
+    protected $fillable = [
+        'slug',
+        'name',
+        'description',
+        'image_path',
+        'metadata'
+    ];
 
     protected $casts = ['metadata' => 'array'];
 
@@ -139,7 +145,7 @@ class Exercise extends Model
     {
         return $this->categories
             ->groupBy('type_slug')
-            ->map(fn ($grp) => $grp->pluck('name_slug')->values()->all())
+            ->map(fn($grp) => $grp->pluck('name_slug')->values()->all())
             ->toArray();
     }
 }

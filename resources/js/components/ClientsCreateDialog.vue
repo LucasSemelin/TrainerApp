@@ -8,23 +8,59 @@ const emit = defineEmits(['created']);
 
 const form = useForm({
     first_name: '',
-    last_name: '',
     email: '',
+    confirm_existing: false,
 });
 
 const submitting = ref(false);
+const showConfirmation = ref(false);
+const existingUserInfo = ref<{ email: string; name: string } | null>(null);
 
 const submit = async () => {
     submitting.value = true;
     await form.post('/clients', {
+        preserveScroll: true,
         onSuccess: () => {
             emit('created');
             form.reset();
+            showConfirmation.value = false;
+            existingUserInfo.value = null;
+        },
+        onError: (errors: any) => {
+            // Check if error is for existing user
+            if (errors.user_exists) {
+                try {
+                    const userData = JSON.parse(errors.user_exists);
+                    showConfirmation.value = true;
+                    existingUserInfo.value = userData;
+                    submitting.value = false; // Reset submitting for confirmation
+                    // Clear the error from form
+                    form.clearErrors('user_exists');
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                    submitting.value = false;
+                }
+            }
         },
         onFinish: () => {
-            submitting.value = false;
+            if (!showConfirmation.value) {
+                submitting.value = false;
+            }
         },
     });
+};
+
+const confirmInvite = async () => {
+    form.confirm_existing = true;
+    await submit();
+};
+
+const cancelConfirmation = () => {
+    showConfirmation.value = false;
+    existingUserInfo.value = null;
+    form.confirm_existing = false;
+    submitting.value = false;
+    form.clearErrors();
 };
 </script>
 
@@ -43,10 +79,41 @@ const submit = async () => {
         <DialogContent class="sm:max-w-[425px]">
             <DialogHeader>
                 <DialogTitle class="text-lg leading-none font-semibold tracking-tight"> Nuevo alumno </DialogTitle>
-                <p class="text-sm text-muted-foreground">Agrega la información del nuevo alumno aquí.</p>
+                <p class="text-sm text-muted-foreground">Agregá la información del nuevo alumno acá.</p>
             </DialogHeader>
 
-            <form @submit.prevent="submit" class="space-y-4">
+            <!-- Confirmation message when user already exists -->
+            <div v-if="showConfirmation" class="space-y-4">
+                <div class="rounded-lg border border-primary/30 bg-primary/5 p-4">
+                    <p class="mb-2 text-sm font-medium text-foreground">
+                        El email <strong>{{ existingUserInfo?.email }}</strong> ya está registrado.
+                    </p>
+                    <p class="text-sm text-muted-foreground">
+                        ¿Querés invitar a <strong>{{ existingUserInfo?.name }}</strong> a ser tu alumno?
+                    </p>
+                </div>
+                <DialogFooter class="gap-2">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        @click="cancelConfirmation"
+                        class="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium whitespace-nowrap ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        type="button"
+                        @click="confirmInvite"
+                        :disabled="submitting"
+                        class="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium whitespace-nowrap text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    >
+                        Sí, invitar
+                    </Button>
+                </DialogFooter>
+            </div>
+
+            <!-- Regular form when no confirmation needed -->
+            <form v-else @submit.prevent="submit" class="space-y-4">
                 <div class="grid gap-4 py-4">
                     <div class="grid gap-2">
                         <label for="first_name" class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -57,28 +124,11 @@ const submit = async () => {
                             v-model="form.first_name"
                             type="text"
                             class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                            placeholder="Ingresa el nombre"
+                            placeholder="Ingresá el nombre"
                             required
                         />
                         <div v-if="form.errors.first_name" class="text-sm font-medium text-destructive">
                             {{ form.errors.first_name }}
-                        </div>
-                    </div>
-
-                    <div class="grid gap-2">
-                        <label for="last_name" class="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                            Apellido
-                        </label>
-                        <input
-                            id="last_name"
-                            v-model="form.last_name"
-                            type="text"
-                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                            placeholder="Ingresa el apellido"
-                            required
-                        />
-                        <div v-if="form.errors.last_name" class="text-sm font-medium text-destructive">
-                            {{ form.errors.last_name }}
                         </div>
                     </div>
 

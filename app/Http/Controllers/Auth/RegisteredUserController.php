@@ -32,10 +32,9 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
             'gender' => 'nullable|in:male,female,other',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+            'password' => ['required', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
@@ -45,15 +44,36 @@ class RegisteredUserController extends Controller
 
         $user->profile()->create([
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'last_name' => '',
             'gender' => $request->gender,
         ]);
-
-        $user->assignRole('trainer');
 
         event(new Registered($user));
 
         Auth::login($user);
+
+        return to_route('user.createRole');
+    }
+
+    /**
+     * Show the role selection page.
+     */
+    public function createRole(): Response
+    {
+        return Inertia::render('auth/RegisterRole');
+    }
+
+    /**
+     * Handle role selection for the authenticated user.
+     */
+    public function storeRole(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'role' => 'required|string|in:trainer,client',
+        ]);
+
+        $user = Auth::user();
+        $user->assignRole($request->role);
 
         return to_route('dashboard');
     }

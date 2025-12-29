@@ -40,9 +40,9 @@ const onCreated = () => {
                     <Users class="h-10 w-10 text-muted-foreground" />
                 </div>
                 <div class="flex flex-col items-center gap-2 text-center">
-                    <h2 class="text-xl font-semibold text-foreground">No hay alumnos todavía</h2>
+                    <h2 class="text-xl font-semibold text-foreground">No tenés alumnos todavía</h2>
                     <p class="max-w-md text-sm text-muted-foreground">
-                        Comienza agregando tu primer alumno para poder crear y asignar rutinas de entrenamiento.
+                        Comenzá agregando tu primer alumno para poder crearle y asignarle rutinas de entrenamiento.
                     </p>
                 </div>
                 <ClientsCreateDialog @created="onCreated">
@@ -51,7 +51,7 @@ const onCreated = () => {
                             type="button"
                             class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                         >
-                            Agregar primer alumno
+                            Agregar alumno
                         </button>
                     </template>
                 </ClientsCreateDialog>

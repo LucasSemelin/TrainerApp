@@ -34,6 +34,26 @@ const page = usePage();
 const client = computed<Client>(() => page.props.client as Client);
 const workouts = computed<Workout[]>(() => page.props.workouts as Workout[]);
 
+// Check if there's a current workout
+const hasCurrentWorkout = computed(() => workouts.value.some((w) => w.is_current));
+
+// Get the most recent workout when there's no current workout
+const mostRecentWorkout = computed(() => {
+    if (hasCurrentWorkout.value || workouts.value.length === 0) return null;
+    return [...workouts.value].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
+});
+
+// Get remaining workouts (excluding current and most recent if applicable)
+const remainingWorkouts = computed(() => {
+    if (hasCurrentWorkout.value) {
+        return workouts.value.filter((w) => !w.is_current);
+    }
+    if (mostRecentWorkout.value) {
+        return workouts.value.filter((w) => w.id !== mostRecentWorkout.value?.id);
+    }
+    return workouts.value;
+});
+
 // Format date to DD/MM/YYYY
 const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -77,10 +97,10 @@ const makeWorkoutCurrent = (workoutId: string) => {
             <!-- Lista de rutinas -->
             <div v-if="workouts.length > 0" class="space-y-4">
                 <!-- Rutina actual -->
-                <div v-for="workout in workouts.filter((w) => w.is_current)" :key="workout.id">
+                <div v-if="hasCurrentWorkout" v-for="workout in workouts.filter((w) => w.is_current)" :key="workout.id">
                     <Link
                         :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
-                        class="-mx-4 flex cursor-pointer items-center justify-between rounded-none border-b border-muted-foreground/20 bg-muted/50 px-4 py-2 transition-colors hover:bg-muted/70 dark:border-muted-foreground/30 dark:bg-muted/30 dark:hover:bg-muted/40"
+                        class="flex cursor-pointer items-center justify-between rounded-lg border-2 border-primary bg-muted/50 px-4 py-3 transition-all hover:border-primary/80 hover:bg-muted/70 dark:bg-muted/30 dark:hover:bg-muted/40"
                     >
                         <div class="flex flex-col">
                             <div class="flex items-center gap-2">
@@ -94,12 +114,30 @@ const makeWorkoutCurrent = (workoutId: string) => {
                     </Link>
                 </div>
 
+                <!-- Rutina más reciente cuando no hay actual -->
+                <div v-if="!hasCurrentWorkout && mostRecentWorkout" :key="mostRecentWorkout.id">
+                    <Link
+                        :href="clients.workouts.show({ client: client.id, workout: mostRecentWorkout.id }).url"
+                        class="flex cursor-pointer items-center justify-between rounded-lg border-2 border-primary bg-muted/50 px-4 py-3 transition-all hover:border-primary/80 hover:bg-muted/70 dark:bg-muted/30 dark:hover:bg-muted/40"
+                    >
+                        <div class="flex flex-col">
+                            <div class="flex items-center gap-2">
+                                <span class="font-medium">
+                                    {{ mostRecentWorkout.name }}
+                                </span>
+                                <Badge variant="secondary" class="text-xs"> Más reciente </Badge>
+                            </div>
+                            <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(mostRecentWorkout.created_at) }} </span>
+                        </div>
+                    </Link>
+                </div>
+
                 <!-- Rutinas anteriores -->
-                <div v-if="workouts.filter((w) => !w.is_current).length > 0">
+                <div v-if="remainingWorkouts.length > 0">
                     <h3 class="mb-2 text-sm font-medium text-muted-foreground">Rutinas anteriores</h3>
                     <div class="space-y-2">
                         <div
-                            v-for="workout in workouts.filter((w) => !w.is_current)"
+                            v-for="workout in remainingWorkouts"
                             :key="workout.id"
                             class="relative flex items-center justify-between border-b border-border/70 py-2 dark:border-border"
                         >

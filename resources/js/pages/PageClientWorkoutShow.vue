@@ -290,8 +290,7 @@ const confirmDeleteSet = async () => {
                                     ? `-${exercise.sets[0]?.max_reps}`
                                     : ''
                             }}
-                            Reps •
-                            {{ exercise.sets[0]?.weight ? `${exercise.sets[0]?.weight} kg` : '- kg' }}
+                            Reps
                         </div>
                     </div>
 

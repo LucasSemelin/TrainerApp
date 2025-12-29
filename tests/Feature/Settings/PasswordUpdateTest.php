@@ -24,7 +24,6 @@ test('password can be updated', function () {
         ->put(route('password.update'), [
             'current_password' => 'password',
             'password' => 'new-password',
-            'password_confirmation' => 'new-password',
         ]);
 
     $response
@@ -43,7 +42,6 @@ test('correct password must be provided to update password', function () {
         ->put(route('password.update'), [
             'current_password' => 'wrong-password',
             'password' => 'new-password',
-            'password_confirmation' => 'new-password',
         ]);
 
     $response

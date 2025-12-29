@@ -1,3 +1,146 @@
+<trainerapp-context>
+# TrainerApp - Workout Management System
+
+This is a Laravel-based Trainer/Client workout management application. Before making any changes, understand the core domain architecture.
+
+## Core Domain Models & Relationships
+
+### Primary Models
+- **User**: Can be both trainer and client (polymorphic roles via `ClientTrainer` pivot)
+- **Workout**: Belongs to one client, optionally has a trainer. Has UUID primary key and boolean `is_current` flag
+- **Exercise**: Base exercise catalog with translations, categories, and metadata
+- **ExerciseWorkout**: Pivot connecting Exercise to Workout with ordering
+- **ExerciseSet**: Workout sets with reps, weight, rest time (belongs to ExerciseWorkout)
+- **ExerciseCategory**: Translatable categories with types: `muscle_group`, `movement_pattern`, `difficulty`, `equipment`
+
+### Key Relationships
+```php
+// Workout relationships
+Workout->exerciseWorkouts()->exercise->categories->translations
+Workout->client (User)
+Workout->trainer (User)
+
+// Exercise relationships  
+Exercise->categories (BelongsToMany with category_exercise pivot)
+Exercise->names (HasMany ExerciseName with locale & is_primary)
+
+// Category system
+ExerciseCategory has type_slug ('muscle_group', 'movement_pattern', etc)
+ExerciseCategory->translations (HasMany with 'locale' field)
+```
+
+## Critical Domain Logic
+
+### Current Workout Pattern
+- Only ONE workout per client can be `is_current = true`
+- Automatic enforcement via Eloquent model event in `Workout::booted()`
+- When marking workout current, ALL others for that client are automatically unmarked
+- Use `Workout::scopeCurrent()` and `Workout::scopeForClient($clientId)` for queries
+- Method: `$workout->makeCurrentForClient()` handles the transaction
+
+### Exercise Category Display Priority
+When showing exercises, prioritize categories:
+1. **First choice**: `muscle_group` categories (e.g., "Pecho", "Espalda")
+2. **Fallback**: `movement_pattern` categories if no muscle_group exists
+
+**Example from ClientWorkoutController:**
+```php
+$mainCategories = $exercise->categories
+    ->where('type_slug', 'muscle_group')
+    ->map(fn($cat) => $cat->label('es'))
+    ->filter()->values()->toArray();
+
+if (empty($mainCategories)) {
+    $mainCategories = $exercise->categories
+        ->where('type_slug', 'movement_pattern')
+        ->map(fn($cat) => $cat->label('es'))
+        ->filter()->values()->toArray();
+}
+```
+
+**CRITICAL**: When loading exercises with categories, ALWAYS eager load with translations:
+```php
+->with(['exercise.categories.translations' => fn($q) => $q->where('locale', 'es')])
+```
+
+### Exercise Search & Naming
+- Exercise has multilingual names via `ExerciseName` model
+- `Exercise->primaryName($locale)` gets primary name for locale
+- Search uses `Exercise::scopeSearchByName($query, $searchTerm)` - searches across all translated names
+- Example: "press militar" finds exercises with that name in ANY ExerciseName record
+
+## Vue/Inertia Patterns
+
+### Component Structure
+- Pages are in `resources/js/pages/` with `Page` prefix (e.g., `PageClientWorkoutIndex.vue`)
+- Components in `resources/js/components/` organized by feature
+- Use composition API with `<script setup>` syntax
+- Props come from Inertia controller returns: `inertia('PageName', ['prop' => $data])`
+
+### Common UI Patterns
+- Badge component with variants: `primary`, `secondary`, `success`, `outline`, `destructive`
+- Secondary variant style: `border-primary/30 bg-primary/5 text-primary`
+- Dialog components for CRUD operations (e.g., `WorkoutExercisesAddDialog.vue`)
+- Use `useForm()` from '@inertiajs/vue3' for forms with error handling
+
+### Styling Conventions
+- Tailwind v4 syntax (use `@import "tailwindcss"` not `@tailwind` directives)
+- Primary color for current/active states: `border-primary`, `bg-primary/5`, `text-primary`
+- Dark mode support via `dark:` prefix
+- Spacing with `gap-*` utilities instead of margins in flex/grid layouts
+- Highlight important cards: `border-2 border-primary rounded-lg px-4 py-3`
+
+## Route Patterns
+
+### Workout Management
+```php
+// Trainer managing workouts
+Route::post('workouts', [WorkoutController::class, 'store'])
+Route::post('workouts/{workout}/exercises', [WorkoutController::class, 'addExercise'])
+
+// Client viewing workouts
+Route::get('clients/{client}/workouts', [ClientWorkoutController::class, 'index'])
+Route::get('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'show'])
+Route::patch('clients/{client}/workouts/{workout}/make-current', [ClientWorkoutController::class, 'makeCurrent'])
+```
+
+### Key Route Naming
+- Trainer routes: `workouts.*`
+- Client routes: `clients.workouts.*`
+- Use named routes: `route('clients.workouts.show', [$client, $workout])`
+
+## Testing Conventions
+- Use Pest v4 with browser testing capabilities
+- Tests in `tests/Feature/` and `tests/Unit/`
+- Example: `tests/Feature/WorkoutCurrentTest.php` for current workout behavior
+- Use factories: `Workout::factory()->create(['is_current' => true])`
+
+## Common Tasks & Solutions
+
+### Adding a new exercise to a workout
+1. POST to `workouts/{workout}/exercises` with `exercise_id`
+2. Controller creates `ExerciseWorkout` record with auto-incremented `order`
+3. MUST eager load categories with translations for response
+4. Return processed categories (muscle_group priority, movement_pattern fallback)
+
+### Displaying workout exercises
+1. Load via `ExerciseWorkout::where('workout_id', $id)->with([...])`
+2. Eager load: `'exercise.categories.translations'`, `'sets'`
+3. Process categories using priority logic (muscle_group → movement_pattern)
+4. Return as array with `exercise.categories` already processed
+
+### Marking workout as current
+- Use `$workout->makeCurrentForClient()` - handles automatic unmarking of others
+- Alternative: `$workout->update(['is_current' => true])` - triggers model event
+- Query current: `Workout::currentForClient($clientId)` static method
+
+## AI Agent Integration (Vizra ADK)
+- IntentParserAgent in `app/Agents/IntentParserAgent.php`
+- AgentResponseParser service handles agent output processing
+- See Vizra ADK guidelines below for agent/tool development
+
+</trainerapp-context>
+
 <laravel-boost-guidelines>
 === foundation rules ===
 

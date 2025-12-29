@@ -48,13 +48,46 @@ class WorkoutController extends Controller
             'order' => $nextOrder,
         ]);
 
-        // Load the related exercise data and empty sets
-        $exerciseWorkout->load(['exercise', 'sets']);
+        // Load the related exercise data with categories and sets
+        $exerciseWorkout->load([
+            'exercise.categories.translations' => function ($query) {
+                $query->where('locale', 'es');
+            },
+            'sets' => function ($query) {
+                $query->orderBy('set_number');
+            },
+        ]);
+
+        // Transform to include category information (same as ClientWorkoutController)
+        $mainCategories = $exerciseWorkout->exercise->categories
+            ->where('type_slug', 'muscle_group')
+            ->map(function ($category) {
+                return $category->label('es');
+            })
+            ->filter()
+            ->values()
+            ->toArray();
+
+        // If no muscle_group, use movement_pattern as alternative
+        if (empty($mainCategories)) {
+            $mainCategories = $exerciseWorkout->exercise->categories
+                ->where('type_slug', 'movement_pattern')
+                ->map(function ($category) {
+                    return $category->label('es');
+                })
+                ->filter()
+                ->values()
+                ->toArray();
+        }
+
+        // Convert to array and add categories
+        $exerciseArray = $exerciseWorkout->toArray();
+        $exerciseArray['exercise']['categories'] = $mainCategories;
 
         return response()->json([
             'success' => true,
             'message' => 'Ejercicio agregado exitosamente',
-            'exercise_workout' => $exerciseWorkout,
+            'exercise_workout' => $exerciseArray,
         ]);
     }
 }
