@@ -34,6 +34,13 @@ class Exercise extends Model
         return $this->hasMany(ExerciseName::class);
     }
 
+    public function muscles(): BelongsToMany
+    {
+        return $this->belongsToMany(Muscle::class, 'exercise_muscles')
+            ->withPivot('muscle_role_id')
+            ->using(ExerciseMuscle::class);
+    }
+
     public function primaryName(string $locale = 'es'): ?ExerciseName
     {
         return $this->names()
