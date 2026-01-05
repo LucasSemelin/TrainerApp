@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import Button from './ui/button/Button.vue';
+import ButtonSecondary from './ui/button/ButtonSecondary.vue';
 
 interface Props {
     clientId: string;
@@ -39,15 +40,17 @@ const createWorkout = () => {
 
 <template>
     <Dialog>
-        <DialogTrigger>
-            <slot name="trigger">
-                <Button
-                    class="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium whitespace-nowrap text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+        <template v-if="$slots.trigger">
+            <DialogTrigger>
+                <ButtonSecondary
+                    type="button"
+                    variant="outline"
+                    class="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium whitespace-nowrap ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                 >
-                    Nueva Rutina
-                </Button>
-            </slot>
-        </DialogTrigger>
+                    Crear rutina
+                </ButtonSecondary>
+            </DialogTrigger>
+        </template>
 
         <DialogContent class="sm:max-w-[425px]">
             <DialogHeader>
@@ -83,9 +86,10 @@ const createWorkout = () => {
                 </DialogClose>
                 <Button
                     type="button"
+                    variant="secondary"
                     :disabled="form.processing || !form.name.trim()"
                     @click="createWorkout"
-                    class="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium whitespace-nowrap text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    class="inline-flex h-10 items-center justify-center rounded-md border border-primary/30 bg-transparent px-4 py-2 text-sm font-medium text-primary ring-offset-background transition-colors hover:border-primary/40 hover:bg-primary/5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                 >
                     <span v-if="form.processing" class="mr-2">
                         <svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

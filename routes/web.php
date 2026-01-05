@@ -29,14 +29,38 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified', 'ensure.role'])->name('dashboard');
 
 /**
- * Client Management
+ * Administración de alumnos
+ * perfil: entrenador
  */
 Route::middleware(['auth', 'verified', 'ensure.role'])->group(function () {
+    // Listado de alumnos
     Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
+
+    // Guardar alumno
     Route::post('clients', [ClientController::class, 'store'])->name('clients.store');
+
+    // Mostrar perfil del alumno
     Route::get('clients/{client}', [ClientController::class, 'show'])->name('clients.show');
+
+    // ELiminar relación entrenador-alumno
     Route::delete('clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
+
+    // Rutinas del alumno
+    Route::get('clients/{client}/workouts', [ClientWorkoutController::class, 'index'])->name('clients.workouts.index');
+
+    // Rutina específica del alumno
+    Route::get('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'show'])->name('clients.workouts.show');
+
+    // Crear nueva rutina para el alumno
+    Route::post('clients/{client}/workouts', [ClientWorkoutController::class, 'store'])->name('clients.workouts.store');
+
+    // Marcar una rutina como actual
+    Route::patch('clients/{client}/workouts/{workout}/make-current', [ClientWorkoutController::class, 'makeCurrent'])->name('clients.workouts.make-current');
+
+    // Eliminar rutina del alumno
+    Route::delete('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'destroy'])->name('clients.workouts.destroy');
 });
+
 
 /**
  * Profile Management
@@ -82,13 +106,7 @@ Route::middleware(['auth', 'verified', 'ensure.role'])->group(function () {
 /**
  * Client Workout Management
  */
-Route::middleware(['auth', 'verified', 'ensure.role'])->group(function () {
-    Route::get('clients/{client}/workouts', [ClientWorkoutController::class, 'index'])->name('clients.workouts.index');
-    Route::get('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'show'])->name('clients.workouts.show');
-    Route::post('clients/{client}/workouts', [ClientWorkoutController::class, 'store'])->name('clients.workouts.store');
-    Route::patch('clients/{client}/workouts/{workout}/make-current', [ClientWorkoutController::class, 'makeCurrent'])->name('clients.workouts.make-current');
-    Route::delete('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'destroy'])->name('clients.workouts.destroy');
-});
+
 
 use App\Http\Controllers\AiController;
 

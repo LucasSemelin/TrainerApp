@@ -97,21 +97,32 @@ const makeWorkoutCurrent = (workoutId: string) => {
             <!-- Lista de rutinas -->
             <div v-if="workouts.length > 0" class="space-y-4">
                 <!-- Rutina actual -->
-                <div v-if="hasCurrentWorkout" v-for="workout in workouts.filter((w) => w.is_current)" :key="workout.id">
-                    <Link
-                        :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
-                        class="flex cursor-pointer items-center justify-between rounded-lg border-2 border-primary bg-muted/50 px-4 py-3 transition-all hover:border-primary/80 hover:bg-muted/70 dark:bg-muted/30 dark:hover:bg-muted/40"
-                    >
-                        <div class="flex flex-col">
-                            <div class="flex items-center gap-2">
-                                <span class="font-medium">
-                                    {{ workout.name }}
-                                </span>
-                                <Badge variant="default" class="bg-green-500 text-xs hover:bg-green-600"> Actual </Badge>
+                <div v-if="hasCurrentWorkout">
+                    <div v-for="workout in workouts.filter((w) => w.is_current)" :key="workout.id">
+                        <Link
+                            :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
+                            class="flex cursor-pointer items-center justify-between rounded-lg border border-primary/60 px-4 py-3 transition-all hover:border-primary/80"
+                            style="
+                                background: repeating-linear-gradient(
+                                    135deg,
+                                    rgba(59, 130, 246, 0.08) 0px,
+                                    rgba(59, 130, 246, 0.08) 8px,
+                                    transparent 8px,
+                                    transparent 16px
+                                );
+                            "
+                        >
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium">
+                                        {{ workout.name }}
+                                    </span>
+                                    <Badge variant="secondary" class="border border-primary/40 bg-transparent text-xs text-primary">Actual</Badge>
+                                </div>
+                                <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(workout.created_at) }} </span>
                             </div>
-                            <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(workout.created_at) }} </span>
-                        </div>
-                    </Link>
+                        </Link>
+                    </div>
                 </div>
 
                 <!-- Rutina más reciente cuando no hay actual -->

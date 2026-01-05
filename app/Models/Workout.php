@@ -85,4 +85,9 @@ class Workout extends Model
     {
         return static::forClient($clientId)->current()->first();
     }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(WorkoutSession::class)->orderBy('session_order');
+    }
 }
