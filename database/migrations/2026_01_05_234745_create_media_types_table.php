@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('muscle_roles', function (Blueprint $table) {
-            $table->id();
+        Schema::create('media_types', function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->string('code')->unique();
             $table->timestamps();
         });
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('muscle_roles');
+        Schema::dropIfExists('media_types');
     }
 };

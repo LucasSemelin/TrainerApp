@@ -19,6 +19,7 @@ class ClientController extends Controller
             $array['status'] = $client->pivot?->status ?? null;
             // Renombrar myWorkouts a workouts para el frontend
             $array['workouts'] = $client->myWorkouts;
+
             return $array;
         });
 

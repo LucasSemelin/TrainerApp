@@ -69,7 +69,7 @@ class AuthenticatedSessionController extends Controller
             // Find or create user
             $user = User::where('email', $googleUser->email)->first();
 
-            if (!$user) {
+            if (! $user) {
                 // Create new user with Google data
                 $user = User::create([
                     'email' => $googleUser->email,
@@ -102,8 +102,6 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('login')->with('error', 'Error al autenticar con Google. Por favor, intenta nuevamente.');
         }
     }
-
-
 
     /**
      * Destroy an authenticated session.

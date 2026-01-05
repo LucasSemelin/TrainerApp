@@ -19,7 +19,7 @@ class Exercise extends Model
         'name',
         'description',
         'image_path',
-        'metadata'
+        'metadata',
     ];
 
     protected $casts = ['metadata' => 'array'];
@@ -39,6 +39,28 @@ class Exercise extends Model
         return $this->belongsToMany(Muscle::class, 'exercise_muscles')
             ->withPivot('muscle_role_id')
             ->using(ExerciseMuscle::class);
+    }
+
+    public function equipment(): BelongsToMany
+    {
+        return $this->belongsToMany(Equipment::class, 'exercise_equipment')
+            ->using(ExerciseEquipment::class);
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'exercise_tags')
+            ->using(ExerciseTag::class);
+    }
+
+    public function media(): HasMany
+    {
+        return $this->hasMany(ExerciseMedia::class);
+    }
+
+    public function instructionSets(): HasMany
+    {
+        return $this->hasMany(ExerciseInstructionSet::class);
     }
 
     public function primaryName(string $locale = 'es'): ?ExerciseName
@@ -152,7 +174,7 @@ class Exercise extends Model
     {
         return $this->categories
             ->groupBy('type_slug')
-            ->map(fn($grp) => $grp->pluck('name_slug')->values()->all())
+            ->map(fn ($grp) => $grp->pluck('name_slug')->values()->all())
             ->toArray();
     }
 }

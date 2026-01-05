@@ -38,12 +38,12 @@ class TrainerInvitation extends Notification implements ShouldQueue
         $acceptUrl = route('invitations.accept', ['token' => $this->invitationToken]);
         $rejectUrl = route('invitations.reject', ['token' => $this->invitationToken]);
 
-        $trainerName = $this->trainer->profile->first_name . ' ' . $this->trainer->profile->last_name;
+        $trainerName = $this->trainer->profile->first_name.' '.$this->trainer->profile->last_name;
 
         return (new MailMessage)
             ->subject('Invitación para unirte a los entrenamientos')
-            ->greeting('¡Hola ' . $notifiable->profile->first_name . '!')
-            ->line($trainerName . ' te invitó a unirte a sus entrenamientos.')
+            ->greeting('¡Hola '.$notifiable->profile->first_name.'!')
+            ->line($trainerName.' te invitó a unirte a sus entrenamientos.')
             ->line('¿Querés aceptar la invitación?')
             ->action('Aceptar invitación', $acceptUrl)
             ->line('Si preferís rechazar la invitación, hacé clic en el siguiente enlace:')
@@ -58,13 +58,14 @@ class TrainerInvitation extends Notification implements ShouldQueue
      */
     public function toArray(object $notifiable): array
     {
-        $trainerName = $this->trainer->profile->first_name . ' ' . $this->trainer->profile->last_name;
+        $trainerName = $this->trainer->profile->first_name.' '.$this->trainer->profile->last_name;
+
         return [
             'type' => 'trainer_invitation',
             'trainer_id' => $this->trainer->id,
             'trainer_name' => $trainerName,
             'invitation_token' => $this->invitationToken,
-            'message' => $trainerName . ' te invitó a unirte a sus entrenamientos. Aceptá o rechazá la invitación.',
+            'message' => $trainerName.' te invitó a unirte a sus entrenamientos. Aceptá o rechazá la invitación.',
         ];
     }
 }

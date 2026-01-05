@@ -2,14 +2,12 @@
 
 namespace App\Actions;
 
-use App\Mail\WelcomeClientMail;
 use App\Models\Profile;
 use App\Models\User;
 use App\Notifications\TrainerInvitation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
@@ -37,12 +35,12 @@ class CreateClient
 
         if ($existingUser) {
             // If user exists but no confirmation, return error asking for confirmation
-            if (!$confirmExisting) {
+            if (! $confirmExisting) {
                 return [
                     'user_exists' => true,
                     'user' => [
                         'email' => $existingUser->email,
-                        'name' => $existingUser->profile ? $existingUser->profile->first_name . ' ' . $existingUser->profile->last_name : $existingUser->email,
+                        'name' => $existingUser->profile ? $existingUser->profile->first_name.' '.$existingUser->profile->last_name : $existingUser->email,
                     ],
                 ];
             }

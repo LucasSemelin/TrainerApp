@@ -7,18 +7,15 @@ use App\Http\Controllers\ExerciseSetController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\WorkoutController;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Socialite;
 use Inertia\Inertia;
 
 Route::get('/', function () {
     return redirect()->route('login');
 })->name('home');
 
-
 /**
  * PANTALLAS DE ONBOARDING
  */
-
 Route::middleware(['auth'])->group(function () {
     Route::get('register/role', [App\Http\Controllers\Auth\RegisteredUserController::class, 'createRole'])->name('user.createRole');
     Route::post('register/role', [App\Http\Controllers\Auth\RegisteredUserController::class, 'storeRole'])->name('user.storeRole');
@@ -60,7 +57,6 @@ Route::middleware(['auth', 'verified', 'ensure.role'])->group(function () {
     // Eliminar rutina del alumno
     Route::delete('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'destroy'])->name('clients.workouts.destroy');
 });
-
 
 /**
  * Profile Management
@@ -107,7 +103,6 @@ Route::middleware(['auth', 'verified', 'ensure.role'])->group(function () {
  * Client Workout Management
  */
 
-
 use App\Http\Controllers\AiController;
 
 Route::post('ai/prompt', [AiController::class, 'handlePrompt'])
@@ -125,5 +120,5 @@ Route::get('invitations/reject/{token}', [InvitationController::class, 'reject']
 // Route::post('ai/prompt/execute', [AiController::class, 'execute'])
 //     ->middleware(['auth', 'verified'])->name('ai.prompt.execute');
 
-require __DIR__ . '/settings.php';
-require __DIR__ . '/auth.php';
+require __DIR__.'/settings.php';
+require __DIR__.'/auth.php';

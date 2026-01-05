@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('muscle_role_translations', function (Blueprint $table) {
+        Schema::create('equipment', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('muscle_role_id')->constrained()->cascadeOnDelete();
-            $table->string('locale', 2);
-            $table->string('label');
+            $table->string('code')->unique();
             $table->timestamps();
-
-            $table->unique(['muscle_role_id', 'locale']);
         });
     }
 
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('muscle_role_translations');
+        Schema::dropIfExists('equipment');
     }
 };

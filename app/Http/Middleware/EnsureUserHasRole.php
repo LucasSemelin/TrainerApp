@@ -18,9 +18,9 @@ class EnsureUserHasRole
         $user = $request->user();
 
         // Si el usuario está autenticado y no tiene roles asignados
-        if ($user && !$user->roles()->exists()) {
+        if ($user && ! $user->roles()->exists()) {
             // Permitir acceso a las rutas de selección de rol
-            if (!$request->routeIs('user.createRole') && !$request->routeIs('user.storeRole')) {
+            if (! $request->routeIs('user.createRole') && ! $request->routeIs('user.storeRole')) {
                 return redirect()->route('user.createRole');
             }
         }

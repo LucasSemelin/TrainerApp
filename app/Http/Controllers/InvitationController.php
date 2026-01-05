@@ -14,7 +14,7 @@ class InvitationController extends Controller
             ->where('status', 'pending')
             ->first();
 
-        if (!$invitation) {
+        if (! $invitation) {
             return redirect('/')->with('error', 'Invitación no válida o ya procesada.');
         }
 
@@ -37,7 +37,7 @@ class InvitationController extends Controller
             ->where('status', 'pending')
             ->first();
 
-        if (!$invitation) {
+        if (! $invitation) {
             return redirect('/')->with('error', 'Invitación no válida o ya procesada.');
         }
 
