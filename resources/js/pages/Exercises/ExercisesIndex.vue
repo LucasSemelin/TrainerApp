@@ -2,6 +2,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
     Dialog,
     DialogClose,
@@ -17,7 +18,7 @@ import { Label } from '@/components/ui/label';
 import AppSidebarLayout from '@/layouts/app/AppSidebarLayout.vue';
 import { BreadcrumbItem } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/vue3';
-import { Dumbbell, Plus, Search, Trash2 } from 'lucide-vue-next';
+import { ChevronDown, Dumbbell, Plus, Search, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 interface Exercise {
@@ -29,9 +30,16 @@ interface Exercise {
     categories?: Record<string, string[]>;
 }
 
+interface MuscleGroup {
+    slug: string;
+    label: string;
+}
+
 interface Props {
     exercises: Exercise[];
     search: string;
+    muscleGroup: string;
+    muscleGroups: MuscleGroup[];
 }
 
 const props = defineProps<Props>();
@@ -45,6 +53,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const page = usePage();
 const searchTerm = ref(props.search);
+const selectedMuscleGroup = ref(props.muscleGroup);
+const isFilterOpen = ref(false);
 const showCreateDialog = ref(false);
 const showDeleteDialog = ref(false);
 const exerciseToDelete = ref<Exercise | null>(null);
@@ -57,15 +67,22 @@ const createForm = useForm({
 
 // Handle search with Inertia
 const handleSearch = () => {
-    router.get(
-        '/exercises',
-        { search: searchTerm.value },
-        {
-            preserveState: true,
-            preserveScroll: true,
-            only: ['exercises', 'search'],
-        },
-    );
+    const params: Record<string, string> = {};
+    if (searchTerm.value) params.search = searchTerm.value;
+    if (selectedMuscleGroup.value) params.muscle_group = selectedMuscleGroup.value;
+
+    router.get('/exercises', params, {
+        preserveState: true,
+        preserveScroll: true,
+        only: ['exercises', 'search', 'muscleGroup'],
+    });
+};
+
+// Handle muscle group filter
+const toggleMuscleGroup = (slug: string) => {
+    selectedMuscleGroup.value = selectedMuscleGroup.value === slug ? '' : slug;
+    handleSearch();
+    isFilterOpen.value = false; // Cerrar el acordeón después de seleccionar
 };
 
 // Debounce search
@@ -195,6 +212,29 @@ const getCategoryBadges = (categories?: Record<string, string[]>) => {
                 <Input v-model="searchTerm" @input="debouncedSearch" placeholder="Buscar ejercicios por nombre..." class="pl-10" />
             </div>
 
+            <!-- Muscle Group Filter (Collapsible) -->
+            <Collapsible v-model:open="isFilterOpen">
+                <CollapsibleTrigger
+                    class="flex w-full items-center justify-between rounded-lg border border-border bg-muted/30 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/50"
+                >
+                    <span>Filtrar por grupo muscular</span>
+                    <ChevronDown class="h-4 w-4 transition-transform duration-200" :class="{ 'rotate-180': isFilterOpen }" />
+                </CollapsibleTrigger>
+                <CollapsibleContent class="pt-3">
+                    <div class="flex flex-wrap gap-2">
+                        <Badge
+                            v-for="group in props.muscleGroups"
+                            :key="group.slug"
+                            :variant="selectedMuscleGroup === group.slug ? 'default' : 'outline'"
+                            @click="toggleMuscleGroup(group.slug)"
+                            class="cursor-pointer transition-all hover:opacity-80"
+                        >
+                            {{ group.label }}
+                        </Badge>
+                    </div>
+                </CollapsibleContent>
+            </Collapsible>
+
             <!-- Exercise count -->
             <div class="flex items-center gap-2 text-sm text-muted-foreground">
                 <span
@@ -227,7 +267,8 @@ const getCategoryBadges = (categories?: Record<string, string[]>) => {
                 <Card
                     v-for="exercise in props.exercises"
                     :key="exercise.id"
-                    class="group relative overflow-hidden transition-all hover:border-primary/50"
+                    class="group relative cursor-pointer overflow-hidden transition-all hover:border-primary/50"
+                    @click="router.visit(`/exercises/${exercise.id}`)"
                 >
                     <CardHeader>
                         <div class="flex items-start justify-between gap-2">
@@ -240,7 +281,7 @@ const getCategoryBadges = (categories?: Record<string, string[]>) => {
                                         variant="ghost"
                                         size="icon"
                                         class="h-8 w-8 shrink-0"
-                                        @click="confirmDelete(exercise)"
+                                        @click.stop="confirmDelete(exercise)"
                                         aria-label="Eliminar ejercicio"
                                     >
                                         <Trash2 class="h-4 w-4" />

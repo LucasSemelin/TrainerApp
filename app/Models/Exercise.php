@@ -174,7 +174,7 @@ class Exercise extends Model
     {
         return $this->categories
             ->groupBy('type_slug')
-            ->map(fn ($grp) => $grp->pluck('name_slug')->values()->all())
+            ->map(fn($grp) => $grp->pluck('name_slug')->values()->all())
             ->toArray();
     }
 }

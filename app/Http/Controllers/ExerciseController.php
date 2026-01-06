@@ -17,6 +17,11 @@ class ExerciseController extends Controller
             $query->searchByNameFlexible($search, 'es');
         }
 
+        // Si hay filtro por grupo muscular
+        if ($muscleGroup = $request->get('muscle_group')) {
+            $query->withCategory('muscle_group', $muscleGroup);
+        }
+
         $exercises = $query->with([
             'names' => function ($q) {
                 $q->where('locale', 'es');
@@ -47,9 +52,24 @@ class ExerciseController extends Controller
             ];
         });
 
+        // Obtener todos los grupos musculares únicos para el filtro
+        $muscleGroups = \App\Models\ExerciseCategory::where('type_slug', 'muscle_group')
+            ->with(['translations' => function ($q) {
+                $q->where('locale', 'es');
+            }])
+            ->get()
+            ->map(fn($cat) => [
+                'slug' => $cat->name_slug,
+                'label' => $cat->label('es'),
+            ])
+            ->sortBy('label')
+            ->values();
+
         return Inertia::render('Exercises/ExercisesIndex', [
             'exercises' => $exercises,
             'search' => $request->get('search', ''),
+            'muscleGroup' => $request->get('muscle_group', ''),
+            'muscleGroups' => $muscleGroups,
         ]);
     }
 
@@ -96,30 +116,78 @@ class ExerciseController extends Controller
     public function show(Exercise $exercise)
     {
         $exercise->load([
-            'names',
-            'categories.translations' => function ($q) {
-                $q->where('locale', 'es'); // Siempre en español para las categorías
+            'names' => function ($q) {
+                $q->where('locale', 'es');
             },
+            'categories.translations' => function ($q) {
+                $q->where('locale', 'es');
+            },
+            'equipment.translations' => function ($q) {
+                $q->where('locale', 'es');
+            },
+            'tags.translations' => function ($q) {
+                $q->where('locale', 'es');
+            },
+            'media.mediaType.translations' => function ($q) {
+                $q->where('locale', 'es');
+            },
+            'instructionSets.instructions',
         ]);
 
         $primaryName = $exercise->names->firstWhere('is_primary', true);
         $allNames = $exercise->names->pluck('name')->toArray();
 
-        $response = [
-            'id' => $exercise->id,
-            'name' => $primaryName?->name ?? $exercise->name,
-            'alternative_names' => $allNames,
-            'slug' => $exercise->slug,
-            'description' => $exercise->description,
-            'categories' => $exercise->categories->map(function ($category) {
-                return [
-                    'type' => $category->type_slug,
-                    'name' => $category->label('es'),
-                ];
-            })->toArray(),
-        ];
+        // Agrupar categorías por tipo con sus traducciones
+        $categoriesGrouped = $exercise->categories
+            ->groupBy('type_slug')
+            ->map(fn($group) => $group->map(fn($cat) => $cat->label('es'))->values()->toArray())
+            ->toArray();
 
-        return response()->json($response);
+        // Equipamiento con traducciones
+        $equipment = $exercise->equipment->map(fn($eq) => $eq->label('es'))->toArray();
+
+        // Tags con traducciones
+        $tags = $exercise->tags->map(fn($tag) => $tag->label('es'))->toArray();
+
+        // Media
+        $media = $exercise->media->map(function ($m) {
+            return [
+                'id' => $m->id,
+                'url' => $m->url,
+                'type' => $m->mediaType?->label('es') ?? $m->media_type_id,
+                'order' => $m->order,
+            ];
+        })->sortBy('order')->values()->toArray();
+
+        // Instrucciones agrupadas por sets
+        $instructions = $exercise->instructionSets->map(function ($set) {
+            return [
+                'set_name' => $set->set_name,
+                'order' => $set->order,
+                'instructions' => $set->instructions->sortBy('step_number')->map(function ($inst) {
+                    return [
+                        'step' => $inst->step_number,
+                        'text' => $inst->instruction_text,
+                    ];
+                })->values()->toArray(),
+            ];
+        })->sortBy('order')->values()->toArray();
+
+        return Inertia::render('Exercises/ExercisesShow', [
+            'exercise' => [
+                'id' => $exercise->id,
+                'name' => $primaryName?->name ?? $exercise->name,
+                'alternative_names' => array_filter($allNames, fn($n) => $n !== ($primaryName?->name ?? $exercise->name)),
+                'slug' => $exercise->slug,
+                'description' => $exercise->description,
+                'image_path' => $exercise->image_path,
+                'categories' => $categoriesGrouped,
+                'equipment' => $equipment,
+                'tags' => $tags,
+                'media' => $media,
+                'instructions' => $instructions,
+            ],
+        ]);
     }
 
     public function search(Request $request)
