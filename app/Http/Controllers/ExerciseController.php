@@ -4,12 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\Exercise;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ExerciseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return inertia('Exercises/Index');
+        $query = Exercise::query();
+
+        // Si hay búsqueda por nombre
+        if ($search = $request->get('search')) {
+            $query->searchByNameFlexible($search, 'es');
+        }
+
+        $exercises = $query->with([
+            'names' => function ($q) {
+                $q->where('locale', 'es');
+            },
+            'categories.translations' => function ($q) {
+                $q->where('locale', 'es');
+            },
+        ])->get();
+
+        // Transformar la respuesta para incluir todos los nombres
+        $exercises = $exercises->map(function ($exercise) {
+            $primaryName = $exercise->names->firstWhere('is_primary', true);
+            $allNames = $exercise->names->pluck('name')->toArray();
+
+            // Agrupar categorías por tipo con sus traducciones en español
+            $categoriesGrouped = $exercise->categories
+                ->groupBy('type_slug')
+                ->map(fn($group) => $group->map(fn($cat) => $cat->label('es'))->values()->toArray())
+                ->toArray();
+
+            return [
+                'id' => $exercise->id,
+                'name' => $primaryName?->name ?? $exercise->name,
+                'alternative_names' => $allNames,
+                'slug' => $exercise->slug,
+                'description' => $exercise->description,
+                'categories' => $categoriesGrouped,
+            ];
+        });
+
+        return Inertia::render('Exercises/ExercisesIndex', [
+            'exercises' => $exercises,
+            'search' => $request->get('search', ''),
+        ]);
     }
 
     public function list(Request $request)
