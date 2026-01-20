@@ -17,11 +17,11 @@ interface Exercise {
     slug: string;
     description?: string;
     categories?: string[];
-    matched_name?: string; // El nombre que coincidió con la búsqueda
+    matched_name?: string;
 }
 
 interface Props {
-    workoutId: string;
+    sessionId: string;
     open: boolean;
 }
 
@@ -97,7 +97,6 @@ const handleInputBlur = () => {
 
 // Select an exercise
 const selectExercise = (exercise: Exercise) => {
-    // Determinar el nombre que se está mostrando y guardarlo
     const displayName = getDisplayName(exercise);
     const exerciseWithMatchedName = {
         ...exercise,
@@ -116,24 +115,19 @@ const getDisplayName = (exercise: Exercise) => {
         return exercise.matched_name;
     }
 
-    // Si hay una búsqueda activa, buscar el nombre que mejor coincida
     if (searchQuery.value && searchQuery.value.length >= 2) {
         const query = searchQuery.value.toLowerCase();
 
-        // Buscar coincidencia exacta primero
         const exactMatch = exercise.alternative_names.find((name) => name.toLowerCase() === query);
         if (exactMatch) return exactMatch;
 
-        // Buscar coincidencia parcial al inicio
         const startMatch = exercise.alternative_names.find((name) => name.toLowerCase().startsWith(query));
         if (startMatch) return startMatch;
 
-        // Buscar coincidencia parcial en cualquier lugar
         const partialMatch = exercise.alternative_names.find((name) => name.toLowerCase().includes(query));
         if (partialMatch) return partialMatch;
     }
 
-    // Por defecto, usar el nombre principal
     return exercise.name;
 };
 
@@ -159,7 +153,6 @@ const handleResultsScroll = (event: Event) => {
 
 // Handle touch events to prevent scroll propagation on mobile
 const handleTouchStart = (event: TouchEvent) => {
-    // Store the initial touch position
     const target = event.currentTarget as HTMLElement;
     const touch = event.touches[0];
     (target as any)._startY = touch.clientY;
@@ -177,17 +170,15 @@ const handleTouchMove = (event: TouchEvent) => {
     const deltaY = touch.clientY - startY;
     const newScrollTop = startScrollTop - deltaY;
 
-    // If we're at the boundaries and trying to scroll beyond, prevent the event
     if (
-        (newScrollTop <= 0 && deltaY > 0) || // At top, trying to scroll up
-        (newScrollTop >= target.scrollHeight - target.clientHeight && deltaY < 0) // At bottom, trying to scroll down
+        (newScrollTop <= 0 && deltaY > 0) ||
+        (newScrollTop >= target.scrollHeight - target.clientHeight && deltaY < 0)
     ) {
         event.preventDefault();
         event.stopPropagation();
         return;
     }
 
-    // Otherwise, allow the scroll but prevent propagation
     event.stopPropagation();
 };
 
@@ -196,30 +187,26 @@ watch(
     () => props.open,
     (newValue) => {
         if (!newValue) {
-            // Reset when dialog closes
             clearSelection();
         }
     },
 );
 
 const submit = async () => {
-    // Clear previous errors
     form.clearErrors();
     form.processing = true;
 
     try {
-        const response = await axios.post(`/workouts/${props.workoutId}/exercises`, {
+        const response = await axios.post(`/workout-sessions/${props.sessionId}/exercises`, {
             exercise_id: form.exercise_id,
         });
 
-        // Use the real exercise workout data from the backend
-        const exerciseWorkout = response.data.exercise_workout;
+        const sessionExercise = response.data.session_exercise;
 
-        emit('created', exerciseWorkout);
+        emit('created', sessionExercise);
         isOpen.value = false;
         form.reset();
     } catch (error: any) {
-        // Handle validation errors
         if (error.response?.status === 422) {
             const errors = error.response.data.errors;
             Object.keys(errors).forEach((key) => {
@@ -241,7 +228,7 @@ const submit = async () => {
         <DialogContent class="sm:max-w-[600px]">
             <DialogHeader>
                 <DialogTitle>Agregar Ejercicio</DialogTitle>
-                <DialogDescription> Busca el ejercicio que deseas agregar al entrenamiento </DialogDescription>
+                <DialogDescription> Busca el ejercicio que deseas agregar a la sesión </DialogDescription>
             </DialogHeader>
 
             <form @submit.prevent="submit" class="space-y-6">

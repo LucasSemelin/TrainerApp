@@ -19,9 +19,16 @@ class EnsureUserHasRole
 
         // Si el usuario está autenticado y no tiene roles asignados
         if ($user && ! $user->roles()->exists()) {
-            // Permitir acceso a las rutas de selección de rol
-            if (! $request->routeIs('user.createRole') && ! $request->routeIs('user.storeRole')) {
-                return redirect()->route('user.createRole');
+            // Solo redirigir en peticiones GET
+            // Para peticiones PATCH/POST/DELETE, devolver 403
+            if ($request->isMethod('GET')) {
+                // Permitir acceso a las rutas de selección de rol
+                if (! $request->routeIs('user.createRole') && ! $request->routeIs('user.storeRole')) {
+                    return redirect()->route('user.createRole');
+                }
+            } else {
+                // Para peticiones no-GET, abortar con 403
+                abort(403, 'Debes seleccionar un rol antes de realizar esta acción');
             }
         }
 
