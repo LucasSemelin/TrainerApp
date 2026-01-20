@@ -14,7 +14,14 @@ class ClientController extends Controller
     {
         $trainer = Auth::user();
 
-        $clients = $trainer->clients()->with('profile')->get();
+        $clients = $trainer->clients()->with(['profile', 'myWorkouts'])->get()->map(function ($client) {
+            $array = $client->toArray();
+            $array['status'] = $client->pivot?->status ?? null;
+            // Renombrar myWorkouts a workouts para el frontend
+            $array['workouts'] = $client->myWorkouts;
+
+            return $array;
+        });
 
         return inertia('PageClientsIndex', [
             'clients' => $clients,

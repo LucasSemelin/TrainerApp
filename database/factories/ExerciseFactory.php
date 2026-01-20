@@ -16,8 +16,13 @@ class ExerciseFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->words(2, true);
+
         return [
-            //
+            'name' => $name, // Keep name field (required NOT NULL)
+            'slug' => \Illuminate\Support\Str::slug($name),
+            'description' => fake()->optional()->paragraph(),
+            'image_path' => fake()->optional()->imageUrl(),
         ];
     }
 }

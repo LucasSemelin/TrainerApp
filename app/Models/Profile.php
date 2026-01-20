@@ -26,23 +26,23 @@ class Profile extends Model
     protected function firstName(): Attribute
     {
         return new Attribute(
-            get: fn($value) => ucfirst($value),
-            set: fn($value) => strtolower($value)
+            get: fn ($value) => ucfirst($value),
+            set: fn ($value) => strtolower($value)
         );
     }
 
     protected function lastName(): Attribute
     {
         return new Attribute(
-            get: fn($value) => ucfirst($value),
-            set: fn($value) => strtolower($value)
+            get: fn ($value) => ucfirst($value),
+            set: fn ($value) => strtolower($value)
         );
     }
 
     protected function gender(): Attribute
     {
         return new Attribute(
-            get: fn($value) => match ($value) {
+            get: fn ($value) => match ($value) {
                 'male' => 'Masculino',
                 'female' => 'Femenino',
                 'other' => 'Otro',

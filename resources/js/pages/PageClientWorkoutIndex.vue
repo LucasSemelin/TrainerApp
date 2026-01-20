@@ -5,19 +5,10 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
+import type { Workout, WorkoutStatus } from '@/types/workout';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
-import { Pin } from 'lucide-vue-next';
+import { Pin, Archive } from 'lucide-vue-next';
 import { computed } from 'vue';
-
-interface Workout {
-    id: string;
-    name: string;
-    trainer_id: string | null;
-    client_id: string;
-    is_current: boolean;
-    created_at: string;
-    updated_at: string;
-}
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -34,25 +25,14 @@ const page = usePage();
 const client = computed<Client>(() => page.props.client as Client);
 const workouts = computed<Workout[]>(() => page.props.workouts as Workout[]);
 
-// Check if there's a current workout
-const hasCurrentWorkout = computed(() => workouts.value.some((w) => w.is_current));
+// Get active workout
+const activeWorkout = computed(() => workouts.value.find((w) => w.status === 'active'));
 
-// Get the most recent workout when there's no current workout
-const mostRecentWorkout = computed(() => {
-    if (hasCurrentWorkout.value || workouts.value.length === 0) return null;
-    return [...workouts.value].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
-});
+// Get draft workouts
+const draftWorkouts = computed(() => workouts.value.filter((w) => w.status === 'draft'));
 
-// Get remaining workouts (excluding current and most recent if applicable)
-const remainingWorkouts = computed(() => {
-    if (hasCurrentWorkout.value) {
-        return workouts.value.filter((w) => !w.is_current);
-    }
-    if (mostRecentWorkout.value) {
-        return workouts.value.filter((w) => w.id !== mostRecentWorkout.value?.id);
-    }
-    return workouts.value;
-});
+// Get archived workouts
+const archivedWorkouts = computed(() => workouts.value.filter((w) => w.status === 'archived'));
 
 // Format date to DD/MM/YYYY
 const formatDate = (dateString: string): string => {
@@ -63,18 +43,38 @@ const formatDate = (dateString: string): string => {
     return `${day}/${month}/${year}`;
 };
 
-// Function to mark a workout as current
-const makeWorkoutCurrent = (workoutId: string) => {
+// Get status badge variant and text
+const getStatusBadge = (status: WorkoutStatus) => {
+    switch (status) {
+        case 'active':
+            return { text: 'Activa', variant: 'default' as const, class: 'border border-primary/40 bg-transparent text-primary' };
+        case 'draft':
+            return { text: 'Borrador', variant: 'secondary' as const, class: '' };
+        case 'archived':
+            return { text: 'Archivada', variant: 'outline' as const, class: '' };
+        default:
+            return { text: status, variant: 'outline' as const, class: '' };
+    }
+};
+
+// Function to activate a workout
+const activateWorkout = (workoutId: string) => {
     router.patch(
-        `/clients/${client.value.id}/workouts/${workoutId}/make-current`,
+        `/clients/${client.value.id}/workouts/${workoutId}/activate`,
         {},
         {
-            onSuccess: () => {
-                // Optional: Show success message
-            },
-            onError: () => {
-                // Optional: Show error message
-            },
+            preserveScroll: true,
+        },
+    );
+};
+
+// Function to archive a workout
+const archiveWorkout = (workoutId: string) => {
+    router.patch(
+        `/clients/${client.value.id}/workouts/${workoutId}/archive`,
+        {},
+        {
+            preserveScroll: true,
         },
     );
 };
@@ -89,55 +89,88 @@ const makeWorkoutCurrent = (workoutId: string) => {
                 <WorkoutCreateDialog :client-id="client.id" />
             </div>
 
-            <!-- <div class="flex justify-between font-medium text-slate-700 dark:text-slate-200">
-                <div>Rutinas</div>
-                <div>Acciones</div>
-            </div> -->
-
             <!-- Lista de rutinas -->
             <div v-if="workouts.length > 0" class="space-y-4">
-                <!-- Rutina actual -->
-                <div v-if="hasCurrentWorkout" v-for="workout in workouts.filter((w) => w.is_current)" :key="workout.id">
+                <!-- Rutina activa -->
+                <div v-if="activeWorkout">
                     <Link
-                        :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
-                        class="flex cursor-pointer items-center justify-between rounded-lg border-2 border-primary bg-muted/50 px-4 py-3 transition-all hover:border-primary/80 hover:bg-muted/70 dark:bg-muted/30 dark:hover:bg-muted/40"
+                        :href="clients.workouts.show({ client: client.id, workout: activeWorkout.id }).url"
+                        class="flex cursor-pointer items-center justify-between rounded-lg border border-primary/60 px-4 py-3 transition-all hover:border-primary/80"
+                        style="
+                            background: repeating-linear-gradient(
+                                135deg,
+                                rgba(59, 130, 246, 0.08) 0px,
+                                rgba(59, 130, 246, 0.08) 8px,
+                                transparent 8px,
+                                transparent 16px
+                            );
+                        "
                     >
                         <div class="flex flex-col">
                             <div class="flex items-center gap-2">
                                 <span class="font-medium">
-                                    {{ workout.name }}
+                                    {{ activeWorkout.name }}
                                 </span>
-                                <Badge variant="default" class="bg-green-500 text-xs hover:bg-green-600"> Actual </Badge>
+                                <Badge :variant="getStatusBadge('active').variant" :class="getStatusBadge('active').class">
+                                    {{ getStatusBadge('active').text }}
+                                </Badge>
                             </div>
-                            <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(workout.created_at) }} </span>
+                            <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(activeWorkout.created_at) }} </span>
                         </div>
+                        <button
+                            @click.prevent="archiveWorkout(activeWorkout.id)"
+                            class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-amber-50 hover:text-amber-600 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-amber-900/20"
+                            aria-label="Archivar rutina"
+                            title="Archivar rutina"
+                        >
+                            <Archive class="h-5 w-5" />
+                        </button>
                     </Link>
                 </div>
 
-                <!-- Rutina más reciente cuando no hay actual -->
-                <div v-if="!hasCurrentWorkout && mostRecentWorkout" :key="mostRecentWorkout.id">
-                    <Link
-                        :href="clients.workouts.show({ client: client.id, workout: mostRecentWorkout.id }).url"
-                        class="flex cursor-pointer items-center justify-between rounded-lg border-2 border-primary bg-muted/50 px-4 py-3 transition-all hover:border-primary/80 hover:bg-muted/70 dark:bg-muted/30 dark:hover:bg-muted/40"
-                    >
-                        <div class="flex flex-col">
-                            <div class="flex items-center gap-2">
-                                <span class="font-medium">
-                                    {{ mostRecentWorkout.name }}
-                                </span>
-                                <Badge variant="secondary" class="text-xs"> Más reciente </Badge>
-                            </div>
-                            <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(mostRecentWorkout.created_at) }} </span>
-                        </div>
-                    </Link>
-                </div>
-
-                <!-- Rutinas anteriores -->
-                <div v-if="remainingWorkouts.length > 0">
-                    <h3 class="mb-2 text-sm font-medium text-muted-foreground">Rutinas anteriores</h3>
+                <!-- Rutinas en borrador -->
+                <div v-if="draftWorkouts.length > 0">
+                    <h3 class="mb-2 text-sm font-medium text-muted-foreground">Borradores</h3>
                     <div class="space-y-2">
                         <div
-                            v-for="workout in remainingWorkouts"
+                            v-for="workout in draftWorkouts"
+                            :key="workout.id"
+                            class="relative flex items-center justify-between border-b border-border/70 py-2 dark:border-border"
+                        >
+                            <Link
+                                :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
+                                class="-mx-2 flex flex-1 cursor-pointer flex-col rounded-md px-2 py-1 transition-colors hover:bg-accent/50"
+                            >
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium">
+                                        {{ workout.name }}
+                                    </span>
+                                    <Badge :variant="getStatusBadge('draft').variant" :class="getStatusBadge('draft').class">
+                                        {{ getStatusBadge('draft').text }}
+                                    </Badge>
+                                </div>
+                                <span class="text-sm text-muted-foreground"> Creada el {{ formatDate(workout.created_at) }} </span>
+                            </Link>
+                            <div class="z-10 flex items-center gap-2">
+                                <button
+                                    @click.stop="activateWorkout(workout.id)"
+                                    class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-green-50 hover:text-green-600 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-green-900/20"
+                                    aria-label="Activar rutina"
+                                    title="Activar como rutina actual"
+                                >
+                                    <Pin class="h-5 w-5" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rutinas archivadas -->
+                <div v-if="archivedWorkouts.length > 0">
+                    <h3 class="mb-2 text-sm font-medium text-muted-foreground">Anteriores</h3>
+                    <div class="space-y-2">
+                        <div
+                            v-for="workout in archivedWorkouts"
                             :key="workout.id"
                             class="relative flex items-center justify-between border-b border-border/70 py-2 dark:border-border"
                         >
@@ -154,10 +187,10 @@ const makeWorkoutCurrent = (workoutId: string) => {
                             </Link>
                             <div class="z-10 flex items-center gap-2">
                                 <button
-                                    @click.stop="makeWorkoutCurrent(workout.id)"
+                                    @click.stop="activateWorkout(workout.id)"
                                     class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-green-50 hover:text-green-600 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-green-900/20"
-                                    aria-label="Marcar como actual"
-                                    title="Marcar como rutina actual"
+                                    aria-label="Reactivar rutina"
+                                    title="Reactivar esta rutina"
                                 >
                                     <Pin class="h-5 w-5" />
                                 </button>

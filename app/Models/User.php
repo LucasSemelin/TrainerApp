@@ -60,7 +60,7 @@ class User extends Authenticatable
     protected function email(): Attribute
     {
         return Attribute::make(
-            set: fn($value) => strtolower($value),
+            set: fn ($value) => strtolower($value),
         );
     }
 
@@ -71,7 +71,8 @@ class User extends Authenticatable
 
     public function clients()
     {
-        return $this->belongsToMany(User::class, 'client_trainer', 'trainer_id', 'client_id');
+        return $this->belongsToMany(User::class, 'client_trainer', 'trainer_id', 'client_id')
+            ->withPivot('status');
     }
 
     public function myWorkouts()

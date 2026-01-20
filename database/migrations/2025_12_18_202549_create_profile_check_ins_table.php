@@ -17,7 +17,6 @@ return new class extends Migration
 
             $table->decimal('weight_kg', 5, 2)->nullable();
 
-
             $table->unsignedTinyInteger('stress_level')->nullable();
             $table->unsignedTinyInteger('sleep_quality')->nullable();
             $table->unsignedTinyInteger('daily_energy')->nullable();
