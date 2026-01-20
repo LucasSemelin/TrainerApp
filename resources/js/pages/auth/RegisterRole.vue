@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { storeRole } from '@/actions/App/Http/Controllers/Auth/RegisteredUserController';
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { storeRole } from '@/routes/user';
 import { Head, router } from '@inertiajs/vue3';
 import { Check, Dumbbell, Users } from 'lucide-vue-next';
 import { ref } from 'vue';
