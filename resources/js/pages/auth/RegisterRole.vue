@@ -18,11 +18,7 @@ const handleSubmit = () => {
 
     processing.value = true;
     router.post(
-<<<<<<< HEAD
         storeRole().url,
-=======
-        user.storeRole().url,
->>>>>>> caf0e1ae752f7ae6a81bafd7b1f036f7c56aacae
         { role: selectedRole.value },
         {
             onFinish: () => {
