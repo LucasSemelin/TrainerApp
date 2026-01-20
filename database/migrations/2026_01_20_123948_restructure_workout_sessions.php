@@ -79,61 +79,63 @@ return new class extends Migration
             $table->unique(['workout_session_exercise_id', 'set_order'], 'wse_sets_unique');
         });
 
-        // Step 6: Migrate data from exercise_workouts to workout_session_exercises
-        $workoutsWithExercises = DB::table('exercise_workouts')
-            ->select('workout_id')
-            ->distinct()
-            ->get();
-
-        foreach ($workoutsWithExercises as $workoutRow) {
-            // Create default session "Día 1" for each workout
-            $sessionId = Str::uuid()->toString();
-            DB::table('workout_sessions')->insert([
-                'id' => $sessionId,
-                'workout_id' => $workoutRow->workout_id,
-                'session_order' => 1,
-                'name' => 'Día 1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            // Move exercises to the new session
-            $exerciseWorkouts = DB::table('exercise_workouts')
-                ->where('workout_id', $workoutRow->workout_id)
-                ->orderBy('order')
+        // Step 6: Migrate data from exercise_workouts to workout_session_exercises (only if tables exist)
+        if (Schema::hasTable('exercise_workouts') && Schema::hasTable('exercise_sets')) {
+            $workoutsWithExercises = DB::table('exercise_workouts')
+                ->select('workout_id')
+                ->distinct()
                 ->get();
 
-            foreach ($exerciseWorkouts as $exerciseWorkout) {
-                $sessionExerciseId = Str::uuid()->toString();
-                DB::table('workout_session_exercises')->insert([
-                    'id' => $sessionExerciseId,
-                    'workout_session_id' => $sessionId,
-                    'exercise_id' => $exerciseWorkout->exercise_id,
-                    'position' => $exerciseWorkout->order,
-                    'notes' => null,
-                    'created_at' => $exerciseWorkout->created_at,
-                    'updated_at' => $exerciseWorkout->updated_at,
+            foreach ($workoutsWithExercises as $workoutRow) {
+                // Create default session "Día 1" for each workout
+                $sessionId = Str::uuid()->toString();
+                DB::table('workout_sessions')->insert([
+                    'id' => $sessionId,
+                    'workout_id' => $workoutRow->workout_id,
+                    'session_order' => 1,
+                    'name' => 'Día 1',
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ]);
 
-                // Move sets to the new structure
-                $sets = DB::table('exercise_sets')
-                    ->where('exercise_workout_id', $exerciseWorkout->id)
-                    ->orderBy('set_number')
+                // Move exercises to the new session
+                $exerciseWorkouts = DB::table('exercise_workouts')
+                    ->where('workout_id', $workoutRow->workout_id)
+                    ->orderBy('order')
                     ->get();
 
-                foreach ($sets as $set) {
-                    DB::table('workout_session_exercise_sets')->insert([
-                        'id' => Str::uuid()->toString(),
-                        'workout_session_exercise_id' => $sessionExerciseId,
-                        'set_order' => $set->set_number,
-                        'target_reps' => $set->min_reps ?? $set->max_reps,
-                        'target_weight' => $set->weight,
-                        'target_rpe' => null,
-                        'rest_seconds' => $set->rest_time_seconds,
-                        'tempo' => null,
-                        'created_at' => $set->created_at,
-                        'updated_at' => $set->updated_at,
+                foreach ($exerciseWorkouts as $exerciseWorkout) {
+                    $sessionExerciseId = Str::uuid()->toString();
+                    DB::table('workout_session_exercises')->insert([
+                        'id' => $sessionExerciseId,
+                        'workout_session_id' => $sessionId,
+                        'exercise_id' => $exerciseWorkout->exercise_id,
+                        'position' => $exerciseWorkout->order,
+                        'notes' => null,
+                        'created_at' => $exerciseWorkout->created_at,
+                        'updated_at' => $exerciseWorkout->updated_at,
                     ]);
+
+                    // Move sets to the new structure
+                    $sets = DB::table('exercise_sets')
+                        ->where('exercise_workout_id', $exerciseWorkout->id)
+                        ->orderBy('set_number')
+                        ->get();
+
+                    foreach ($sets as $set) {
+                        DB::table('workout_session_exercise_sets')->insert([
+                            'id' => Str::uuid()->toString(),
+                            'workout_session_exercise_id' => $sessionExerciseId,
+                            'set_order' => $set->set_number,
+                            'target_reps' => $set->min_reps ?? $set->max_reps,
+                            'target_weight' => $set->weight,
+                            'target_rpe' => null,
+                            'rest_seconds' => $set->rest_time_seconds,
+                            'tempo' => null,
+                            'created_at' => $set->created_at,
+                            'updated_at' => $set->updated_at,
+                        ]);
+                    }
                 }
             }
         }
@@ -160,9 +162,11 @@ return new class extends Migration
         Schema::dropIfExists('exercise_sets');
         Schema::dropIfExists('exercise_workouts');
 
-        Schema::table('workouts', function (Blueprint $table) {
-            $table->dropColumn('is_current');
-        });
+        if (Schema::hasColumn('workouts', 'is_current')) {
+            Schema::table('workouts', function (Blueprint $table) {
+                $table->dropColumn('is_current');
+            });
+        }
     }
 
     /**
