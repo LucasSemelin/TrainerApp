@@ -1,75 +1,53 @@
 <script setup lang="ts">
 import ExerciseSetCreateDialog from '@/components/ExerciseSetCreateDialog.vue';
+import SessionNavigation from '@/components/SessionNavigation.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import WorkoutExercisesAddDialog from '@/components/WorkoutExercisesAddDialog.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
+import type { Workout, WorkoutSession, WorkoutSessionExercise, WorkoutSessionExerciseSet, WorkoutStatus } from '@/types/workout';
 import { Head, usePage } from '@inertiajs/vue3';
 import { Dumbbell, MoreVertical, PencilLine, Plus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
-
-interface Exercise {
-    id: string;
-    name: string;
-    categories?: string[];
-}
-
-interface Set {
-    id: string;
-    workout_exercise_id: string;
-    set_number: number;
-    min_reps: number;
-    max_reps: number;
-    weight: number;
-    rest_time_seconds: number;
-    notes?: string;
-}
-
-interface WorkoutExercise {
-    id: string;
-    workout_id: string;
-    exercise_id: string;
-    exercise: Exercise;
-    sets: Set[];
-}
-
-interface Workout {
-    id: string;
-    name: string;
-    trainer_id: string | null;
-    client_id: string;
-    is_current: boolean;
-    created_at: string;
-    updated_at: string;
-    exercises: WorkoutExercise[];
-}
 
 const page = usePage();
 const client = computed<Client>(() => page.props.client as Client);
 const workout = computed<Workout>(() => page.props.workout as Workout);
 
-// Use reactive ref for exercises to allow dynamic updates
-const exercises = ref<WorkoutExercise[]>(page.props.exercises as WorkoutExercise[]);
+// Use reactive ref for sessions to allow dynamic updates
+const sessions = ref<WorkoutSession[]>(page.props.sessions as WorkoutSession[]);
+
+// Active session state
+const activeSessionId = ref<string>(sessions.value[0]?.id || '');
+
+// Get the active session
+const activeSession = computed(() => sessions.value.find((s) => s.id === activeSessionId.value));
+
+// Get exercises for the active session
+const activeExercises = computed(() => activeSession.value?.exercises || []);
 
 // Dialog state
 const showAddDialog = ref(false);
 const showSetDialog = ref(false);
 const showDeleteConfirmDialog = ref(false);
 const showEditNotesDialog = ref(false);
+const showAddSessionDialog = ref(false);
 const selectedExerciseId = ref<string>('');
 const setToDelete = ref<{ setId: string; exerciseId: string } | null>(null);
 const setToEdit = ref<{ setId: string; exerciseId: string; currentNotes: string } | null>(null);
 const notesText = ref<string>('');
+const newSessionName = ref<string>('');
 
 // Get existing sets for selected exercise
 const selectedExerciseSets = computed(() => {
-    const exercise = exercises.value.find((ex) => ex.id === selectedExerciseId.value);
+    const exercise = activeExercises.value.find((ex) => ex.id === selectedExerciseId.value);
     return exercise?.sets || [];
 });
 
@@ -88,18 +66,76 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-// Format date to DD/MM/YYYY
-const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+// Get status badge
+const getStatusBadge = (status: WorkoutStatus) => {
+    switch (status) {
+        case 'active':
+            return { text: 'Activa', class: 'bg-primary/20 text-primary hover:bg-primary/30' };
+        case 'draft':
+            return { text: 'Borrador', class: 'bg-muted text-muted-foreground' };
+        case 'archived':
+            return { text: 'Archivada', class: 'bg-muted text-muted-foreground' };
+        default:
+            return { text: status, class: '' };
+    }
+};
+
+// Handle session selection
+const onSessionSelect = (sessionId: string) => {
+    activeSessionId.value = sessionId;
+};
+
+// Handle adding a new session
+const onAddSession = () => {
+    const nextOrder = Math.max(...sessions.value.map((s) => s.session_order), 0) + 1;
+    newSessionName.value = `Día ${nextOrder}`;
+    showAddSessionDialog.value = true;
+};
+
+// Create new session
+const createSession = async () => {
+    try {
+        const response = await fetch(`/workouts/${workout.value.id}/sessions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({
+                name: newSessionName.value || null,
+            }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const newSession: WorkoutSession = {
+                ...data.session,
+                exercises: [],
+            };
+            sessions.value.push(newSession);
+            activeSessionId.value = newSession.id;
+        } else {
+            alert('Error al crear la sesión');
+        }
+    } catch (error) {
+        console.error('Error al crear la sesión:', error);
+        alert('Error al crear la sesión');
+    } finally {
+        showAddSessionDialog.value = false;
+        newSessionName.value = '';
+    }
 };
 
 // Handle exercise added
-const onExerciseAdded = (newExercise: WorkoutExercise) => {
-    exercises.value.push(newExercise);
+const onExerciseAdded = (newExercise: WorkoutSessionExercise) => {
+    const session = sessions.value.find((s) => s.id === activeSessionId.value);
+    if (session) {
+        if (!session.exercises) {
+            session.exercises = [];
+        }
+        session.exercises.push(newExercise);
+    }
 };
 
 // Handle opening set dialog
@@ -108,29 +144,27 @@ const openSetDialog = (exerciseId: string) => {
     showSetDialog.value = true;
 };
 
-// Handle edit notes for a set
-const editSetNotes = (setId: string, exerciseId: string) => {
-    // Find the set to get current notes
-    const exercise = exercises.value.find((ex) => ex.id === exerciseId);
-    const set = exercise?.sets?.find((s) => s.id === setId);
+// Handle edit notes for an exercise
+const editExerciseNotes = (exerciseId: string) => {
+    const exercise = activeExercises.value.find((ex) => ex.id === exerciseId);
 
     setToEdit.value = {
-        setId,
+        setId: '',
         exerciseId,
-        currentNotes: set?.notes || '',
+        currentNotes: exercise?.notes || '',
     };
-    notesText.value = set?.notes || '';
+    notesText.value = exercise?.notes || '';
     showEditNotesDialog.value = true;
 };
 
-// Save edited notes
+// Save edited notes - This now updates the session exercise notes, not set notes
 const saveEditedNotes = async () => {
     if (!setToEdit.value) return;
 
-    const { setId, exerciseId } = setToEdit.value;
+    const { exerciseId } = setToEdit.value;
 
     try {
-        const response = await fetch(`/exercise-sets/${setId}`, {
+        const response = await fetch(`/workout-session-exercises/${exerciseId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -143,11 +177,10 @@ const saveEditedNotes = async () => {
         });
 
         if (response.ok) {
-            // Update the set in the local state
-            const exercise = exercises.value.find((ex) => ex.id === exerciseId);
-            const set = exercise?.sets?.find((s) => s.id === setId);
-            if (set) {
-                set.notes = notesText.value;
+            const session = sessions.value.find((s) => s.id === activeSessionId.value);
+            const exercise = session?.exercises?.find((ex) => ex.id === exerciseId);
+            if (exercise) {
+                exercise.notes = notesText.value;
             }
         } else {
             alert('Error al guardar las notas');
@@ -163,22 +196,16 @@ const saveEditedNotes = async () => {
 };
 
 // Handle set created
-const onSetCreated = (newSet: Set) => {
-    const exercise = exercises.value.find((ex) => ex.id === selectedExerciseId.value);
+const onSetCreated = (newSet: WorkoutSessionExerciseSet) => {
+    const session = sessions.value.find((s) => s.id === activeSessionId.value);
+    const exercise = session?.exercises?.find((ex) => ex.id === selectedExerciseId.value);
     if (exercise) {
         if (!exercise.sets) {
             exercise.sets = [];
         }
         exercise.sets.push(newSet);
-        // Sort sets by set_number
-        exercise.sets.sort((a, b) => a.set_number - b.set_number);
+        exercise.sets.sort((a, b) => a.set_order - b.set_order);
     }
-};
-
-// Handle set deletion - Show confirmation dialog
-const deleteSet = (setId: string, exerciseId: string) => {
-    setToDelete.value = { setId, exerciseId };
-    showDeleteConfirmDialog.value = true;
 };
 
 // Confirm set deletion
@@ -188,7 +215,7 @@ const confirmDeleteSet = async () => {
     const { setId, exerciseId } = setToDelete.value;
 
     try {
-        const response = await fetch(`/exercise-sets/${setId}`, {
+        const response = await fetch(`/workout-session-exercise-sets/${setId}`, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
@@ -197,8 +224,8 @@ const confirmDeleteSet = async () => {
         });
 
         if (response.ok) {
-            // Remove set from the exercise
-            const exercise = exercises.value.find((ex) => ex.id === exerciseId);
+            const session = sessions.value.find((s) => s.id === activeSessionId.value);
+            const exercise = session?.exercises?.find((ex) => ex.id === exerciseId);
             if (exercise && exercise.sets) {
                 exercise.sets = exercise.sets.filter((set) => set.id !== setId);
             }
@@ -211,6 +238,33 @@ const confirmDeleteSet = async () => {
     } finally {
         showDeleteConfirmDialog.value = false;
         setToDelete.value = null;
+    }
+};
+
+// Delete exercise from session
+const deleteExercise = async (exerciseId: string) => {
+    if (!confirm('¿Estás seguro de que querés eliminar este ejercicio?')) return;
+
+    try {
+        const response = await fetch(`/workout-session-exercises/${exerciseId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
+
+        if (response.ok) {
+            const session = sessions.value.find((s) => s.id === activeSessionId.value);
+            if (session && session.exercises) {
+                session.exercises = session.exercises.filter((ex) => ex.id !== exerciseId);
+            }
+        } else {
+            alert('Error al eliminar el ejercicio');
+        }
+    } catch (error) {
+        console.error('Error al eliminar el ejercicio:', error);
+        alert('Error al eliminar el ejercicio');
     }
 };
 </script>
@@ -232,7 +286,9 @@ const confirmDeleteSet = async () => {
                         </button>
                     </div>
                     <div class="mt-1 flex items-center gap-2">
-                        <Badge v-if="workout.is_current" variant="default" class="bg-primary/20 text-primary hover:bg-primary/30"> Actual </Badge>
+                        <Badge variant="default" :class="getStatusBadge(workout.status).class">
+                            {{ getStatusBadge(workout.status).text }}
+                        </Badge>
                         <span class="text-sm text-muted-foreground">
                             {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
                         </span>
@@ -240,10 +296,18 @@ const confirmDeleteSet = async () => {
                 </div>
             </div>
 
+            <!-- Session Navigation -->
+            <SessionNavigation :sessions="sessions" :active-session-id="activeSessionId" @select="onSessionSelect" @add="onAddSession" />
+
+            <!-- Active Session Name -->
+            <div v-if="activeSession" class="flex items-center gap-2">
+                <h2 class="text-lg font-medium">{{ activeSession.name || `Día ${activeSession.session_order}` }}</h2>
+            </div>
+
             <!-- Exercises List -->
-            <div v-if="exercises.length > 0" class="space-y-4">
+            <div v-if="activeExercises.length > 0" class="space-y-4">
                 <!-- Exercise Card -->
-                <div v-for="exercise in exercises" :key="exercise.id" class="overflow-hidden rounded-2xl border border-border bg-card">
+                <div v-for="exercise in activeExercises" :key="exercise.id" class="overflow-hidden rounded-2xl border border-border bg-card">
                     <!-- Exercise Header -->
                     <div class="flex items-start gap-4 p-4">
                         <!-- Exercise Image Placeholder -->
@@ -259,6 +323,9 @@ const confirmDeleteSet = async () => {
                                     {{ exercise.exercise.categories.join(' • ') }}
                                 </span>
                             </div>
+                            <div v-if="exercise.notes" class="mt-1">
+                                <span class="text-sm italic text-muted-foreground">{{ exercise.notes }}</span>
+                            </div>
                         </div>
 
                         <!-- Menu Button -->
@@ -272,8 +339,10 @@ const confirmDeleteSet = async () => {
                                 </button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
+                                <DropdownMenuItem @click="openSetDialog(exercise.id)"> Agregar serie </DropdownMenuItem>
+                                <DropdownMenuItem @click="editExerciseNotes(exercise.id)"> Editar notas </DropdownMenuItem>
                                 <DropdownMenuItem> Detalles del ejercicio </DropdownMenuItem>
-                                <DropdownMenuItem @click="openDeleteDialog(exercise.id)" class="text-destructive focus:text-destructive">
+                                <DropdownMenuItem @click="deleteExercise(exercise.id)" class="text-destructive focus:text-destructive">
                                     Eliminar
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -284,20 +353,22 @@ const confirmDeleteSet = async () => {
                     <div v-if="exercise.sets && exercise.sets.length > 0" class="border-t border-border/50 px-4 py-3">
                         <!-- Sets Summary -->
                         <div class="text-sm text-muted-foreground">
-                            {{ exercise.sets.length }} series • {{ exercise.sets[0]?.min_reps
-                            }}{{
-                                exercise.sets[0]?.max_reps && exercise.sets[0]?.max_reps !== exercise.sets[0]?.min_reps
-                                    ? `-${exercise.sets[0]?.max_reps}`
-                                    : ''
-                            }}
-                            Reps •
-                            {{ exercise.sets[0]?.weight ? `${exercise.sets[0]?.weight} kg` : '- kg' }}
+                            {{ exercise.sets.length }} series
+                            <template v-if="exercise.sets[0]?.target_reps">
+                                • {{ exercise.sets[0]?.target_reps }} Reps
+                            </template>
+                            <template v-if="exercise.sets[0]?.target_weight"> • {{ exercise.sets[0]?.target_weight }}kg </template>
                         </div>
                     </div>
 
                     <!-- No sets message -->
                     <div v-else class="border-t border-border/50 px-4 py-3">
-                        <p class="text-sm text-muted-foreground">No hay series configuradas</p>
+                        <button
+                            @click="openSetDialog(exercise.id)"
+                            class="text-sm text-muted-foreground hover:text-primary hover:underline"
+                        >
+                            + Agregar series
+                        </button>
                     </div>
                 </div>
 
@@ -320,7 +391,7 @@ const confirmDeleteSet = async () => {
                 <div class="flex flex-col items-center gap-2 text-center">
                     <h2 class="text-xl font-semibold text-foreground">No hay ejercicios todavía</h2>
                     <p class="max-w-md text-sm text-muted-foreground">
-                        Comienza agregando ejercicios a esta rutina para crear un plan de entrenamiento completo.
+                        Comienza agregando ejercicios a esta sesión para crear un plan de entrenamiento completo.
                     </p>
                 </div>
                 <button
@@ -335,22 +406,42 @@ const confirmDeleteSet = async () => {
         </div>
 
         <!-- Add Exercise Dialog -->
-        <WorkoutExercisesAddDialog v-model:open="showAddDialog" :workout-id="workout.id" @created="onExerciseAdded" />
+        <WorkoutExercisesAddDialog v-model:open="showAddDialog" :session-id="activeSessionId" @created="onExerciseAdded" />
 
         <!-- Add Set Dialog -->
         <ExerciseSetCreateDialog
             v-model:open="showSetDialog"
-            :workout-exercise-id="selectedExerciseId"
+            :session-exercise-id="selectedExerciseId"
             :existing-sets="selectedExerciseSets"
             @created="onSetCreated"
         />
+
+        <!-- Add Session Dialog -->
+        <Dialog v-model:open="showAddSessionDialog">
+            <DialogContent class="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>Agregar Sesión</DialogTitle>
+                    <DialogDescription> Crea una nueva sesión (día) para esta rutina. </DialogDescription>
+                </DialogHeader>
+                <div class="grid gap-4 py-4">
+                    <div class="grid gap-2">
+                        <Label for="session-name">Nombre de la sesión</Label>
+                        <Input id="session-name" v-model="newSessionName" placeholder="Ej: Día 2, Push Day, etc." />
+                    </div>
+                </div>
+                <DialogFooter>
+                    <Button variant="outline" @click="showAddSessionDialog = false"> Cancelar </Button>
+                    <Button @click="createSession"> Crear Sesión </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
 
         <!-- Edit Notes Dialog -->
         <Dialog v-model:open="showEditNotesDialog">
             <DialogContent class="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Editar Notas</DialogTitle>
-                    <DialogDescription> Agrega o modifica las notas para esta serie. </DialogDescription>
+                    <DialogDescription> Agrega o modifica las notas para este ejercicio. </DialogDescription>
                 </DialogHeader>
                 <div class="grid gap-4 py-4">
                     <div class="grid gap-2">
@@ -359,7 +450,7 @@ const confirmDeleteSet = async () => {
                             id="notes"
                             v-model="notesText"
                             class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                            placeholder="Escribe las notas para esta serie..."
+                            placeholder="Escribe las notas para este ejercicio..."
                             rows="4"
                         />
                     </div>

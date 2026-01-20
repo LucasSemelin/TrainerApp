@@ -10,4 +10,5 @@ export interface Client {
     id: string;
     email: string;
     profile?: Profile;
+    status?: string | null;
 }

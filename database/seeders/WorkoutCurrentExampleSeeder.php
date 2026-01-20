@@ -14,8 +14,8 @@ class WorkoutCurrentExampleSeeder extends Seeder
     public function run(): void
     {
         // Crear un cliente y un entrenador
-        $client = User::factory()->create(['email' => 'client' . time() . '@example.com']);
-        $trainer = User::factory()->create(['email' => 'trainer' . time() . '@example.com']);
+        $client = User::factory()->create(['email' => 'client'.time().'@example.com']);
+        $trainer = User::factory()->create(['email' => 'trainer'.time().'@example.com']);
 
         // Crear algunas rutinas históricas
         $oldWorkout1 = Workout::factory()->create([
@@ -40,10 +40,10 @@ class WorkoutCurrentExampleSeeder extends Seeder
             'is_current' => true,
         ]);
 
-        $this->command->info('✅ Creado cliente: ' . $client->email);
-        $this->command->info('✅ Creado entrenador: ' . $trainer->email);
+        $this->command->info('✅ Creado cliente: '.$client->email);
+        $this->command->info('✅ Creado entrenador: '.$trainer->email);
         $this->command->info('✅ Creadas 3 rutinas para el cliente');
-        $this->command->info('✅ Rutina actual: ' . $currentWorkout->name);
+        $this->command->info('✅ Rutina actual: '.$currentWorkout->name);
 
         // Demostrar el uso de los métodos
         $this->command->info('');

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ExerciseWorkout;
 use App\Models\Workout;
 use Illuminate\Http\Request;
 
@@ -18,43 +17,26 @@ class WorkoutController extends Controller
 
         $workout = Workout::create($validated);
 
-        // Para Inertia, devolvemos una respuesta JSON simple
+        // For Inertia, return a simple JSON response
         if ($request->wantsJson()) {
             return response()->json([
                 'success' => true,
-                'workout' => $workout,
+                'workout' => $workout->load('sessions'),
                 'message' => 'Rutina creada exitosamente',
             ]);
         }
 
-        // Si no es una petición AJAX, redirigir
+        // If not an AJAX request, redirect
         return redirect()->route('clients.workouts.index', $validated['client_id'])
             ->with('success', 'Rutina creada exitosamente');
     }
 
-    public function addExercise(Request $request, Workout $workout)
+    public function destroy(Workout $workout)
     {
-        $validated = $request->validate([
-            'exercise_id' => 'required|exists:exercises,id',
-        ]);
+        $clientId = $workout->client_id;
+        $workout->delete();
 
-        // Get the next order number for this workout
-        $nextOrder = $workout->exerciseWorkouts()->max('order') + 1 ?? 1;
-
-        // Create the exercise workout relationship
-        $exerciseWorkout = ExerciseWorkout::create([
-            'workout_id' => $workout->id,
-            'exercise_id' => $validated['exercise_id'],
-            'order' => $nextOrder,
-        ]);
-
-        // Load the related exercise data and empty sets
-        $exerciseWorkout->load(['exercise', 'sets']);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Ejercicio agregado exitosamente',
-            'exercise_workout' => $exerciseWorkout,
-        ]);
+        return redirect()->route('clients.workouts.index', $clientId)
+            ->with('success', 'Rutina eliminada exitosamente');
     }
 }

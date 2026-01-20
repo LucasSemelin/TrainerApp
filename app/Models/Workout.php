@@ -13,35 +13,51 @@ class Workout extends Model
     /** @use HasFactory<\Database\Factories\WorkoutFactory> */
     use HasFactory, HasUuids;
 
+    public const STATUS_DRAFT = 'draft';
+
+    public const STATUS_ACTIVE = 'active';
+
+    public const STATUS_ARCHIVED = 'archived';
+
     protected $fillable = [
         'name',
         'trainer_id',
         'client_id',
-        'is_current',
+        'status',
     ];
 
     protected function casts(): array
     {
         return [
-            'is_current' => 'boolean',
+            'status' => 'string',
         ];
     }
 
     protected static function booted(): void
     {
-        // Cuando se marca una rutina como actual, desmarcar las demás del mismo cliente
+        // When a workout is activated, archive other active workouts for the same client-trainer pair
         static::saving(function (Workout $workout) {
-            if ($workout->is_current && $workout->isDirty('is_current')) {
+            if ($workout->status === self::STATUS_ACTIVE && $workout->isDirty('status')) {
                 static::where('client_id', $workout->client_id)
+                    ->where('trainer_id', $workout->trainer_id)
                     ->where('id', '!=', $workout->id)
-                    ->update(['is_current' => false]);
+                    ->where('status', self::STATUS_ACTIVE)
+                    ->update(['status' => self::STATUS_ARCHIVED]);
             }
+        });
+
+        // Create a default session when a workout is created
+        static::created(function (Workout $workout) {
+            $workout->sessions()->create([
+                'session_order' => 1,
+                'name' => 'Día 1',
+            ]);
         });
     }
 
-    public function exerciseWorkouts(): HasMany
+    public function sessions(): HasMany
     {
-        return $this->hasMany(ExerciseWorkout::class);
+        return $this->hasMany(WorkoutSession::class)->orderBy('session_order');
     }
 
     public function client(): BelongsTo
@@ -55,23 +71,71 @@ class Workout extends Model
     }
 
     /**
-     * Marcar esta rutina como actual para el cliente
+     * Activate this workout (marks it as current for the client-trainer pair)
      */
-    public function makeCurrentForClient(): bool
+    public function activate(): bool
     {
-        return $this->update(['is_current' => true]);
+        return $this->update(['status' => self::STATUS_ACTIVE]);
     }
 
     /**
-     * Scope para obtener la rutina actual de un cliente
+     * Archive this workout
      */
-    public function scopeCurrent($query)
+    public function archive(): bool
     {
-        return $query->where('is_current', true);
+        return $this->update(['status' => self::STATUS_ARCHIVED]);
     }
 
     /**
-     * Scope para obtener rutinas por cliente
+     * Check if this workout is active
+     */
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    /**
+     * Check if this workout is a draft
+     */
+    public function isDraft(): bool
+    {
+        return $this->status === self::STATUS_DRAFT;
+    }
+
+    /**
+     * Check if this workout is archived
+     */
+    public function isArchived(): bool
+    {
+        return $this->status === self::STATUS_ARCHIVED;
+    }
+
+    /**
+     * Scope for active workouts
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', self::STATUS_ACTIVE);
+    }
+
+    /**
+     * Scope for draft workouts
+     */
+    public function scopeDraft($query)
+    {
+        return $query->where('status', self::STATUS_DRAFT);
+    }
+
+    /**
+     * Scope for archived workouts
+     */
+    public function scopeArchived($query)
+    {
+        return $query->where('status', self::STATUS_ARCHIVED);
+    }
+
+    /**
+     * Scope for workouts by client
      */
     public function scopeForClient($query, $clientId)
     {
@@ -79,10 +143,21 @@ class Workout extends Model
     }
 
     /**
-     * Obtener la rutina actual de un cliente específico
+     * Scope for workouts by trainer
      */
-    public static function currentForClient($clientId): ?self
+    public function scopeForTrainer($query, $trainerId)
     {
-        return static::forClient($clientId)->current()->first();
+        return $query->where('trainer_id', $trainerId);
+    }
+
+    /**
+     * Get the active workout for a specific client-trainer pair
+     */
+    public static function activeFor($clientId, $trainerId = null): ?self
+    {
+        return static::forClient($clientId)
+            ->when($trainerId, fn ($q) => $q->forTrainer($trainerId))
+            ->active()
+            ->first();
     }
 }

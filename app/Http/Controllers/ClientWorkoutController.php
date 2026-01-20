@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ExerciseWorkout;
 use App\Models\User;
 use App\Models\Workout;
 
@@ -13,72 +12,88 @@ class ClientWorkoutController extends Controller
         return inertia('PageClientWorkoutIndex', [
             'client' => $client,
             'workouts' => $client->myWorkouts()
-                ->orderByDesc('is_current')  // Rutina actual primero
-                ->orderByDesc('created_at')  // Luego por fecha de creación
+                ->orderByRaw("CASE WHEN status = 'active' THEN 0 WHEN status = 'draft' THEN 1 ELSE 2 END")
+                ->orderByDesc('created_at')
                 ->get(),
         ]);
     }
 
     public function show(User $client, Workout $workout)
     {
-        $exercises = ExerciseWorkout::where('workout_id', $workout->id)
+        // Load sessions with their exercises and sets
+        $sessions = $workout->sessions()
             ->with([
-                'exercise.categories.translations' => function ($query) {
+                'exercises.exercise.categories.translations' => function ($query) {
                     $query->where('locale', 'es');
                 },
-                'sets' => function ($query) {
-                    $query->orderBy('set_number');
+                'exercises.sets' => function ($query) {
+                    $query->orderBy('set_order');
                 },
             ])
             ->get();
 
-        // Transform exercises to include category information
-        $exercises = $exercises->map(function ($exerciseWorkout) {
-            // Get main categories (muscle_group primarily)
-            $mainCategories = $exerciseWorkout->exercise->categories
-                ->where('type_slug', 'muscle_group')
-                ->map(function ($category) {
-                    return $category->label('es');
-                })
-                ->filter()
-                ->values()
-                ->toArray();
-
-            // If no muscle_group, use movement_pattern as alternative
-            if (empty($mainCategories)) {
-                $mainCategories = $exerciseWorkout->exercise->categories
-                    ->where('type_slug', 'movement_pattern')
-                    ->map(function ($category) {
-                        return $category->label('es');
-                    })
+        // Transform sessions to include category information for each exercise
+        $sessions = $sessions->map(function ($session) {
+            $exercises = $session->exercises->map(function ($sessionExercise) {
+                // Get main categories (muscle_group primarily)
+                $mainCategories = $sessionExercise->exercise->categories
+                    ->where('type_slug', 'muscle_group')
+                    ->map(fn ($category) => $category->label('es'))
                     ->filter()
                     ->values()
                     ->toArray();
-            }
 
-            // Convert to array and add categories
-            $exerciseArray = $exerciseWorkout->toArray();
-            $exerciseArray['exercise']['categories'] = $mainCategories;
+                // If no muscle_group, use movement_pattern as alternative
+                if (empty($mainCategories)) {
+                    $mainCategories = $sessionExercise->exercise->categories
+                        ->where('type_slug', 'movement_pattern')
+                        ->map(fn ($category) => $category->label('es'))
+                        ->filter()
+                        ->values()
+                        ->toArray();
+                }
 
-            return $exerciseArray;
+                // Convert to array and add categories
+                $exerciseArray = $sessionExercise->toArray();
+                $exerciseArray['exercise']['categories'] = $mainCategories;
+
+                return $exerciseArray;
+            });
+
+            $sessionArray = $session->toArray();
+            $sessionArray['exercises'] = $exercises;
+
+            return $sessionArray;
         });
 
         return inertia('PageClientWorkoutShow', [
             'client' => $client,
             'workout' => $workout,
-            'exercises' => $exercises,
+            'sessions' => $sessions,
         ]);
     }
 
-    public function makeCurrent(User $client, Workout $workout)
+    public function activate(User $client, Workout $workout)
     {
-        // Verificar que la rutina pertenece al cliente
+        // Verify the workout belongs to the client
         if ($workout->client_id !== $client->id) {
             abort(403, 'Esta rutina no pertenece al cliente especificado.');
         }
 
-        $workout->makeCurrentForClient();
+        $workout->activate();
 
-        return redirect()->back()->with('success', 'Rutina marcada como actual exitosamente.');
+        return redirect()->back()->with('success', 'Rutina activada exitosamente.');
+    }
+
+    public function archive(User $client, Workout $workout)
+    {
+        // Verify the workout belongs to the client
+        if ($workout->client_id !== $client->id) {
+            abort(403, 'Esta rutina no pertenece al cliente especificado.');
+        }
+
+        $workout->archive();
+
+        return redirect()->back()->with('success', 'Rutina archivada exitosamente.');
     }
 }

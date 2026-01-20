@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import ClientRemoveDialog from '@/components/ClientRemoveDialog.vue';
 import ClientsCreateDialog from '@/components/ClientsCreateDialog.vue';
+import WorkoutCreateDialog from '@/components/WorkoutCreateDialog.vue';
+import { Badge } from '@/components/ui/badge';
+import ButtonSecondary from '@/components/ui/button/ButtonSecondary.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import { ClipboardList, Trash2, Users } from 'lucide-vue-next';
+import { Head, router, usePage } from '@inertiajs/vue3';
+import { Users } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -19,10 +21,33 @@ const breadcrumbs: BreadcrumbItem[] = [
 const page = usePage();
 const clientsList = computed<Client[]>(() => page.props.clients as Client[]);
 
+// Rutinas actuales por alumno (asumimos que viene en props.clients[] como client.workouts)
+function hasCurrentWorkout(client: Client): boolean {
+    // Si el cliente tiene al menos una rutina actual
+    return Array.isArray(client.workouts) && client.workouts.some((w: any) => w.is_current);
+}
+
 // client creation handled by ClientsCreateDialog component
 const onCreated = () => {
     window.location.reload();
 };
+
+// Para mostrar el modal de crear rutina
+import { ref } from 'vue';
+const showWorkoutDialog = ref<string | null>(null);
+function openWorkoutDialog(clientId: string) {
+    showWorkoutDialog.value = clientId;
+}
+function closeWorkoutDialog() {
+    showWorkoutDialog.value = null;
+}
+
+function goToClientShow(clientId: string) {
+    router.visit(`/clients/${clientId}`);
+}
+function goToClientWorkouts(clientId: string) {
+    router.visit(`/clients/${clientId}/workouts`);
+}
 </script>
 
 <template>
@@ -40,9 +65,9 @@ const onCreated = () => {
                     <Users class="h-10 w-10 text-muted-foreground" />
                 </div>
                 <div class="flex flex-col items-center gap-2 text-center">
-                    <h2 class="text-xl font-semibold text-foreground">No hay alumnos todavía</h2>
+                    <h2 class="text-xl font-semibold text-foreground">No tenés alumnos todavía</h2>
                     <p class="max-w-md text-sm text-muted-foreground">
-                        Comienza agregando tu primer alumno para poder crear y asignar rutinas de entrenamiento.
+                        Comenzá agregando tu primer alumno para poder crearle y asignarle rutinas de entrenamiento.
                     </p>
                 </div>
                 <ClientsCreateDialog @created="onCreated">
@@ -51,7 +76,7 @@ const onCreated = () => {
                             type="button"
                             class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                         >
-                            Agregar primer alumno
+                            Agregar alumno
                         </button>
                     </template>
                 </ClientsCreateDialog>
@@ -60,37 +85,30 @@ const onCreated = () => {
             <!-- Clients List -->
             <template v-else v-for="(client, index) in clientsList" :key="client.id">
                 <div
-                    class="flex items-center justify-between border-b border-border/70 py-2 dark:border-border"
+                    class="group flex cursor-pointer items-center justify-between border-b border-border/70 py-2 transition-colors hover:bg-muted/40 dark:border-border"
                     :class="index % 2 === 1 ? 'bg-muted/30' : ''"
+                    @click="goToClientShow(client.id)"
                 >
-                    <div class="flex flex-col">
-                        <span>
+                    <div class="flex w-full flex-col">
+                        <span class="flex items-center gap-2">
                             {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
+                            <Badge v-if="client.status === 'pending'" variant="secondary">Pendiente</Badge>
                         </span>
-                        <span class="text-sm">{{ client.email }}</span>
+                        <span class="text-sm text-gray-400">{{ client.email }}</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <Link
-                            :href="clients.workouts.index(client.id).url"
-                            class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                            aria-label="Ver rutinas"
-                        >
-                            <ClipboardList class="h-5 w-5" />
-                        </Link>
-                        <ClientRemoveDialog
-                            :client-id="client.id"
-                            :client-name="client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email"
-                        >
-                            <template #trigger>
-                                <button
-                                    type="button"
-                                    class="inline-flex items-center justify-center rounded-md p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                    aria-label="Eliminar cliente"
-                                >
-                                    <Trash2 class="h-5 w-5" />
-                                </button>
-                            </template>
-                        </ClientRemoveDialog>
+                    <div class="z-10 flex min-w-[100px] items-center justify-end gap-2" @click.stop>
+                        <template v-if="hasCurrentWorkout(client)">
+                            <ButtonSecondary type="button" class="px-4 py-1.5 text-xs" @click="goToClientWorkouts(client.id)">
+                                Ver rutinas
+                            </ButtonSecondary>
+                        </template>
+                        <template v-else>
+                            <div class="w-full">
+                                <WorkoutCreateDialog :clientId="client.id" @created="onCreated">
+                                    <template #trigger></template>
+                                </WorkoutCreateDialog>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </template>
