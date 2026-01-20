@@ -22,16 +22,16 @@ return new class extends Migration
     public function up(): void
     {
         // Step 1: Add status column to workouts
-        Schema::table('workouts', function (Blueprint $table) {
-            $table->string('status', 20)->default('draft')->after('client_id');
-            $table->index(['client_id', 'trainer_id', 'status']);
-        });
+        // Schema::table('workouts', function (Blueprint $table) {
+        //     $table->string('status', 20)->default('draft')->after('client_id');
+        //     $table->index(['client_id', 'trainer_id', 'status']);
+        // });
 
-        // Step 2: Convert is_current to status (only if column exists)
-        if (Schema::hasColumn('workouts', 'is_current')) {
-            DB::table('workouts')->where('is_current', true)->update(['status' => 'active']);
-            DB::table('workouts')->where('is_current', false)->update(['status' => 'archived']);
-        }
+        // // Step 2: Convert is_current to status (only if column exists)
+        // if (Schema::hasColumn('workouts', 'is_current')) {
+        //     DB::table('workouts')->where('is_current', true)->update(['status' => 'active']);
+        //     DB::table('workouts')->where('is_current', false)->update(['status' => 'archived']);
+        // }
 
         // Step 3: Drop old workout_sessions table and recreate with UUID
         // First drop tables that have foreign keys to workout_sessions
