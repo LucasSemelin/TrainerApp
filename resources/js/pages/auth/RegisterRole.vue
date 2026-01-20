@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { storeRole } from '@/actions/App/Http/Controllers/Auth/RegisteredUserController';
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
@@ -18,7 +17,7 @@ const handleSubmit = () => {
 
     processing.value = true;
     router.post(
-        storeRole().url,
+        '/register/role',
         { role: selectedRole.value },
         {
             onFinish: () => {
