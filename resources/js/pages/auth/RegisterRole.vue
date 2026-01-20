@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import user from '@/routes/user';
+import { storeRole } from '@/routes/user';
 import { Head, router } from '@inertiajs/vue3';
 import { Check, Dumbbell, Users } from 'lucide-vue-next';
 import { ref } from 'vue';
@@ -18,7 +18,7 @@ const handleSubmit = () => {
 
     processing.value = true;
     router.post(
-        user.storeRole().url,
+        storeRole().url,
         { role: selectedRole.value },
         {
             onFinish: () => {
