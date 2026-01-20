@@ -161,7 +161,6 @@ return new class extends Migration
         Schema::dropIfExists('exercise_workouts');
 
         Schema::table('workouts', function (Blueprint $table) {
-            $table->dropIndex(['client_id', 'is_current']);
             $table->dropColumn('is_current');
         });
     }
