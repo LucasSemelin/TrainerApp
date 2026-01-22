@@ -38,6 +38,11 @@
     --color-destructive: var(--destructive);
     --color-destructive-foreground: var(--destructive-foreground);
 
+    --color-success: var(--success);
+    --color-info: var(--info);
+    --color-draft: var(--draft);
+    --color-warning: var(--warning);
+
     --color-border: var(--border);
     --color-input: var(--input);
     --color-ring: var(--ring);
@@ -167,6 +172,8 @@
      Feedback (alineado al primary)
      ========================= */
     --success: oklch(0.86 0.2 137.76); /* progreso OK */
+    --info: oklch(0.72 0.14 220); /* información / activa */
+    --draft: oklch(0.50 0.02 260); /* borrador / en construcción */
     --warning: oklch(0.78 0.16 95); /* sobrecarga */
     --destructive: oklch(0.62 0.22 25); /* error / lesión */
     --destructive-foreground: oklch(0.96 0.01 260);

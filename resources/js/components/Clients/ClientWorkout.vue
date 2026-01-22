@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import WorkoutStatus from '@/components/Workouts/WorkoutStatus.vue';
 import type { Workout } from '@/types/workout';
 import { ArchiveRestore, Check, X } from 'lucide-vue-next';
 import { ref } from 'vue';
@@ -16,22 +17,6 @@ const emit = defineEmits<{
 }>();
 
 const showUnarchiveConfirm = ref(false);
-
-const getStatusLabel = (status: string) => {
-    const labels: Record<string, string> = {
-        active: 'Activa',
-        archived: 'Archivada',
-    };
-    return labels[status] || status;
-};
-
-const getStatusVariant = (status: string) => {
-    const variants: Record<string, string> = {
-        active: 'border-primary bg-primary/10 text-primary',
-        archived: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400',
-    };
-    return variants[status] || variants.active;
-};
 
 const handleClick = () => {
     if (!showUnarchiveConfirm.value) {
@@ -54,10 +39,6 @@ const cancelUnarchive = (event: Event) => {
     event.stopPropagation();
     showUnarchiveConfirm.value = false;
 };
-
-const showPill = (status: string) => {
-    return status === 'active' || status === 'archived';
-};
 </script>
 
 <template>
@@ -67,16 +48,14 @@ const showPill = (status: string) => {
     >
         <!-- Primera línea: Nombre (2/3) + Pill (1/3) -->
         <div class="flex w-full items-start gap-3">
-            <h3 class="flex-[2] font-medium text-foreground group-hover:text-primary">{{ workout.name }}</h3>
-            <div v-if="showPill(workout.status)" class="flex flex-1 justify-end">
-                <span :class="['rounded-full border px-3 py-1 text-xs font-medium whitespace-nowrap', getStatusVariant(workout.status)]">
-                    {{ getStatusLabel(workout.status) }}
-                </span>
+            <h3 class="flex-[2] text-lg font-medium text-foreground group-hover:text-primary">{{ workout.name }}</h3>
+            <div class="flex flex-1 justify-end">
+                <WorkoutStatus :workout="workout" />
             </div>
         </div>
 
         <!-- Segunda línea: Fecha de creación -->
-        <p class="text-sm text-muted-foreground">Creada el {{ new Date(workout.created_at).toLocaleDateString('es-ES') }}</p>
+        <p class="text-xs text-muted-foreground">Creada el {{ new Date(workout.created_at).toLocaleDateString('es-ES') }}</p>
 
         <!-- Tercera línea: Botones de acción -->
         <div v-if="workout.status === 'archived'" class="flex items-center gap-2" @click.stop>
@@ -84,7 +63,7 @@ const showPill = (status: string) => {
             <button
                 v-if="!showUnarchiveConfirm"
                 @click="toggleUnarchiveConfirm"
-                class="flex size-8 shrink-0 items-center justify-center rounded-full border border-yellow-500/30 bg-yellow-500/10 text-yellow-600 transition-colors hover:bg-yellow-500/20 dark:text-yellow-400"
+                class="flex size-8 shrink-0 items-center justify-center rounded-full border border-warning/30 bg-warning/10 text-warning transition-colors hover:bg-warning/20"
                 title="Desarchivar rutina"
             >
                 <ArchiveRestore class="size-4" />
@@ -95,14 +74,14 @@ const showPill = (status: string) => {
                 <span class="text-sm font-medium text-muted-foreground">¿Desarchivar?</span>
                 <button
                     @click="confirmUnarchive"
-                    class="flex size-8 shrink-0 items-center justify-center rounded-full border border-green-500/30 bg-green-500/10 text-green-600 transition-colors hover:bg-green-500/20 dark:text-green-400"
+                    class="flex size-8 shrink-0 items-center justify-center rounded-full border border-success/30 bg-success/10 text-success transition-colors hover:bg-success/20"
                     title="Confirmar"
                 >
                     <Check class="size-4" />
                 </button>
                 <button
                     @click="cancelUnarchive"
-                    class="flex size-8 shrink-0 items-center justify-center rounded-full border border-red-500/30 bg-red-500/10 text-red-600 transition-colors hover:bg-red-500/20 dark:text-red-400"
+                    class="flex size-8 shrink-0 items-center justify-center rounded-full border border-destructive/30 bg-destructive/10 text-destructive transition-colors hover:bg-destructive/20"
                     title="Cancelar"
                 >
                     <X class="size-4" />
