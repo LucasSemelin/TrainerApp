@@ -1,3 +1,4 @@
+git
 <script setup lang="ts">
 import ExerciseSetCreateDialog from '@/components/ExerciseSetCreateDialog.vue';
 import SessionNavigation from '@/components/SessionNavigation.vue';
@@ -310,17 +311,17 @@ const deleteSet = async (setId: string) => {
                         const setIndex = exercise.sets.findIndex((set) => set.id === setId);
                         if (setIndex !== -1) {
                             const deletedSetOrder = exercise.sets[setIndex].set_order;
-                            
+
                             // Eliminar la serie
                             exercise.sets.splice(setIndex, 1);
-                            
+
                             // Reordenar las series restantes (decrementar el order de las que venían después)
                             exercise.sets.forEach((set) => {
                                 if (set.set_order > deletedSetOrder) {
                                     set.set_order--;
                                 }
                             });
-                            
+
                             break;
                         }
                     }
