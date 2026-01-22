@@ -84,6 +84,51 @@ const unarchiveWorkout = () => {
     }
 };
 
+// Danger Zone Functions
+const deleteCurrentSession = () => {
+    if (!activeSession.value) return;
+    
+    if (confirm(`¿Estás seguro de que querés eliminar "${activeSession.value.name || `Día ${activeSession.value.session_order}`}"?`)) {
+        fetch(`/clients/${client.value.id}/workouts/${workout.value.id}/sessions/${activeSession.value.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            },
+        }).then(() => {
+            window.location.reload();
+        });
+    }
+};
+
+const archiveWorkout = () => {
+    if (confirm('¿Estás seguro de que querés archivar esta rutina?')) {
+        fetch(`/clients/${client.value.id}/workouts/${workout.value.id}/archive`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            },
+        }).then(() => {
+            window.location.reload();
+        });
+    }
+};
+
+const deleteWorkout = () => {
+    if (confirm('⚠️ ATENCIÓN: Esta acción no se puede deshacer. ¿Estás seguro de que querés eliminar esta rutina permanentemente?')) {
+        fetch(`/clients/${client.value.id}/workouts/${workout.value.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            },
+        }).then(() => {
+            window.location.href = clients.workouts.index({ client: client.value.id }).url;
+        });
+    }
+};
+
 // Handle session selection
 const onSessionSelect = (sessionId: string) => {
     activeSessionId.value = sessionId;
@@ -405,6 +450,39 @@ const deleteExercise = async (exerciseId: string) => {
                     <Plus class="mr-2 inline h-5 w-5" />
                     Agregar Primer Ejercicio
                 </button>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="mt-8 rounded-lg border-2 border-destructive/30 bg-destructive/5 p-6">
+                <h2 class="mb-4 text-lg font-semibold text-destructive">Zona de peligro</h2>
+                <div class="space-y-3">
+                    <!-- Delete Current Session -->
+                    <div v-if="activeSession" class="flex items-center justify-between rounded-md border border-border bg-card p-4">
+                        <div>
+                            <h3 class="font-medium text-foreground">Eliminar día actual</h3>
+                            <p class="text-sm text-muted-foreground">Eliminar permanentemente "{{ activeSession.name || `Día ${activeSession.session_order}` }}"</p>
+                        </div>
+                        <Button @click="deleteCurrentSession" variant="destructive" size="sm"> Eliminar día </Button>
+                    </div>
+
+                    <!-- Archive Workout -->
+                    <div v-if="workout.status !== 'archived'" class="flex items-center justify-between rounded-md border border-border bg-card p-4">
+                        <div>
+                            <h3 class="font-medium text-foreground">Archivar rutina</h3>
+                            <p class="text-sm text-muted-foreground">La rutina dejará de estar disponible para el alumno</p>
+                        </div>
+                        <Button @click="archiveWorkout" variant="outline" size="sm" class="border-warning text-warning hover:bg-warning/10"> Archivar </Button>
+                    </div>
+
+                    <!-- Delete Workout -->
+                    <div class="flex items-center justify-between rounded-md border border-border bg-card p-4">
+                        <div>
+                            <h3 class="font-medium text-foreground">Eliminar rutina</h3>
+                            <p class="text-sm text-muted-foreground">Eliminar permanentemente esta rutina y todos sus datos</p>
+                        </div>
+                        <Button @click="deleteWorkout" variant="destructive" size="sm"> Eliminar rutina </Button>
+                    </div>
+                </div>
             </div>
         </div>
 
