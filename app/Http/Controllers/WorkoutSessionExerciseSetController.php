@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Workouts\DeleteExerciseSet;
 use App\Models\WorkoutSessionExercise;
 use App\Models\WorkoutSessionExerciseSet;
 use Illuminate\Http\Request;
@@ -55,9 +56,9 @@ class WorkoutSessionExerciseSetController extends Controller
         ]);
     }
 
-    public function destroy(WorkoutSessionExerciseSet $set)
+    public function destroy(WorkoutSessionExerciseSet $set, DeleteExerciseSet $deleteExerciseSet)
     {
-        $set->delete();
+        $deleteExerciseSet->execute($set);
 
         return response()->json([
             'success' => true,

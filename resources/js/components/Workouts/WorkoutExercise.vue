@@ -72,7 +72,9 @@ const handleDeleteSet = (setId: string) => {
             <div v-if="exercise.sets && exercise.sets.length > 0">
                 <div class="overflow-hidden">
                     <!-- Table Header -->
-                    <div class="grid grid-cols-[60px_1fr_1fr_1fr_60px] gap-3 border-b border-border bg-muted/50 px-4 py-2 text-sm font-medium text-muted-foreground">
+                    <div
+                        class="grid grid-cols-[60px_1fr_1fr_1fr_60px] gap-3 border-b border-border bg-muted/50 px-4 py-2 text-sm font-medium text-muted-foreground"
+                    >
                         <div>Serie</div>
                         <div>Reps</div>
                         <div>Peso</div>
@@ -80,8 +82,12 @@ const handleDeleteSet = (setId: string) => {
                         <div></div>
                     </div>
                     <!-- Table Rows -->
-                    <div v-for="(set, index) in exercise.sets" :key="set.id" class="grid grid-cols-[60px_1fr_1fr_1fr_60px] gap-3 border-b border-border px-4 py-3 text-sm last:border-b-0">
-                        <div class="font-medium text-foreground">{{ index + 1 }}°</div>
+                    <div
+                        v-for="(set, index) in exercise.sets"
+                        :key="set.id"
+                        class="grid grid-cols-[60px_1fr_1fr_1fr_60px] gap-3 border-b border-border px-4 py-3 text-sm last:border-b-0"
+                    >
+                        <div class="font-medium text-foreground">{{ set.set_order }}°</div>
                         <div class="text-muted-foreground">{{ set.target_reps || '-' }}</div>
                         <div class="text-muted-foreground">{{ set.target_weight ? `${Math.floor(set.target_weight)}kg` : '-' }}</div>
                         <div class="text-muted-foreground">
@@ -93,7 +99,23 @@ const handleDeleteSet = (setId: string) => {
                                 class="inline-flex items-center justify-center rounded-md p-1 text-muted-foreground transition-colors hover:text-destructive"
                                 title="Eliminar serie"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M3 6h18" />
+                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                    <line x1="10" x2="10" y1="11" y2="17" />
+                                    <line x1="14" x2="14" y1="11" y2="17" />
+                                </svg>
                             </button>
                         </div>
                     </div>
