@@ -107,6 +107,9 @@ const archiveWorkout = (workoutId: string) => {
                         "
                     >
                         <div class="flex flex-col">
+                            <span class="text-xs text-muted-foreground">
+                                {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
+                            </span>
                             <div class="flex items-center gap-2">
                                 <span class="font-medium">
                                     {{ activeWorkout.name }}
@@ -141,6 +144,9 @@ const archiveWorkout = (workoutId: string) => {
                                 :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
                                 class="-mx-2 flex flex-1 cursor-pointer flex-col rounded-md px-2 py-1 transition-colors hover:bg-accent/50"
                             >
+                                <span class="text-xs text-muted-foreground">
+                                    {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
+                                </span>
                                 <div class="flex items-center gap-2">
                                     <span class="font-medium">
                                         {{ workout.name }}
@@ -178,6 +184,9 @@ const archiveWorkout = (workoutId: string) => {
                                 :href="clients.workouts.show({ client: client.id, workout: workout.id }).url"
                                 class="-mx-2 flex flex-1 cursor-pointer flex-col rounded-md px-2 py-1 transition-colors hover:bg-accent/50"
                             >
+                                <span class="text-xs text-muted-foreground">
+                                    {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
+                                </span>
                                 <div class="flex items-center gap-2">
                                     <span class="font-medium">
                                         {{ workout.name }}

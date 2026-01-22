@@ -14,7 +14,7 @@ import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
 import type { Workout, WorkoutSession, WorkoutSessionExercise, WorkoutSessionExerciseSet, WorkoutStatus } from '@/types/workout';
 import { Head, usePage } from '@inertiajs/vue3';
-import { Dumbbell, MoreVertical, PencilLine, Plus } from 'lucide-vue-next';
+import { ArchiveRestore, Dumbbell, MoreVertical, PencilLine, Plus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 const page = usePage();
@@ -74,9 +74,27 @@ const getStatusBadge = (status: WorkoutStatus) => {
         case 'draft':
             return { text: 'Borrador', class: 'bg-muted text-muted-foreground' };
         case 'archived':
-            return { text: 'Archivada', class: 'bg-muted text-muted-foreground' };
+            return { text: 'Archivada', class: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400' };
         default:
             return { text: status, class: '' };
+    }
+};
+
+const unarchiveWorkout = () => {
+    if (confirm('¿Deseas desarchivar esta rutina?')) {
+        const form = {
+            _method: 'PATCH',
+        };
+        fetch(`/clients/${client.value.id}/workouts/${workout.value.id}/unarchive`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            },
+            body: JSON.stringify(form),
+        }).then(() => {
+            window.location.reload();
+        });
     }
 };
 
@@ -289,6 +307,10 @@ const deleteExercise = async (exerciseId: string) => {
                         <Badge variant="default" :class="getStatusBadge(workout.status).class">
                             {{ getStatusBadge(workout.status).text }}
                         </Badge>
+                        <Button v-if="workout.status === 'archived'" @click="unarchiveWorkout" variant="outline" size="sm" class="gap-2">
+                            <ArchiveRestore class="h-4 w-4" />
+                            Desarchivar
+                        </Button>
                         <span class="text-sm text-muted-foreground">
                             {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
                         </span>
@@ -324,7 +346,7 @@ const deleteExercise = async (exerciseId: string) => {
                                 </span>
                             </div>
                             <div v-if="exercise.notes" class="mt-1">
-                                <span class="text-sm italic text-muted-foreground">{{ exercise.notes }}</span>
+                                <span class="text-sm text-muted-foreground italic">{{ exercise.notes }}</span>
                             </div>
                         </div>
 
@@ -354,19 +376,14 @@ const deleteExercise = async (exerciseId: string) => {
                         <!-- Sets Summary -->
                         <div class="text-sm text-muted-foreground">
                             {{ exercise.sets.length }} series
-                            <template v-if="exercise.sets[0]?.target_reps">
-                                • {{ exercise.sets[0]?.target_reps }} Reps
-                            </template>
+                            <template v-if="exercise.sets[0]?.target_reps"> • {{ exercise.sets[0]?.target_reps }} Reps </template>
                             <template v-if="exercise.sets[0]?.target_weight"> • {{ exercise.sets[0]?.target_weight }}kg </template>
                         </div>
                     </div>
 
                     <!-- No sets message -->
                     <div v-else class="border-t border-border/50 px-4 py-3">
-                        <button
-                            @click="openSetDialog(exercise.id)"
-                            class="text-sm text-muted-foreground hover:text-primary hover:underline"
-                        >
+                        <button @click="openSetDialog(exercise.id)" class="text-sm text-muted-foreground hover:text-primary hover:underline">
                             + Agregar series
                         </button>
                     </div>

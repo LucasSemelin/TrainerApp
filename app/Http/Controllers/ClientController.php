@@ -32,7 +32,7 @@ class ClientController extends Controller
     {
         // $this->authorize('view', $client);
 
-        $client->load('profile');
+        $client->load(['profile', 'myWorkouts']);
 
         return inertia('Clients/PageShow', [
             'client' => $client,

@@ -38,7 +38,7 @@ class ClientWorkoutController extends Controller
                 // Get main categories (muscle_group primarily)
                 $mainCategories = $sessionExercise->exercise->categories
                     ->where('type_slug', 'muscle_group')
-                    ->map(fn ($category) => $category->label('es'))
+                    ->map(fn($category) => $category->label('es'))
                     ->filter()
                     ->values()
                     ->toArray();
@@ -47,7 +47,7 @@ class ClientWorkoutController extends Controller
                 if (empty($mainCategories)) {
                     $mainCategories = $sessionExercise->exercise->categories
                         ->where('type_slug', 'movement_pattern')
-                        ->map(fn ($category) => $category->label('es'))
+                        ->map(fn($category) => $category->label('es'))
                         ->filter()
                         ->values()
                         ->toArray();
@@ -95,5 +95,17 @@ class ClientWorkoutController extends Controller
         $workout->archive();
 
         return redirect()->back()->with('success', 'Rutina archivada exitosamente.');
+    }
+
+    public function unarchive(User $client, Workout $workout)
+    {
+        // Verify the workout belongs to the client
+        if ($workout->client_id !== $client->id) {
+            abort(403, 'Esta rutina no pertenece al cliente especificado.');
+        }
+
+        $workout->update(['status' => Workout::STATUS_DRAFT]);
+
+        return redirect()->back()->with('success', 'Rutina desarchivada exitosamente.');
     }
 }
