@@ -66,7 +66,7 @@ class ClientWorkoutController extends Controller
             return $sessionArray;
         });
 
-        return inertia('PageClientWorkoutShow', [
+        return inertia('Clients/PageWorkoutShow', [
             'client' => $client,
             'workout' => $workout,
             'sessions' => $sessions,
