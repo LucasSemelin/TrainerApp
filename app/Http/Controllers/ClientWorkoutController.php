@@ -9,7 +9,7 @@ class ClientWorkoutController extends Controller
 {
     public function index(User $client)
     {
-        return inertia('PageClientWorkoutIndex', [
+        return inertia('Clients/PageWorkoutIndex', [
             'client' => $client,
             'workouts' => $client->myWorkouts()
                 ->orderByRaw("CASE WHEN status = 'active' THEN 0 WHEN status = 'draft' THEN 1 ELSE 2 END")

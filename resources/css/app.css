@@ -173,7 +173,7 @@
      ========================= */
     --success: oklch(0.86 0.2 137.76); /* progreso OK */
     --info: oklch(0.72 0.14 220); /* información / activa */
-    --draft: oklch(0.50 0.02 260); /* borrador / en construcción */
+    --draft: oklch(0.5 0.02 260); /* borrador / en construcción */
     --warning: oklch(0.78 0.16 95); /* sobrecarga */
     --destructive: oklch(0.62 0.22 25); /* error / lesión */
     --destructive-foreground: oklch(0.96 0.01 260);
