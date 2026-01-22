@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import ExerciseSetCreateDialog from '@/components/ExerciseSetCreateDialog.vue';
 import SessionNavigation from '@/components/SessionNavigation.vue';
-import WorkoutStatus from '@/components/Workouts/WorkoutStatus.vue';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import WorkoutExercisesAddDialog from '@/components/WorkoutExercisesAddDialog.vue';
+import WorkoutStatus from '@/components/Workouts/WorkoutStatus.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
@@ -280,7 +280,13 @@ const deleteExercise = async (exerciseId: string) => {
             <!-- Header -->
             <div class="flex items-start justify-between">
                 <div class="flex-1">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-muted-foreground">
+                            {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
+                        </span>
+                        <WorkoutStatus :workout="workout" />
+                    </div>
+                    <div class="mt-2 flex items-center gap-2">
                         <h1 class="text-2xl font-semibold">{{ workout.name }}</h1>
                         <button
                             type="button"
@@ -289,15 +295,11 @@ const deleteExercise = async (exerciseId: string) => {
                             <PencilLine class="h-4 w-4" />
                         </button>
                     </div>
-                    <div class="mt-1 flex items-center gap-2">
-                        <WorkoutStatus :workout="workout" />
-                        <Button v-if="workout.status === 'archived'" @click="unarchiveWorkout" variant="outline" size="sm" class="gap-2">
+                    <div v-if="workout.status === 'archived'" class="mt-2">
+                        <Button @click="unarchiveWorkout" variant="outline" size="sm" class="gap-2">
                             <ArchiveRestore class="h-4 w-4" />
                             Desarchivar
                         </Button>
-                        <span class="text-sm text-muted-foreground">
-                            {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
-                        </span>
                     </div>
                 </div>
             </div>
