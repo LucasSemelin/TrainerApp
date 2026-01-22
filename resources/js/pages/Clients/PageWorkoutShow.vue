@@ -290,6 +290,40 @@ const confirmDeleteSet = async () => {
     }
 };
 
+// Delete set directly (from WorkoutExercise component)
+const deleteSet = async (setId: string) => {
+    try {
+        const response = await fetch(`/workout-session-exercise-sets/${setId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
+
+        if (response.ok) {
+            // Find and update the exercise's sets
+            const session = sessions.value.find((s) => s.id === activeSessionId.value);
+            if (session && session.exercises) {
+                for (const exercise of session.exercises) {
+                    if (exercise.sets) {
+                        const setIndex = exercise.sets.findIndex((set) => set.id === setId);
+                        if (setIndex !== -1) {
+                            exercise.sets.splice(setIndex, 1);
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            alert('Error al eliminar la serie');
+        }
+    } catch (error) {
+        console.error('Error al eliminar la serie:', error);
+        alert('Error al eliminar la serie');
+    }
+};
+
 // Delete exercise from session
 const deleteExercise = async (exerciseId: string) => {
     if (!confirm('¿Estás seguro de que querés eliminar este ejercicio?')) return;
@@ -367,6 +401,7 @@ const deleteExercise = async (exerciseId: string) => {
                     @add-set="openSetDialog"
                     @edit-notes="editExerciseNotes"
                     @delete="deleteExercise"
+                    @delete-set="deleteSet"
                 />
 
                 <!-- Add Exercise Button -->
