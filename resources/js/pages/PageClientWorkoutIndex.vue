@@ -7,7 +7,7 @@ import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
 import type { Workout, WorkoutStatus } from '@/types/workout';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
-import { Pin, Archive } from 'lucide-vue-next';
+import { Archive, Pin } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [

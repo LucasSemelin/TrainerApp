@@ -143,7 +143,7 @@
     --primary-active: oklch(0.82 0.21 137.76);
 
     --primary-soft: oklch(0.94 0.12 137.76);
-    --primary-soft-hover: oklch(0.90 0.12 137.76);
+    --primary-soft-hover: oklch(0.9 0.12 137.76);
 
     --primary-foreground: oklch(0.11 0.01 260);
 
@@ -166,7 +166,7 @@
     /* =========================
      Feedback (alineado al primary)
      ========================= */
-    --success: oklch(0.86 0.20 137.76); /* progreso OK */
+    --success: oklch(0.86 0.2 137.76); /* progreso OK */
     --warning: oklch(0.78 0.16 95); /* sobrecarga */
     --destructive: oklch(0.62 0.22 25); /* error / lesión */
     --destructive-foreground: oklch(0.96 0.01 260);
@@ -177,16 +177,16 @@
     --border: oklch(0.28 0.02 260);
     --input: oklch(0.28 0.02 260);
 
-    --ring: oklch(0.88 0.20 137.76);
+    --ring: oklch(0.88 0.2 137.76);
 
     /* =========================
      Charts (fitness + lectura)
      ========================= */
-    --chart-1: oklch(0.82 0.20 137.76); /* progreso */
+    --chart-1: oklch(0.82 0.2 137.76); /* progreso */
     --chart-2: oklch(0.7 0.12 220); /* volumen / info */
     --chart-3: oklch(0.76 0.17 95); /* warning */
     --chart-4: oklch(0.62 0.22 25); /* fatiga */
-    --chart-5: oklch(0.90 0.18 137.76); /* highlight */
+    --chart-5: oklch(0.9 0.18 137.76); /* highlight */
 
     /* =========================
      Sidebar
@@ -201,7 +201,7 @@
     --sidebar-accent-foreground: oklch(0.96 0.01 260);
 
     --sidebar-border: oklch(0.28 0.02 260);
-    --sidebar-ring: oklch(0.88 0.20 137.76);
+    --sidebar-ring: oklch(0.88 0.2 137.76);
 
     /* =========================
      Radius

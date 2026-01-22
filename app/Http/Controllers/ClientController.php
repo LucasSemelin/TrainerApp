@@ -23,7 +23,7 @@ class ClientController extends Controller
             return $array;
         });
 
-        return inertia('PageClientsIndex', [
+        return inertia('Clients/PageIndex', [
             'clients' => $clients,
         ]);
     }
