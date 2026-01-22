@@ -3,10 +3,10 @@ import ExerciseSetCreateDialog from '@/components/ExerciseSetCreateDialog.vue';
 import SessionNavigation from '@/components/SessionNavigation.vue';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import WorkoutExercisesAddDialog from '@/components/WorkoutExercisesAddDialog.vue';
+import WorkoutExercise from '@/components/Workouts/WorkoutExercise.vue';
 import WorkoutStatus from '@/components/Workouts/WorkoutStatus.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import clients from '@/routes/clients';
@@ -14,7 +14,7 @@ import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
 import type { Workout, WorkoutSession, WorkoutSessionExercise, WorkoutSessionExerciseSet } from '@/types/workout';
 import { Head, usePage } from '@inertiajs/vue3';
-import { ArchiveRestore, Dumbbell, MoreVertical, PencilLine, Plus } from 'lucide-vue-next';
+import { ArchiveRestore, Dumbbell, PencilLine, Plus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 const page = usePage();
@@ -87,7 +87,7 @@ const unarchiveWorkout = () => {
 // Danger Zone Functions
 const deleteCurrentSession = () => {
     if (!activeSession.value) return;
-    
+
     if (confirm(`¿Estás seguro de que querés eliminar "${activeSession.value.name || `Día ${activeSession.value.session_order}`}"?`)) {
         fetch(`/clients/${client.value.id}/workouts/${workout.value.id}/sessions/${activeSession.value.id}`, {
             method: 'DELETE',
@@ -360,65 +360,14 @@ const deleteExercise = async (exerciseId: string) => {
             <!-- Exercises List -->
             <div v-if="activeExercises.length > 0" class="space-y-4">
                 <!-- Exercise Card -->
-                <div v-for="exercise in activeExercises" :key="exercise.id" class="overflow-hidden rounded-2xl border border-border bg-card">
-                    <!-- Exercise Header -->
-                    <div class="flex items-start gap-4 p-4">
-                        <!-- Exercise Image Placeholder -->
-                        <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                            <Dumbbell class="h-10 w-10 text-primary" />
-                        </div>
-
-                        <!-- Exercise Info -->
-                        <div class="flex min-w-0 flex-1 flex-col">
-                            <h3 class="text-lg font-semibold">{{ exercise.exercise.name }}</h3>
-                            <div v-if="exercise.exercise.categories && exercise.exercise.categories.length > 0" class="mt-1">
-                                <span class="text-sm text-muted-foreground">
-                                    {{ exercise.exercise.categories.join(' • ') }}
-                                </span>
-                            </div>
-                            <div v-if="exercise.notes" class="mt-1">
-                                <span class="text-sm text-muted-foreground italic">{{ exercise.notes }}</span>
-                            </div>
-                        </div>
-
-                        <!-- Menu Button -->
-                        <DropdownMenu>
-                            <DropdownMenuTrigger as-child>
-                                <button
-                                    type="button"
-                                    class="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                                >
-                                    <MoreVertical class="h-5 w-5" />
-                                </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuItem @click="openSetDialog(exercise.id)"> Agregar serie </DropdownMenuItem>
-                                <DropdownMenuItem @click="editExerciseNotes(exercise.id)"> Editar notas </DropdownMenuItem>
-                                <DropdownMenuItem> Detalles del ejercicio </DropdownMenuItem>
-                                <DropdownMenuItem @click="deleteExercise(exercise.id)" class="text-destructive focus:text-destructive">
-                                    Eliminar
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
-
-                    <!-- Sets Info -->
-                    <div v-if="exercise.sets && exercise.sets.length > 0" class="border-t border-border/50 px-4 py-3">
-                        <!-- Sets Summary -->
-                        <div class="text-sm text-muted-foreground">
-                            {{ exercise.sets.length }} series
-                            <template v-if="exercise.sets[0]?.target_reps"> • {{ exercise.sets[0]?.target_reps }} Reps </template>
-                            <template v-if="exercise.sets[0]?.target_weight"> • {{ exercise.sets[0]?.target_weight }}kg </template>
-                        </div>
-                    </div>
-
-                    <!-- No sets message -->
-                    <div v-else class="border-t border-border/50 px-4 py-3">
-                        <button @click="openSetDialog(exercise.id)" class="text-sm text-muted-foreground hover:text-primary hover:underline">
-                            + Agregar series
-                        </button>
-                    </div>
-                </div>
+                <WorkoutExercise
+                    v-for="exercise in activeExercises"
+                    :key="exercise.id"
+                    :exercise="exercise"
+                    @add-set="openSetDialog"
+                    @edit-notes="editExerciseNotes"
+                    @delete="deleteExercise"
+                />
 
                 <!-- Add Exercise Button -->
                 <button
@@ -457,30 +406,34 @@ const deleteExercise = async (exerciseId: string) => {
                 <h2 class="mb-4 text-lg font-semibold text-destructive">Zona de peligro</h2>
                 <div class="space-y-3">
                     <!-- Delete Current Session -->
-                    <div v-if="activeSession" class="flex items-center justify-between rounded-md border border-border bg-card p-4">
-                        <div>
+                    <div v-if="activeSession" class="rounded-md border border-border bg-card p-4">
+                        <div class="flex items-center justify-between">
                             <h3 class="font-medium text-foreground">Eliminar día actual</h3>
-                            <p class="text-sm text-muted-foreground">Eliminar permanentemente "{{ activeSession.name || `Día ${activeSession.session_order}` }}"</p>
+                            <Button @click="deleteCurrentSession" variant="destructive" size="sm"> Eliminar día </Button>
                         </div>
-                        <Button @click="deleteCurrentSession" variant="destructive" size="sm"> Eliminar día </Button>
+                        <p class="mt-1 text-sm text-muted-foreground">
+                            Eliminar permanentemente "{{ activeSession.name || `Día ${activeSession.session_order}` }}"
+                        </p>
                     </div>
 
                     <!-- Archive Workout -->
-                    <div v-if="workout.status !== 'archived'" class="flex items-center justify-between rounded-md border border-border bg-card p-4">
-                        <div>
+                    <div v-if="workout.status !== 'archived'" class="rounded-md border border-border bg-card p-4">
+                        <div class="flex items-center justify-between">
                             <h3 class="font-medium text-foreground">Archivar rutina</h3>
-                            <p class="text-sm text-muted-foreground">La rutina dejará de estar disponible para el alumno</p>
+                            <Button @click="archiveWorkout" variant="outline" size="sm" class="border-warning text-warning hover:bg-warning/10">
+                                Archivar
+                            </Button>
                         </div>
-                        <Button @click="archiveWorkout" variant="outline" size="sm" class="border-warning text-warning hover:bg-warning/10"> Archivar </Button>
+                        <p class="mt-1 text-sm text-muted-foreground">La rutina dejará de estar disponible para el alumno</p>
                     </div>
 
                     <!-- Delete Workout -->
-                    <div class="flex items-center justify-between rounded-md border border-border bg-card p-4">
-                        <div>
+                    <div class="rounded-md border border-border bg-card p-4">
+                        <div class="flex items-center justify-between">
                             <h3 class="font-medium text-foreground">Eliminar rutina</h3>
-                            <p class="text-sm text-muted-foreground">Eliminar permanentemente esta rutina y todos sus datos</p>
+                            <Button @click="deleteWorkout" variant="destructive" size="sm"> Eliminar rutina </Button>
                         </div>
-                        <Button @click="deleteWorkout" variant="destructive" size="sm"> Eliminar rutina </Button>
+                        <p class="mt-1 text-sm text-muted-foreground">Eliminar permanentemente esta rutina y todos sus datos</p>
                     </div>
                 </div>
             </div>
