@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ExerciseSetCreateDialog from '@/components/ExerciseSetCreateDialog.vue';
 import SessionNavigation from '@/components/SessionNavigation.vue';
-import { Badge } from '@/components/ui/badge';
+import WorkoutStatus from '@/components/Workouts/WorkoutStatus.vue';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -12,7 +12,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
-import type { Workout, WorkoutSession, WorkoutSessionExercise, WorkoutSessionExerciseSet, WorkoutStatus } from '@/types/workout';
+import type { Workout, WorkoutSession, WorkoutSessionExercise, WorkoutSessionExerciseSet } from '@/types/workout';
 import { Head, usePage } from '@inertiajs/vue3';
 import { ArchiveRestore, Dumbbell, MoreVertical, PencilLine, Plus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -65,20 +65,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '#',
     },
 ];
-
-// Get status badge
-const getStatusBadge = (status: WorkoutStatus) => {
-    switch (status) {
-        case 'active':
-            return { text: 'Activa', class: 'bg-primary/20 text-primary hover:bg-primary/30' };
-        case 'draft':
-            return { text: 'Borrador', class: 'bg-muted text-muted-foreground' };
-        case 'archived':
-            return { text: 'Archivada', class: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400' };
-        default:
-            return { text: status, class: '' };
-    }
-};
 
 const unarchiveWorkout = () => {
     if (confirm('¿Deseas desarchivar esta rutina?')) {
@@ -304,9 +290,7 @@ const deleteExercise = async (exerciseId: string) => {
                         </button>
                     </div>
                     <div class="mt-1 flex items-center gap-2">
-                        <Badge variant="default" :class="getStatusBadge(workout.status).class">
-                            {{ getStatusBadge(workout.status).text }}
-                        </Badge>
+                        <WorkoutStatus :workout="workout" />
                         <Button v-if="workout.status === 'archived'" @click="unarchiveWorkout" variant="outline" size="sm" class="gap-2">
                             <ArchiveRestore class="h-4 w-4" />
                             Desarchivar
