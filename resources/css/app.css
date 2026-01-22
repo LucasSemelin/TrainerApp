@@ -38,6 +38,11 @@
     --color-destructive: var(--destructive);
     --color-destructive-foreground: var(--destructive-foreground);
 
+    --color-success: var(--success);
+    --color-info: var(--info);
+    --color-draft: var(--draft);
+    --color-warning: var(--warning);
+
     --color-border: var(--border);
     --color-input: var(--input);
     --color-ring: var(--ring);
@@ -138,12 +143,12 @@
     /* =========================
      Primary — BASE DEL SISTEMA
      ========================= */
-    --primary: oklch(0.8342 0.159 79.51);
-    --primary-hover: oklch(0.8 0.159 79.51);
-    --primary-active: oklch(0.76 0.145 79.51);
+    --primary: oklch(0.8979 0.2306 137.76);
+    --primary-hover: oklch(0.86 0.2306 137.76);
+    --primary-active: oklch(0.82 0.21 137.76);
 
-    --primary-soft: oklch(0.92 0.08 79.51);
-    --primary-soft-hover: oklch(0.88 0.08 79.51);
+    --primary-soft: oklch(0.94 0.12 137.76);
+    --primary-soft-hover: oklch(0.9 0.12 137.76);
 
     --primary-foreground: oklch(0.11 0.01 260);
 
@@ -166,7 +171,9 @@
     /* =========================
      Feedback (alineado al primary)
      ========================= */
-    --success: oklch(0.8 0.14 79.51); /* progreso OK */
+    --success: oklch(0.86 0.2 137.76); /* progreso OK */
+    --info: oklch(0.72 0.14 220); /* información / activa */
+    --draft: oklch(0.5 0.02 260); /* borrador / en construcción */
     --warning: oklch(0.78 0.16 95); /* sobrecarga */
     --destructive: oklch(0.62 0.22 25); /* error / lesión */
     --destructive-foreground: oklch(0.96 0.01 260);
@@ -177,16 +184,16 @@
     --border: oklch(0.28 0.02 260);
     --input: oklch(0.28 0.02 260);
 
-    --ring: oklch(0.86 0.18 79.51);
+    --ring: oklch(0.88 0.2 137.76);
 
     /* =========================
      Charts (fitness + lectura)
      ========================= */
-    --chart-1: oklch(0.78 0.15 79.51); /* progreso */
+    --chart-1: oklch(0.82 0.2 137.76); /* progreso */
     --chart-2: oklch(0.7 0.12 220); /* volumen / info */
     --chart-3: oklch(0.76 0.17 95); /* warning */
     --chart-4: oklch(0.62 0.22 25); /* fatiga */
-    --chart-5: oklch(0.88 0.16 79.51); /* highlight */
+    --chart-5: oklch(0.9 0.18 137.76); /* highlight */
 
     /* =========================
      Sidebar
@@ -194,14 +201,14 @@
     --sidebar-background: oklch(0.11 0.01 260);
     --sidebar-foreground: oklch(0.96 0.01 260);
 
-    --sidebar-primary: oklch(0.8342 0.159 79.51);
+    --sidebar-primary: oklch(0.8979 0.2306 137.76);
     --sidebar-primary-foreground: oklch(0.11 0.01 260);
 
     --sidebar-accent: oklch(0.26 0.03 260);
     --sidebar-accent-foreground: oklch(0.96 0.01 260);
 
     --sidebar-border: oklch(0.28 0.02 260);
-    --sidebar-ring: oklch(0.86 0.18 79.51);
+    --sidebar-ring: oklch(0.88 0.2 137.76);
 
     /* =========================
      Radius

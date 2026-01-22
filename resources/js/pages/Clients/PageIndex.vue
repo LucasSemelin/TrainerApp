@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import ClientsCreateDialog from '@/components/ClientsCreateDialog.vue';
-import WorkoutCreateDialog from '@/components/WorkoutCreateDialog.vue';
 import { Badge } from '@/components/ui/badge';
-import ButtonSecondary from '@/components/ui/button/ButtonSecondary.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
@@ -21,32 +19,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 const page = usePage();
 const clientsList = computed<Client[]>(() => page.props.clients as Client[]);
 
-// Rutinas actuales por alumno (asumimos que viene en props.clients[] como client.workouts)
-function hasCurrentWorkout(client: Client): boolean {
-    // Si el cliente tiene al menos una rutina actual
-    return Array.isArray(client.workouts) && client.workouts.some((w: any) => w.is_current);
-}
-
 // client creation handled by ClientsCreateDialog component
 const onCreated = () => {
     window.location.reload();
 };
 
-// Para mostrar el modal de crear rutina
-import { ref } from 'vue';
-const showWorkoutDialog = ref<string | null>(null);
-function openWorkoutDialog(clientId: string) {
-    showWorkoutDialog.value = clientId;
-}
-function closeWorkoutDialog() {
-    showWorkoutDialog.value = null;
-}
-
 function goToClientShow(clientId: string) {
     router.visit(`/clients/${clientId}`);
-}
-function goToClientWorkouts(clientId: string) {
-    router.visit(`/clients/${clientId}/workouts`);
 }
 </script>
 
@@ -95,20 +74,6 @@ function goToClientWorkouts(clientId: string) {
                             <Badge v-if="client.status === 'pending'" variant="secondary">Pendiente</Badge>
                         </span>
                         <span class="text-sm text-gray-400">{{ client.email }}</span>
-                    </div>
-                    <div class="z-10 flex min-w-[100px] items-center justify-end gap-2" @click.stop>
-                        <template v-if="hasCurrentWorkout(client)">
-                            <ButtonSecondary type="button" class="px-4 py-1.5 text-xs" @click="goToClientWorkouts(client.id)">
-                                Ver rutinas
-                            </ButtonSecondary>
-                        </template>
-                        <template v-else>
-                            <div class="w-full">
-                                <WorkoutCreateDialog :clientId="client.id" @created="onCreated">
-                                    <template #trigger></template>
-                                </WorkoutCreateDialog>
-                            </div>
-                        </template>
                     </div>
                 </div>
             </template>

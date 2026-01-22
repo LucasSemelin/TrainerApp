@@ -23,7 +23,7 @@ class ClientController extends Controller
             return $array;
         });
 
-        return inertia('PageClientsIndex', [
+        return inertia('Clients/PageIndex', [
             'clients' => $clients,
         ]);
     }
@@ -32,7 +32,7 @@ class ClientController extends Controller
     {
         // $this->authorize('view', $client);
 
-        $client->load('profile');
+        $client->load(['profile', 'myWorkouts']);
 
         return inertia('Clients/PageShow', [
             'client' => $client,

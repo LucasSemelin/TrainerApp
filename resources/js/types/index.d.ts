@@ -1,5 +1,6 @@
 import { InertiaLinkProps } from '@inertiajs/vue3';
 import type { LucideIcon } from 'lucide-vue-next';
+import type { Workout } from './workout';
 
 export interface Auth {
     user: User;
@@ -38,7 +39,9 @@ export interface User {
         first_name: string;
         last_name: string;
         gender?: string | null;
+        date_of_birth?: string | null;
     };
+    my_workouts?: Workout[];
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

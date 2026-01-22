@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import ClientWorkout from '@/components/Clients/ClientWorkout.vue';
 import ProfileBirthdateDialog from '@/components/ProfileBirthdateDialog.vue';
 import ProfileSexDialog from '@/components/ProfileSexDialog.vue';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { User } from '@/types';
-import { usePage } from '@inertiajs/vue3';
-import { Mail, MessageCircle, User as UserIcon } from 'lucide-vue-next';
+import { router, usePage } from '@inertiajs/vue3';
+import { Dumbbell, Mail, MessageCircle, User as UserIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 const page = usePage();
@@ -33,6 +34,15 @@ const getAge = (dateOfBirth: string) => {
     }
 
     return `${age} años`;
+};
+
+const navigateToWorkout = (workoutId: string) => {
+    router.visit(`/clients/${client.value.id}/workouts/${workoutId}`);
+};
+
+const unarchiveWorkout = (workoutId: string, event: Event) => {
+    event.stopPropagation();
+    router.patch(`/clients/${client.value.id}/workouts/${workoutId}/unarchive`);
 };
 </script>
 
@@ -89,6 +99,25 @@ const getAge = (dateOfBirth: string) => {
 
             <ProfileSexDialog v-model:open="sexDialogOpen" :profile-id="client.profile?.id" />
             <ProfileBirthdateDialog v-model:open="birthdateDialogOpen" :profile-id="client.profile?.id" />
+
+            <!-- Sección de rutinas -->
+            <div class="space-y-3">
+                <h2 class="text-lg font-semibold text-foreground">Rutinas</h2>
+                <div v-if="client.my_workouts && client.my_workouts.length > 0" class="space-y-2">
+                    <ClientWorkout
+                        v-for="workout in client.my_workouts"
+                        :key="workout.id"
+                        :workout="workout"
+                        :client-id="client.id"
+                        @click="navigateToWorkout"
+                        @unarchive="unarchiveWorkout"
+                    />
+                </div>
+                <div v-else class="rounded-lg border border-dashed border-border bg-muted/30 p-8 text-center">
+                    <Dumbbell class="mx-auto mb-2 size-8 text-muted-foreground/50" />
+                    <p class="text-sm text-muted-foreground">Este cliente aún no tiene rutinas asignadas</p>
+                </div>
+            </div>
         </div>
     </AppLayout>
 </template>

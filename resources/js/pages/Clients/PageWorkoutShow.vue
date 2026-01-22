@@ -1,20 +1,21 @@
+git
 <script setup lang="ts">
 import ExerciseSetCreateDialog from '@/components/ExerciseSetCreateDialog.vue';
 import SessionNavigation from '@/components/SessionNavigation.vue';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import WorkoutExercisesAddDialog from '@/components/WorkoutExercisesAddDialog.vue';
+import WorkoutExercise from '@/components/Workouts/WorkoutExercise.vue';
+import WorkoutStatus from '@/components/Workouts/WorkoutStatus.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import clients from '@/routes/clients';
 import { BreadcrumbItem } from '@/types';
 import type { Client } from '@/types/client';
-import type { Workout, WorkoutSession, WorkoutSessionExercise, WorkoutSessionExerciseSet, WorkoutStatus } from '@/types/workout';
+import type { Workout, WorkoutSession, WorkoutSessionExercise, WorkoutSessionExerciseSet } from '@/types/workout';
 import { Head, usePage } from '@inertiajs/vue3';
-import { Dumbbell, MoreVertical, PencilLine, Plus } from 'lucide-vue-next';
+import { ArchiveRestore, Dumbbell, PencilLine, Plus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 const page = usePage();
@@ -66,17 +67,66 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-// Get status badge
-const getStatusBadge = (status: WorkoutStatus) => {
-    switch (status) {
-        case 'active':
-            return { text: 'Activa', class: 'bg-primary/20 text-primary hover:bg-primary/30' };
-        case 'draft':
-            return { text: 'Borrador', class: 'bg-muted text-muted-foreground' };
-        case 'archived':
-            return { text: 'Archivada', class: 'bg-muted text-muted-foreground' };
-        default:
-            return { text: status, class: '' };
+const unarchiveWorkout = () => {
+    if (confirm('¿Deseas desarchivar esta rutina?')) {
+        const form = {
+            _method: 'PATCH',
+        };
+        fetch(`/clients/${client.value.id}/workouts/${workout.value.id}/unarchive`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            },
+            body: JSON.stringify(form),
+        }).then(() => {
+            window.location.reload();
+        });
+    }
+};
+
+// Danger Zone Functions
+const deleteCurrentSession = () => {
+    if (!activeSession.value) return;
+
+    if (confirm(`¿Estás seguro de que querés eliminar "${activeSession.value.name || `Día ${activeSession.value.session_order}`}"?`)) {
+        fetch(`/clients/${client.value.id}/workouts/${workout.value.id}/sessions/${activeSession.value.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            },
+        }).then(() => {
+            window.location.reload();
+        });
+    }
+};
+
+const archiveWorkout = () => {
+    if (confirm('¿Estás seguro de que querés archivar esta rutina?')) {
+        fetch(`/clients/${client.value.id}/workouts/${workout.value.id}/archive`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            },
+        }).then(() => {
+            window.location.reload();
+        });
+    }
+};
+
+const deleteWorkout = () => {
+    if (confirm('⚠️ ATENCIÓN: Esta acción no se puede deshacer. ¿Estás seguro de que querés eliminar esta rutina permanentemente?')) {
+        fetch(`/clients/${client.value.id}/workouts/${workout.value.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            },
+        }).then(() => {
+            window.location.href = clients.workouts.index({ client: client.value.id }).url;
+        });
     }
 };
 
@@ -241,6 +291,51 @@ const confirmDeleteSet = async () => {
     }
 };
 
+// Delete set directly (from WorkoutExercise component)
+const deleteSet = async (setId: string) => {
+    try {
+        const response = await fetch(`/workout-session-exercise-sets/${setId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
+
+        if (response.ok) {
+            // Find and update the exercise's sets
+            const session = sessions.value.find((s) => s.id === activeSessionId.value);
+            if (session && session.exercises) {
+                for (const exercise of session.exercises) {
+                    if (exercise.sets) {
+                        const setIndex = exercise.sets.findIndex((set) => set.id === setId);
+                        if (setIndex !== -1) {
+                            const deletedSetOrder = exercise.sets[setIndex].set_order;
+
+                            // Eliminar la serie
+                            exercise.sets.splice(setIndex, 1);
+
+                            // Reordenar las series restantes (decrementar el order de las que venían después)
+                            exercise.sets.forEach((set) => {
+                                if (set.set_order > deletedSetOrder) {
+                                    set.set_order--;
+                                }
+                            });
+
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            alert('Error al eliminar la serie');
+        }
+    } catch (error) {
+        console.error('Error al eliminar la serie:', error);
+        alert('Error al eliminar la serie');
+    }
+};
+
 // Delete exercise from session
 const deleteExercise = async (exerciseId: string) => {
     if (!confirm('¿Estás seguro de que querés eliminar este ejercicio?')) return;
@@ -276,7 +371,13 @@ const deleteExercise = async (exerciseId: string) => {
             <!-- Header -->
             <div class="flex items-start justify-between">
                 <div class="flex-1">
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-muted-foreground">
+                            {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
+                        </span>
+                        <WorkoutStatus :workout="workout" />
+                    </div>
+                    <div class="mt-2 flex items-center gap-2">
                         <h1 class="text-2xl font-semibold">{{ workout.name }}</h1>
                         <button
                             type="button"
@@ -285,13 +386,11 @@ const deleteExercise = async (exerciseId: string) => {
                             <PencilLine class="h-4 w-4" />
                         </button>
                     </div>
-                    <div class="mt-1 flex items-center gap-2">
-                        <Badge variant="default" :class="getStatusBadge(workout.status).class">
-                            {{ getStatusBadge(workout.status).text }}
-                        </Badge>
-                        <span class="text-sm text-muted-foreground">
-                            {{ client.profile ? `${client.profile.first_name} ${client.profile.last_name}` : client.email }}
-                        </span>
+                    <div v-if="workout.status === 'archived'" class="mt-2">
+                        <Button @click="unarchiveWorkout" variant="outline" size="sm" class="gap-2">
+                            <ArchiveRestore class="h-4 w-4" />
+                            Desarchivar
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -307,70 +406,15 @@ const deleteExercise = async (exerciseId: string) => {
             <!-- Exercises List -->
             <div v-if="activeExercises.length > 0" class="space-y-4">
                 <!-- Exercise Card -->
-                <div v-for="exercise in activeExercises" :key="exercise.id" class="overflow-hidden rounded-2xl border border-border bg-card">
-                    <!-- Exercise Header -->
-                    <div class="flex items-start gap-4 p-4">
-                        <!-- Exercise Image Placeholder -->
-                        <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                            <Dumbbell class="h-10 w-10 text-primary" />
-                        </div>
-
-                        <!-- Exercise Info -->
-                        <div class="flex min-w-0 flex-1 flex-col">
-                            <h3 class="text-lg font-semibold">{{ exercise.exercise.name }}</h3>
-                            <div v-if="exercise.exercise.categories && exercise.exercise.categories.length > 0" class="mt-1">
-                                <span class="text-sm text-muted-foreground">
-                                    {{ exercise.exercise.categories.join(' • ') }}
-                                </span>
-                            </div>
-                            <div v-if="exercise.notes" class="mt-1">
-                                <span class="text-sm italic text-muted-foreground">{{ exercise.notes }}</span>
-                            </div>
-                        </div>
-
-                        <!-- Menu Button -->
-                        <DropdownMenu>
-                            <DropdownMenuTrigger as-child>
-                                <button
-                                    type="button"
-                                    class="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                                >
-                                    <MoreVertical class="h-5 w-5" />
-                                </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuItem @click="openSetDialog(exercise.id)"> Agregar serie </DropdownMenuItem>
-                                <DropdownMenuItem @click="editExerciseNotes(exercise.id)"> Editar notas </DropdownMenuItem>
-                                <DropdownMenuItem> Detalles del ejercicio </DropdownMenuItem>
-                                <DropdownMenuItem @click="deleteExercise(exercise.id)" class="text-destructive focus:text-destructive">
-                                    Eliminar
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
-
-                    <!-- Sets Info -->
-                    <div v-if="exercise.sets && exercise.sets.length > 0" class="border-t border-border/50 px-4 py-3">
-                        <!-- Sets Summary -->
-                        <div class="text-sm text-muted-foreground">
-                            {{ exercise.sets.length }} series
-                            <template v-if="exercise.sets[0]?.target_reps">
-                                • {{ exercise.sets[0]?.target_reps }} Reps
-                            </template>
-                            <template v-if="exercise.sets[0]?.target_weight"> • {{ exercise.sets[0]?.target_weight }}kg </template>
-                        </div>
-                    </div>
-
-                    <!-- No sets message -->
-                    <div v-else class="border-t border-border/50 px-4 py-3">
-                        <button
-                            @click="openSetDialog(exercise.id)"
-                            class="text-sm text-muted-foreground hover:text-primary hover:underline"
-                        >
-                            + Agregar series
-                        </button>
-                    </div>
-                </div>
+                <WorkoutExercise
+                    v-for="exercise in activeExercises"
+                    :key="exercise.id"
+                    :exercise="exercise"
+                    @add-set="openSetDialog"
+                    @edit-notes="editExerciseNotes"
+                    @delete="deleteExercise"
+                    @delete-set="deleteSet"
+                />
 
                 <!-- Add Exercise Button -->
                 <button
@@ -402,6 +446,43 @@ const deleteExercise = async (exerciseId: string) => {
                     <Plus class="mr-2 inline h-5 w-5" />
                     Agregar Primer Ejercicio
                 </button>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="mt-8 rounded-lg border-2 border-destructive/30 bg-destructive/5 p-6">
+                <h2 class="mb-4 text-lg font-semibold text-destructive">Zona de peligro</h2>
+                <div class="space-y-3">
+                    <!-- Delete Current Session -->
+                    <div v-if="activeSession" class="rounded-md border border-border bg-card p-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium text-foreground">Eliminar día actual</h3>
+                            <Button @click="deleteCurrentSession" variant="destructive" size="sm"> Eliminar día </Button>
+                        </div>
+                        <p class="mt-1 text-sm text-muted-foreground">
+                            Eliminar permanentemente "{{ activeSession.name || `Día ${activeSession.session_order}` }}"
+                        </p>
+                    </div>
+
+                    <!-- Archive Workout -->
+                    <div v-if="workout.status !== 'archived'" class="rounded-md border border-border bg-card p-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium text-foreground">Archivar rutina</h3>
+                            <Button @click="archiveWorkout" variant="outline" size="sm" class="border-warning text-warning hover:bg-warning/10">
+                                Archivar
+                            </Button>
+                        </div>
+                        <p class="mt-1 text-sm text-muted-foreground">La rutina dejará de estar disponible para el alumno</p>
+                    </div>
+
+                    <!-- Delete Workout -->
+                    <div class="rounded-md border border-border bg-card p-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium text-foreground">Eliminar rutina</h3>
+                            <Button @click="deleteWorkout" variant="destructive" size="sm"> Eliminar rutina </Button>
+                        </div>
+                        <p class="mt-1 text-sm text-muted-foreground">Eliminar permanentemente esta rutina y todos sus datos</p>
+                    </div>
+                </div>
             </div>
         </div>
 

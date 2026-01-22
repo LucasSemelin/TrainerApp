@@ -59,6 +59,9 @@ Route::middleware(['auth', 'verified', 'ensure.role'])->group(function () {
     // Archivar una rutina
     Route::patch('clients/{client}/workouts/{workout}/archive', [ClientWorkoutController::class, 'archive'])->name('clients.workouts.archive');
 
+    // Desarchivar una rutina
+    Route::patch('clients/{client}/workouts/{workout}/unarchive', [ClientWorkoutController::class, 'unarchive'])->name('clients.workouts.unarchive');
+
     // Eliminar rutina del alumno
     Route::delete('clients/{client}/workouts/{workout}', [ClientWorkoutController::class, 'destroy'])->name('clients.workouts.destroy');
 });
@@ -127,5 +130,5 @@ Route::middleware(['auth', 'verified', 'ensure.role'])->group(function () {
 Route::get('invitations/accept/{token}', [InvitationController::class, 'accept'])->name('invitations.accept');
 Route::get('invitations/reject/{token}', [InvitationController::class, 'reject'])->name('invitations.reject');
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
